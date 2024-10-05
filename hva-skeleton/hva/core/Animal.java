@@ -36,7 +36,12 @@ public class Animal implements Visualiza{
     }
 
     public String getRegistoVacinacao() {
-      return String.join(",", _registoVacinacao.)
+      List<String> danos = new ArrayList<>();
+      if (_registoVacinacao.isEmpty()) {return "VOID";}
+      for (RegistoVacina rv : _registoVacinacao) {
+        danos.add(rv.getDano().name());
+      }
+      return String.join(",", danos);
     }
 
     public Habitat getHabitat() {
@@ -44,6 +49,6 @@ public class Animal implements Visualiza{
     }
 
     public String visualiza(Hotel h) {
-        return String.format("ANIMAL|%s|%s|%s|%s|%s", getId(), getNome(), getEspecie().getId(), );
+        return String.format("ANIMAL|%s|%s|%s|%s|%s", getId(), getNome(), getEspecie().getId(), getRegistoVacinacao(), getHabitat());
     }
 }
