@@ -9,7 +9,7 @@ public class Animal {
     private Especie _especie;
     private List<RegistoVacina> _registoVacinacao;
     private Habitat _habitat;
-
+            
     // Constructor
     public Animal(String id, String nome, Especie especie, Habitat habitat) {
         _id = id;
@@ -25,6 +25,6 @@ public class Animal {
     }
 
       
-
+    //teste
 
 }
