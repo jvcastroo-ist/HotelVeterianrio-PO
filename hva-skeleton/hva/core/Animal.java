@@ -2,7 +2,7 @@ package hva.core;
 
 import java.util.*;
 
-public class Animal {
+public class Animal implements Visualiza{
     private String _id;
     private String _nome;
     private int _adequacao;
@@ -24,8 +24,21 @@ public class Animal {
         return 0;
     }
 
-      
+    // 
+    public int especieIgual() {
+        return 0;
+    }
 
-    //teste
-    //teste2
+    public int getAdequacao() {
+        return _adequacao;
+    }
+
+    public String visualiza() {
+        return "";
+    }
+
+    public void transferirAnimal(Habitat novoH) {
+
+    }
+
 }
