@@ -38,7 +38,7 @@ public class Hotel implements Serializable {
   public Collection<String> visualiza(Collection<? extends Visualiza> T) {
     List<String> view = new ArrayList<>();
     for (Visualiza item : T) {
-      view.add(item.visualiza());
+      view.add(item.visualiza(this));
     }
     return Collections.unmodifiableList(view);
   }
@@ -68,7 +68,25 @@ public class Hotel implements Serializable {
     return visualiza(_vacinas.values());
   }
 
-  
+  public Estacao getEstacaoAno() {
+    return _estacaoAno;
+  }
+
+  public Arvore getArvore(String key) {
+    return _arvores.get(key);
+  }
+
+  public Habitat getHabitat(String key) {
+    return _habitats.get(key);
+  }
+
+  public Animal getAnimal(String key) {
+    return _animais.get(key);
+  }
+
+  public Vacina getVacina(String key) {
+    return _vacinas.get(key);
+  }
 
 
 

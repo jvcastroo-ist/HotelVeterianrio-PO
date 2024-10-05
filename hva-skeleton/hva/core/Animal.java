@@ -3,10 +3,10 @@ package hva.core;
 import java.util.*;
 
 public class Animal implements Visualiza{
-    private String _id;
-    private String _nome;
+    private final String _id;
+    private final String _nome;
     private int _adequacao;
-    private Especie _especie;
+    private final Especie _especie;
     private List<RegistoVacina> _registoVacinacao;
     private Habitat _habitat;
             
@@ -19,26 +19,31 @@ public class Animal implements Visualiza{
         _registoVacinacao = new ArrayList<>();
     }
 
-    // Calcula a satisfação do animal
-    public int satisfacao() {
-        return 0;
+    public String getId() {
+      return _id;
     }
 
-    // 
-    public int especieIgual() {
-        return 0;
+    public String getNome() {
+      return _nome;
     }
 
     public int getAdequacao() {
-        return _adequacao;
+      return _adequacao;
     }
 
-    public String visualiza() {
-        return "";
+    public Especie getEspecie() {
+      return _especie;
     }
 
-    public void transferirAnimal(Habitat novoH) {
-
+    public String getRegistoVacinacao() {
+      return String.join(",", _registoVacinacao.)
     }
 
+    public Habitat getHabitat() {
+      return _habitat;
+    }
+
+    public String visualiza(Hotel h) {
+        return String.format("ANIMAL|%s|%s|%s|%s|%s", getId(), getNome(), getEspecie().getId(), );
+    }
 }
