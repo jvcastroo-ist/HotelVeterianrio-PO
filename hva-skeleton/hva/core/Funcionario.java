@@ -1,23 +1,24 @@
 package hva.core;
 
-public abstract class Funcionario {
+public abstract class Funcionario implements Visualiza{
     private final String _id;
     private final String _nome;
 
     // Constructor
     public Funcionario(String idFuncionario, String nome) {
-        _id = idFuncionario;
-        _nome = nome;
+      _id = idFuncionario;
+      _nome = nome;
     }
 
-    public abstract String visualizaFuncionario();
+    @Override
+    public abstract String visualiza();
 
     public String getIdFuncionario(){
-        return _id;
+      return _id;
     }
 
     public String getNome(){
-        return _nome;
+      return _nome;
     }
 
 
