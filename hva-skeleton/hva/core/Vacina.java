@@ -13,7 +13,19 @@ public class Vacina{
         _especies = especies;
     }
 
-    // public String visualizaVacina(){
-    //     // return VACINA|idVacina|nomeVacina|númeroAplicações|espécies 
-    // }
+    public String getId() {
+      return _id;
+    }
+
+    public String getNome() {
+      return _nome;
+    }
+
+    public ArrayList<Especie> getEspecies() {
+      return _especies;
+    }
+
+    public ArrayList<RegistoVacina> getRegistosVacina() {
+      return _registosVacina;
+    }
 }
