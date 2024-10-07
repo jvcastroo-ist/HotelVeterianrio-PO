@@ -1,6 +1,6 @@
 package hva.core;
 
-public abstract class Arvore implements Visualiza {
+public abstract class Arvore implements Visualiza{
   private final String _id;
   private final String _nome;
   private int _idade;

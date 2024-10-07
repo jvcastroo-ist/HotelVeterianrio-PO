@@ -48,6 +48,7 @@ public class Animal implements Visualiza{
       return _habitat;
     }
 
+    @Override
     public String visualiza(Hotel h) {
         return String.format("ANIMAL|%s|%s|%s|%s|%s", getId(), getNome(), getEspecie().getId(), getRegistoVacinacao(), getHabitat());
     }

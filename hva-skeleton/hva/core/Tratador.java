@@ -2,11 +2,11 @@ package hva.core;
 import java.util.*;
 
 public class Tratador extends Funcionario{
-    private ArrayList<Habitat> _habitats;
+    private List<Habitat> _habitats;
 
     public Tratador(String idTratador, String nome){
       super(idTratador, nome);
-      _habitats = new ArrayList<Habitat>();
+      _habitats = new ArrayList<>();
     }
 
    // Fazer derivado da classe abstrata
