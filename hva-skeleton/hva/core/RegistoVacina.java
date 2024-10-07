@@ -27,6 +27,9 @@ public class RegistoVacina{
     public Dano getDano() {
       return _dano;
     }
+
+
+    
     /*
     + DanoVacina(especies: ArrayList<Especie>): int
     + tamanhoNome(nomeOutraEspecie: String): int
