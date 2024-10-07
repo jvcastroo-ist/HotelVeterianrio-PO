@@ -1,7 +1,7 @@
 package hva.core;
 import java.util.ArrayList;
 
-public class Vacina implements Responsabilidade{
+public class Vacina implements Visualiza{
     private final String _id;
     private final String _nome;
     private int _numAplicacoes;

@@ -30,7 +30,7 @@ public abstract class Funcionario implements Visualiza{
   }
 
   public String visualiza(Hotel h, String tipo, List<? extends Responsabilidade> r){
-    return String.format("%s|%s|%s|%s", tipo, getId(), getNome(), idResponsabilidade(r));
+    return String.format("%s|%s|%s%s", tipo, getId(), getNome(), idResponsabilidade(r));
   }
 
 
