@@ -4,17 +4,16 @@ public abstract class Arvore implements Visualiza{
   private final String _id;
   private final String _nome;
   private int _idade;
-  private final TipoArvore _tipo;
   private final Estacao _estacaoInicial;
-  private final int _dificuldadeBase;
+  // {CADUCA[estacao], PERENE[estacao]}
+  private final Integer[][] _dificuldadeLimpeza = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
+  private final String[][] _cicloBiologico = {{"GERARFOLHAS", "COMFOLHAS", "LARGARFOLHAS", "SEMFOLHAS"}, {"GERARFOLHAS", "COMFOLHAS", "COMFOLHAS", "LARGARFOLHAS"}}; 
 
-  public Arvore(String id, String nome, int idade, TipoArvore tipo, Estacao estacaoInicial, int dificuldadeBase) {
+  public Arvore(String id, String nome, int idade, Estacao estacaoInicial) {
     _id = id;
     _nome = nome;
     _idade = idade;
-    _tipo = tipo;
     _estacaoInicial = estacaoInicial;
-    _dificuldadeBase = dificuldadeBase;
   }
 
   // Getter para o ID da árvore
@@ -32,25 +31,22 @@ public abstract class Arvore implements Visualiza{
     return _idade;
   }
 
-  // Getter para o tipo da árvore
-  public TipoArvore getTipo() {
-    return _tipo;
-  }
-
   // Getter para a estação inicial da árvore
   public Estacao getEstacaoInicial() {
     return _estacaoInicial;
   }
 
-  // Getter para o nível de dificuldade base da árvore
-  public int getDificuldadeBase() {
-    return _dificuldadeBase;
+  public String getCiclo(int estacao, int tipo) {
+    return _cicloBiologico[tipo][estacao];
+  }
+
+  public Integer getDificuldadeBase(int estacao, int tipo) {
+    return _dificuldadeLimpeza[tipo][estacao];
   }
 
   // Abstract method to visualize the tree, to be implemented by subclasses
-  @Override
-  public String visualiza(Hotel h) {
-    return String.format("ÁRVORE|%s|%s|%s|%s|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), getTipo(), h.getEstacaoAno().getCicloBiologico(getTipo()));
+  public String visualiza(Hotel h, int tipo, String nome) {
+    return String.format("ÁRVORE|%s|%s|%s|%s|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(h.getEstacaoAno().ordinal(), tipo), nome, getCiclo(h.getEstacaoAno().ordinal(), tipo));
   }
 
 }

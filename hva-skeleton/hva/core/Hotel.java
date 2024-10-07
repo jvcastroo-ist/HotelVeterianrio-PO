@@ -3,6 +3,7 @@ package hva.core;
 import hva.core.exception.*;
 import java.io.*;
 import java.util.*;
+import java.util.stream.*;
 // FIXME import classes
 
 public class Hotel implements Serializable {
@@ -12,6 +13,7 @@ public class Hotel implements Serializable {
   
   private Estacao _estacaoAno;
   private Map<String, Arvore> _arvores;
+  private Map<String, Funcionario> _funcionarios;
   private Map<String, Habitat> _habitats;
   private Map<String, Animal> _animais;
   private Map<String, Vacina> _vacinas;
@@ -21,6 +23,7 @@ public class Hotel implements Serializable {
   public Hotel() {
     _estacaoAno = Estacao.PRIMAVERA;
     _arvores = new HashMap<>();
+    _funcionarios = new HashMap<>();
     _habitats = new HashMap<>();
     _animais = new HashMap<>();
     _vacinas = new HashMap<>();
@@ -42,30 +45,38 @@ public class Hotel implements Serializable {
     }
     return Collections.unmodifiableList(view);
   }
+  
+  // Ordena uma lista de ids e retorna os objetos ordenados pelo id
+  private <T> Collection<T> sortIds(Map<String, T> map) {
+    List<String> idList = new ArrayList<>(map.keySet()); // Faz uma lista das keys do map
+    idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
+    return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
+  
+  }
 
   // Visualiza todos animais
   public Collection<String> visualizaTodosAnimais() {
-    return visualiza(_animais.values());
+    return visualiza(sortIds(_animais));
   }
 
   // Visualiza todas arvores
   public Collection<String> visualizaTodasArvores() {
-    return visualiza(_arvores.values());
+    return visualiza(sortIds(_arvores));
   }
 
   // Visualiza todos funcionarios
   public Collection<String> visualizaTodosFuncionarios() {
-    return visualiza(_funcionarios.values()); // Assuming you have a _funcionarios map
+    return visualiza(sortIds(_funcionarios)); 
   }
 
   // Visualiza todos habitats
   public Collection<String> visualizaTodosHabitats() {
-    return visualiza(_habitats.values());
+    return visualiza(sortIds(_habitats));
   }
 
   // Visualiza todas vacinas
   public Collection<String> visualizaTodasVacinas() {
-    return visualiza(_vacinas.values());
+    return visualiza(sortIds(_vacinas));
   }
 
   public Estacao getEstacaoAno() {

@@ -1,9 +1,12 @@
 package hva.core;
 
 public class ArvoreCaduca extends Arvore {
-
   // Constructor
-  public ArvoreCaduca(String id, String nome, int idade, Estacao estacaoInicial, int dificuldadeBase) {
-    super(id, nome, idade, TipoArvore.CADUCA, estacaoInicial, dificuldadeBase);
+  public ArvoreCaduca(String id, String nome, int idade, Estacao estacaoInicial) {
+    super(id, nome, idade, estacaoInicial);
+  }
+
+  public String visualiza(Hotel h) {
+    return super.visualiza(h, 0, "CADUCA");
   }
 }
