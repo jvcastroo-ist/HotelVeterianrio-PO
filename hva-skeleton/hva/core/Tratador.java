@@ -10,6 +10,7 @@ public class Tratador extends Funcionario{
     }
 
    // Fazer derivado da classe abstrata
+   @Override
   public String visualiza(Hotel h) {
       return super.visualiza(h, "TRATADOR", _habitats);
   }

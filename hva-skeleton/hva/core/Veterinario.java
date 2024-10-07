@@ -12,6 +12,7 @@ public class Veterinario extends Funcionario{
     _registoVacinas = new ArrayList<RegistoVacina>();
   }
 
+  @Override
   public String visualiza(Hotel h) {
       return super.visualiza(h, "VETERINÁRIO", _especies);
   }

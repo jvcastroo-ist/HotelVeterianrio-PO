@@ -48,6 +48,7 @@ public abstract class Arvore implements Visualiza {
   }
 
   // Abstract method to visualize the tree, to be implemented by subclasses
+  @Override
   public String visualiza(Hotel h) {
     return String.format("ÁRVORE|%s|%s|%s|%s|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), getTipo(), h.getEstacaoAno().getCicloBiologico(getTipo()));
   }

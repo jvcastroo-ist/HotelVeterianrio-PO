@@ -1,9 +1,9 @@
 package hva.core;
 
 public class RegistoVacina{
-    private String _id;
-    private String _idAnimal;
-    private String _idVeterinario;
+    private final String _id;
+    private final String _idAnimal;
+    private final String _idVeterinario;
     private Dano _dano;
 
     public RegistoVacina(String idVacina, String idAnimal, String idVeterinario){
