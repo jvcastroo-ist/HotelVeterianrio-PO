@@ -33,7 +33,6 @@ public abstract class Funcionario implements Visualiza{
     return String.format("%s|%s|%s%s", tipo, getId(), getNome(), idResponsabilidade(r));
   }
 
-
     /*
     + satisfaçao(): int
     + visualizaFuncionario(): void

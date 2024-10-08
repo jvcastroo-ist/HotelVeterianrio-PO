@@ -1,8 +1,10 @@
 package hva.app.vaccine;
 
 import hva.core.Hotel;
+import hva.core.Vacina;
+import java.util.List; //adicionei caso mudarmos tirar
+import java.util.Map;
 import pt.tecnico.uilib.menus.Command;
-import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
 
 /**
@@ -18,5 +20,18 @@ class DoShowAllVaccines extends Command<Hotel> {
   @Override
   protected final void execute() {
     //FIXME implement command
+
+    // Obtém todos os funcionários do hotel
+    Map<String, Vacina> vacinaMap = _receiver.getVacinas();
+
+    // Ordena os animais usando o método sortIds
+    List<Vacina> sortedVacinas = (List<Vacina>) _receiver.sortIds(vacinaMap);
+
+    for (Vacina vacina : sortedVacinas) {
+      _display.addLine(vacina.visualiza(_receiver)); // Adiciona cada funcionário em uma nova linha
+    }
+  
+    _display.display(); // Mostra todos os funcionários
+
   }
 }

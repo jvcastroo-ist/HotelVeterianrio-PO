@@ -28,6 +28,10 @@ public class Habitat implements Responsabilidade, Visualiza{
 
   public List<Arvore> getArvores(){
     return _arvores;
+  } 
+
+  public void addAnimal(Animal a){
+    _animais.add(a);
   }
 
   @Override

@@ -26,4 +26,8 @@ public class Especie implements Responsabilidade{
   public int getNumVeterinarios() {
     return _numVeterinarios;
   }
+
+  public void addAnimal(Animal a){
+    _animais.add(a);
+  }
 }

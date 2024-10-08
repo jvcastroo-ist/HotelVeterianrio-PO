@@ -7,8 +7,9 @@ public class Animal implements Visualiza{
     private final String _nome;
     private int _adequacao;
     private final Especie _especie;
-    private List<RegistoVacina> _registoVacinacao;
     private Habitat _habitat;
+    private List<RegistoVacina> _registoVacinacao;
+    
             
     // Constructor
     public Animal(String id, String nome, Especie especie, Habitat habitat) {
