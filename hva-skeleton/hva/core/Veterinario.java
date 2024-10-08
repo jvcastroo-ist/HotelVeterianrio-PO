@@ -8,8 +8,12 @@ public class Veterinario extends Funcionario{
 
   public Veterinario(String idVeterinario, String nome){
     super(idVeterinario, nome);
-    _especies = new ArrayList<Especie>();
-    _registoVacinas = new ArrayList<RegistoVacina>();
+    _especies = new ArrayList<>();
+    _registoVacinas = new ArrayList<>();
+  }
+
+  public Collection<Especie> getEspecies(){
+    return _especies;
   }
 
   @Override
