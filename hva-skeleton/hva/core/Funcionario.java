@@ -20,17 +20,8 @@ public abstract class Funcionario implements Visualiza{
     return _nome;
   }
 
-  public String idResponsabilidade(Collection<? extends Responsabilidade> T) {
-    List<String> ids = new ArrayList<>();
-    if (T.isEmpty()) {return "";}
-    for (Responsabilidade r : T) {
-      ids.add(r.getId());
-    }
-    return "|" + String.format(",", ids);
-  }
-
   public String visualiza(Hotel h, String tipo, List<? extends Responsabilidade> r){
-    return String.format("%s|%s|%s%s", tipo, getId(), getNome(), idResponsabilidade(r));
+    return String.format("%s|%s|%s%s", tipo, getId(), getNome(), Responsabilidade.idResponsabilidade(r));
   }
 
     /*

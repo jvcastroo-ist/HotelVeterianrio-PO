@@ -1,20 +1,22 @@
 package hva.core;
 
-public enum Dano {
-  NORMAL,
-  CONFUSÃO,
-  ACIDENTE,
-  ERRO;
+import java.util.*;
 
-  public static Dano determinarDano(int valor, boolean especieCerta) {
-      if (valor == 0) {
-          return especieCerta ? NORMAL : CONFUSÃO;
-      } else if (valor >= 1 && valor <= 4) {
-          return ACIDENTE;
-      } else if (valor >= 5) {
-          return ERRO;
-      } else {
-          throw new IllegalArgumentException("Valor de dano inválido");
-      }
+public class Dano {
+  private boolean _especieCerta;
+  private int _key;
+  private TreeMap<Integer, String> _dano;
+
+  public Dano(int key, boolean especieCerta) {
+    _key = key;
+    _especieCerta = especieCerta;
+    _dano = new TreeMap<>();
+    _dano.put(0, "NADA");
+    _dano.put(1, "ACIDENTE");
+    _dano.put(5, "ERRO");
+  }
+
+  public String toString() {
+    return (_key == 0 && !_especieCerta) ? "ACIDENTE" : _dano.floorEntry(_key).getValue();  
   }
 }

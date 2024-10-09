@@ -6,7 +6,7 @@ public abstract class Arvore implements Visualiza{
   private int _idade;
   private final Estacao _estacaoInicial;
   // {CADUCA[estacao], PERENE[estacao]}
-  private final Integer[][] _dificuldadeLimpeza = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
+  private final Integer[][] _dificuldadeBase = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
   private final String[][] _cicloBiologico = {{"GERARFOLHAS", "COMFOLHAS", "LARGARFOLHAS", "SEMFOLHAS"}, {"GERARFOLHAS", "COMFOLHAS", "COMFOLHAS", "LARGARFOLHAS"}}; 
 
   public Arvore(String id, String nome, int idade, Estacao estacaoInicial) {
@@ -41,12 +41,12 @@ public abstract class Arvore implements Visualiza{
   }
 
   public Integer getDificuldadeBase(int estacao, int tipo) {
-    return _dificuldadeLimpeza[tipo][estacao];
+    return _dificuldadeBase[tipo][estacao];
   }
 
   // Abstract method to visualize the tree, to be implemented by subclasses
   public String visualiza(Hotel h, int tipo, String nome) {
-    return String.format("ÁRVORE|%s|%s|%s|%s|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(h.getEstacaoAno().ordinal(), tipo), nome, getCiclo(h.getEstacaoAno().ordinal(), tipo));
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(h.getEstacaoAno().ordinal(), tipo), nome, getCiclo(h.getEstacaoAno().ordinal(), tipo));
   }
 
 }
