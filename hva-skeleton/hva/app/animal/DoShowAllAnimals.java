@@ -17,7 +17,7 @@ class DoShowAllAnimals extends Command<Hotel> {
   
   @Override
   protected final void execute() {
-    //FIXME implement command
+    //FIXME implement commandjava -Dimport=ficheiro.im -cp po-uilib.jar:. hva.app.App
     
     // Obtém todos os animais do hotel
     Map<String, Animal> animaisMap = _receiver.getAnimals();

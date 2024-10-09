@@ -47,8 +47,8 @@ public class Hotel implements Serializable {
 
 
   public void registerAnimal(String animalId, String nome, String habitatId, String speciesId) throws DuplicateAnimalKeyException, UnknownSpeciesKeyException{  
-    Habitat h = getHabitat(habitatId);
     Animal a = getAnimal(animalId);
+    Habitat h = getHabitat(habitatId);
     Especie e = getEspecie(speciesId);
 
     // if(e == null)
@@ -68,9 +68,9 @@ public class Hotel implements Serializable {
 
     Animal novoAnimal = new Animal(animalId, nome, e, h);
 
-    _animais.put(animalId, novoAnimal);
-    e.addAnimal(novoAnimal);
-    h.addAnimal(novoAnimal);
+    _animais.put(animalId, novoAnimal); // Adiciona ao HashMap geral
+    e.addAnimal(novoAnimal);  // Associa novoAnimal à espécie
+    h.addAnimal(novoAnimal);  // Associa novoAnimal ao Habitat
   } 
 
 
@@ -81,9 +81,9 @@ public class Hotel implements Serializable {
       throw new DuplicateEmployeeKeyException(employeeId);
     }
 
-    if(empType.equals("Vet")){
+    if(empType.equals("VET")){
       f = new Veterinario(employeeId, name);
-    } else{
+    } else {
       f = new Tratador(employeeId, name);
     }
 
@@ -94,6 +94,10 @@ public class Hotel implements Serializable {
     Funcionario f = _funcionarios.get(employeeId);
     // Especie e = _especies.get(responsibility);
     // Habitat h = _habitats.get(responsibility);
+
+
+
+    // 
     switch (f) {
       case Veterinario vet -> {
         Especie e = getEspecie(responsibilityId);
@@ -127,10 +131,13 @@ public class Hotel implements Serializable {
     }
     
   public void registerSpecies(String speciesId, String name) {
+
+    // lançar exceçao no registaEpecie  duplicate
     Especie novaEspecie = new Especie(speciesId, name);
     _especies.put(speciesId, novaEspecie);
   }
 
+  // piroca
   public Habitat registerHabitat(String habitatId, String nome, int area) throws DuplicateHabitatKeyException {
     // Verifica se o habitat já existe no mapa
     if (_habitats.containsKey(habitatId)) {
@@ -177,7 +184,7 @@ public class Hotel implements Serializable {
   
   
   public void createTree(String TreeId, String name, String type, int age, int diff){
-  //   // perguntar ao prof se nao recebe id Habitat
+  // perguntar ao prof se nao recebe id Habitat
   }
   
   public Collection<String> visualiza(Collection<? extends Visualiza> T) {
@@ -280,6 +287,6 @@ public class Hotel implements Serializable {
    * @throws IOException if there is an IO erro while processing the text file
    **/
   void importFile(String filename) throws UnrecognizedEntryException, IOException /* FIXME maybe other exceptions */  {
-    //FIXME implement method
-  }
+    new Parser(this).parseFile(filename);
+    }
 }

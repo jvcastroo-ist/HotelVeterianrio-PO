@@ -21,17 +21,17 @@ class DoShowAllVaccines extends Command<Hotel> {
   protected final void execute() {
     //FIXME implement command
 
-    // Obtém todos os funcionários do hotel
+    // Obtém todos as vacinas do hotel
     Map<String, Vacina> vacinaMap = _receiver.getVacinas();
 
-    // Ordena os animais usando o método sortIds
+    // Ordena as vacinas usando o método sortIds
     List<Vacina> sortedVacinas = (List<Vacina>) _receiver.sortIds(vacinaMap);
 
     for (Vacina vacina : sortedVacinas) {
-      _display.addLine(vacina.visualiza(_receiver)); // Adiciona cada funcionário em uma nova linha
+      _display.addLine(vacina.visualiza(_receiver)); // Adiciona cada vacina numa nova linha
     }
   
-    _display.display(); // Mostra todos os funcionários
+    _display.display(); // Mostra todos as vacinas
 
   }
 }
