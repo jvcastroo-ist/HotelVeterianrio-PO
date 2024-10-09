@@ -5,10 +5,10 @@ import java.util.*;
 public class Animal implements Visualiza{
     private final String _id;
     private final String _nome;
-    private int _adequacao;
     private final Especie _especie;
-    private List<RegistoVacina> _registoVacinacao;
     private Habitat _habitat;
+    private List<RegistoVacina> _registoVacinacao;
+    private int _adequacao;
             
     // Constructor
     public Animal(String id, String nome, Especie especie, Habitat habitat) {
@@ -39,7 +39,7 @@ public class Animal implements Visualiza{
       List<String> danos = new ArrayList<>();
       if (_registoVacinacao.isEmpty()) {return "VOID";}
       for (RegistoVacina rv : _registoVacinacao) {
-        danos.add(rv.getDano().name());
+        danos.add(rv.getDano().toString());
       }
       return String.join(",", danos);
     }
@@ -50,6 +50,6 @@ public class Animal implements Visualiza{
 
     @Override
     public String visualiza(Hotel h) {
-        return String.format("ANIMAL|%s|%s|%s|%s|%s", getId(), getNome(), getEspecie().getId(), getRegistoVacinacao(), getHabitat());
+        return String.format("ANIMAL|%s|%s|%s|%s|%s", getId(), getNome(), getEspecie().getId(), getRegistoVacinacao(), getHabitat().getId());
     }
 }

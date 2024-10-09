@@ -2,7 +2,7 @@ package hva.core;
 
 import java.util.*;
 
-public class Especie implements Responsabilidade{
+public class Especie extends Responsabilidade{
   private final String _id;
   private final String _nome;
   private List<Animal> _animais;

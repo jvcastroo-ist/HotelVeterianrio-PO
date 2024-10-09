@@ -3,7 +3,7 @@ package hva.core;
 import java.util.*;
 
 
-public class Habitat implements Responsabilidade, Visualiza{
+public class Habitat extends Responsabilidade implements Visualiza{
   private final String _id;
   private final String _nome;
   private int _area;
@@ -32,6 +32,6 @@ public class Habitat implements Responsabilidade, Visualiza{
 
   @Override
   public String visualiza(Hotel h){    
-    return String.format("HABITAT|%s|%s|%d|%d\n", _id, _nome, _area, _arvores.size());
+    return String.format("HABITAT|%s|%s|%d|%d", _id, _nome, _area, _arvores.size());
   }
 }

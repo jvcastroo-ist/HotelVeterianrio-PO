@@ -31,8 +31,7 @@ public class Vacina implements Visualiza{
 
     @Override
     public String visualiza(Hotel h){
-      String especies = String.format(",", _especies);
-      return String.format("VACINA|%s|%s|%d|%s", _id, _nome, _registosVacina.size(), especies);
+      return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), Responsabilidade.idResponsabilidade(_especies));
     }
     
 }
