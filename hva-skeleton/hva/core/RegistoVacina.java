@@ -1,6 +1,8 @@
 package hva.core;
 
-public class RegistoVacina{
+import java.io.*;
+
+public class RegistoVacina implements Serializable{
     private final String _id;
     private final String _idAnimal;
     private final String _idVeterinario;

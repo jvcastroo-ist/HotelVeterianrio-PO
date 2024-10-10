@@ -1,7 +1,9 @@
 package hva.core;
+
+import java.io.*;
 import java.util.ArrayList;
 
-public class Vacina implements Visualiza{
+public class Vacina implements Visualiza, Serializable{
     private final String _id;
     private final String _nome;
     private ArrayList<Especie> _especies;

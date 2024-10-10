@@ -1,6 +1,8 @@
 package hva.core;
 
-public enum Estacao {
+import java.io.*;
+
+public enum Estacao implements Serializable{
   PRIMAVERA,
   VERÃO, 
   OUTONO,

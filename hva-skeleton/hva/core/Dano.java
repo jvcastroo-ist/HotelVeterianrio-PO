@@ -1,8 +1,9 @@
 package hva.core;
 
 import java.util.*;
+import java.io.*;
 
-public class Dano {
+public class Dano implements Serializable {
   private boolean _especieCerta;
   private int _key;
   private TreeMap<Integer, String> _dano;
