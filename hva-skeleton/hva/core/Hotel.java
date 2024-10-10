@@ -98,7 +98,7 @@ public class Hotel implements Serializable {
   } 
 
   // Regista um funcionário
-  public void registerEmployee(String empType, String employeeId, String name, String[] idResponsabilidades) throws CoreDuplicateEmployeeKeyException, CoreNoResponsibilityException{ 
+  public void registerEmployee(String empType, String employeeId, String name) throws CoreDuplicateEmployeeKeyException { 
     // Verificar se o funcionário já existe
     if(_funcionarios.containsKey(employeeId))
       throw new CoreDuplicateEmployeeKeyException(employeeId);
@@ -106,14 +106,10 @@ public class Hotel implements Serializable {
     Funcionario f = (empType.equals("VET")) ? new Veterinario(employeeId, name) : new Tratador(employeeId, name);
     // Adiciona na HashMap
     _funcionarios.put(employeeId, f);
-    // Atribui as responsabilidades ao funcionário
-      for (String id : idResponsabilidades) {
-        addResponsibilidade(f, id);
-      }
   }
 
   //Atribui uma responsabilidade a um funcionario
-  public void addResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
+  public void addResponsibility(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
     // Verifica se a responsabilidade existe(tanto especie como habitat)
     Responsabilidade r = (_especies.containsKey(responsibilityId)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
     // Chama o metodo do funcionario que atribui a responsabilidade
@@ -170,19 +166,26 @@ public class Hotel implements Serializable {
   }
 
   // Cria uma arvore **** NAO ESQUECER QUE A ARVORE PRECISA SER PRINTADA DEPOIS Q É FEITA  
-  public void registerTree(String habitatId,String treeId, String name, int age, int dificuldadeBase, String type) throws CoreDuplicateTreeKeyException, CoreUnknownHabitatKeyException {
+  public void registerTree(String habitatId, String[] idsTree) throws CoreUnknownHabitatKeyException {
+    // Associa a arvore ao habitat
+    Habitat hab = getHabitat(habitatId);
+
+    for (String id : idsTree) {
+      Arvore a = getArvore(id);
+      hab.addArvore(a);
+    }
+  }
+
+  public void createTree(String treeId, String name, int age, int dificuldadeBase, String type) throws CoreDuplicateTreeKeyException {
     // Verifica se arvore ja existe
     if(_arvores.containsKey(treeId))
       throw new CoreDuplicateTreeKeyException(treeId);
     // Verifica o tipo e constroi a arvore
     Arvore a = (type.equals("CADUCA")) ? new ArvoreCaduca(treeId, name, age, dificuldadeBase, _estacaoAno) : new ArvorePerene(treeId, name, age, dificuldadeBase, _estacaoAno);
-    // Associa a arvore ao habitat
-    Habitat h = getHabitat(habitatId);
-    h.addArvore(a);
     // adiciona ao hashmap
     _arvores.put(treeId, a);
   }
-  
+
   public Collection<String> visualiza(Collection<? extends Visualiza> T) {
     List<String> view = new ArrayList<>();
     for (Visualiza item : T) {

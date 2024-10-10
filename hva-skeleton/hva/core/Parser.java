@@ -1,22 +1,18 @@
 package hva.core;
 
-import hva.app.exception.DuplicateAnimalKeyException;
-import hva.app.exception.DuplicateEmployeeKeyException;
-import hva.app.exception.DuplicateHabitatKeyException;
-import hva.app.exception.DuplicateVaccineKeyException;
-import hva.app.exception.NoResponsibilityException;
-import hva.app.exception.UnknownAnimalKeyException;
-import hva.app.exception.UnknownSpeciesKeyException;
-
-import java.io.IOException;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.Reader;
-
-import java.util.Collection;
-import java.util.ArrayList;
-
+import hva.core.exception.CoreDuplicateAnimalKeyException;
+import hva.core.exception.CoreDuplicateEmployeeKeyException;
+import hva.core.exception.CoreDuplicateHabitatKeyException;
+import hva.core.exception.CoreDuplicateSpeciesKeyException;
+import hva.core.exception.CoreDuplicateTreeKeyException;
+import hva.core.exception.CoreDuplicateVaccineKeyException;
+import hva.core.exception.CoreNoResponsibilityException;
+import hva.core.exception.CoreUnknownHabitatKeyException;
+import hva.core.exception.CoreUnknownSpeciesKeyException;
 import hva.core.exception.UnrecognizedEntryException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 // FIXME add other imports if needed
 
@@ -79,7 +75,7 @@ public class Parser {
       String speciesId = components[3];
 
       _hotel.registerAnimal(id, name, habitatId, speciesId);
-    } catch (DuplicateAnimalKeyException | UnknownSpeciesKeyException e) {
+    } catch (CoreDuplicateAnimalKeyException | CoreUnknownSpeciesKeyException | CoreUnknownHabitatKeyException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }
@@ -91,8 +87,8 @@ public class Parser {
       String name = components[2];
 
       _hotel.registerSpecies(id, name);
-    } catch (ExceptionCore1 e) {
-      throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage);
+    } catch (CoreDuplicateSpeciesKeyException e) {
+      throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }
   
@@ -107,27 +103,28 @@ public class Parser {
 
       if (components.length == 4) {
         for(String responsibility : components[3].split(","))
-          _hotel.addResponsibility(components[1], responsibility);
+          _hotel.addResponsibility(_hotel.getFuncionarios().get(components[1]), responsibility);
       }
-    } catch (DuplicateEmployeeKeyException | NoResponsibilityException e) {
+
+    } catch (CoreDuplicateEmployeeKeyException | CoreNoResponsibilityException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }
 
   // Parse a line with format VACINA|id|nome|idEspécie1,...,idEspécieN
-  private void parseVaccine(String[] components, String empType) {
+  private void parseVaccine(String[] components) throws UnrecognizedEntryException{
     try {
       String id = components[1];
       String name = components[2];
       String[] speciesIds = components.length == 4 ? components[3].split(",") : new String[0];
       _hotel.registerVaccine(id, name, speciesIds);
-    } catch (DuplicateVaccineKeyException | UnknownSpeciesKeyException e) {
+    } catch (CoreDuplicateVaccineKeyException | CoreUnknownSpeciesKeyException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }
 
   // Parse a line with format ÁRVORE|id|nome|idade|dificuldade|tipo
-  private void parseTree(String[] components, String line) throws UnrecognizedEntryException {
+  private void parseTree(String[] components) throws UnrecognizedEntryException {
     try {
       String id = components[1];
       String name = components[2];
@@ -135,8 +132,8 @@ public class Parser {
       int diff = Integer.parseInt(components[4]);
       String type = components[5];
 
-      _hotel.createTree(id, name, type, age, diff);
-    } catch () {
+      _hotel.createTree(id, name, age, diff, type);
+    } catch (CoreDuplicateTreeKeyException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }
@@ -148,14 +145,13 @@ public class Parser {
       String name = components[2];
       int area = Integer.parseInt(components[3]);
 
-      Habitat hab = _hotel.registerHabitat(id, name, area);
+      _hotel.registerHabitat(id, name, area);
 
       if (components.length == 5) {
         String[] listOfTree = components[4].split(",");
-        for (String treeKey : listOfTree)
-          // adicionar a árvore com id treeKey ao habitat referenciado por hab
+        _hotel.registerTree(id, listOfTree);
       }
-    } catch (DuplicateHabitatKeyException e) {
+    } catch (CoreDuplicateHabitatKeyException | CoreUnknownHabitatKeyException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }
