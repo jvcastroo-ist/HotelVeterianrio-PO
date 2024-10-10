@@ -77,6 +77,7 @@ public class Hotel implements Serializable {
   // Avança a estação, devolve o número
   public int avancaEstacao() {
     _estacaoAno = _estacaoAno.proximaEstacao();
+    dirty();
     return _estacaoAno.ordinal();
   }
 
@@ -95,6 +96,8 @@ public class Hotel implements Serializable {
     e.addAnimal(novoAnimal);  
     // Associa novoAnimal ao Habitat
     h.addAnimal(novoAnimal);  
+
+    dirty();
   } 
 
   // Regista um funcionário
@@ -106,6 +109,8 @@ public class Hotel implements Serializable {
     Funcionario f = (empType.equals("VET")) ? new Veterinario(employeeId, name) : new Tratador(employeeId, name);
     // Adiciona na HashMap
     _funcionarios.put(employeeId, f);
+
+    dirty();
   }
 
   //Atribui uma responsabilidade a um funcionario
@@ -114,6 +119,8 @@ public class Hotel implements Serializable {
     Responsabilidade r = (_especies.containsKey(responsibilityId)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
     // Chama o metodo do funcionario que atribui a responsabilidade
     f.operaResponsabilidade(r, true);
+
+    dirty();
   }
 
   //Atribui uma responsabilidade a um funcionario
@@ -122,6 +129,8 @@ public class Hotel implements Serializable {
     Responsabilidade r = (_especies.containsKey(responsibilityId)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
     // Chama o metodo do funcionario que retira a responsabilidade
     f.operaResponsabilidade(r, false);
+    
+    dirty();
   }
 
   // Regista uma especie 
@@ -133,6 +142,8 @@ public class Hotel implements Serializable {
     
     Especie e = new Especie(speciesId, name);
     _especies.put(speciesId, e);
+
+    dirty();
   }
 
   // Regista um habitat
@@ -145,6 +156,8 @@ public class Hotel implements Serializable {
     Habitat novoHabitat = new Habitat(habitatId, nome, area);
     // Adiciona o habitat ao HashMap
     _habitats.put(habitatId, novoHabitat);
+
+    dirty();
   }
 
   
@@ -163,6 +176,8 @@ public class Hotel implements Serializable {
     Vacina v = new Vacina(vaccineId, nome, species);
     // Adiciona a vacina ao mapa
     _vacinas.put(vaccineId, v);
+
+    dirty();
   }
 
   // Cria uma arvore **** NAO ESQUECER QUE A ARVORE PRECISA SER PRINTADA DEPOIS Q É FEITA  
@@ -174,6 +189,8 @@ public class Hotel implements Serializable {
       Arvore a = getArvore(id);
       hab.addArvore(a);
     }
+
+    dirty();
   }
 
   public void createTree(String treeId, String name, int age, int dificuldadeBase, String type) throws CoreDuplicateTreeKeyException {
@@ -184,6 +201,8 @@ public class Hotel implements Serializable {
     Arvore a = (type.equals("CADUCA")) ? new ArvoreCaduca(treeId, name, age, dificuldadeBase, _estacaoAno) : new ArvorePerene(treeId, name, age, dificuldadeBase, _estacaoAno);
     // adiciona ao hashmap
     _arvores.put(treeId, a);
+
+    dirty();
   }
 
   public Collection<String> visualiza(Collection<? extends Visualiza> T) {
@@ -203,7 +222,7 @@ public class Hotel implements Serializable {
     idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
     return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
   }
-  /* 
+  
   // Visualiza todos animais
   public Collection<String> visualizaTodosAnimais() {
     return visualiza(sortIds(_animais));
@@ -227,7 +246,7 @@ public class Hotel implements Serializable {
   // Visualiza todas vacinas
   public Collection<String> visualizaTodasVacinas() {
     return visualiza(sortIds(_vacinas));
-  }*/
+  }
 
   public Estacao getEstacaoAno() {
     return _estacaoAno;
