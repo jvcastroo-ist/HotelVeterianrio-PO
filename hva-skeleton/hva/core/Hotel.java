@@ -11,10 +11,10 @@ public class Hotel implements Serializable {
   private static final long serialVersionUID = 202407081733L;
   
   /**
-   * Whether the warehouse is in a dirty state, that is, if it was modified
+   * Whether the Hotel is in a dirty state, that is, if it was modified
    * since the last time it was saved (or created).
    */
-  private boolean _dirty = false;
+  private boolean _modified = false;
 
   private Estacao _estacaoAno;
   private Map<String, Arvore> _arvores;
@@ -39,20 +39,20 @@ public class Hotel implements Serializable {
   }
 
   /**
-   * Get whether the warehouse has been modified since it was last cleaned. The
+   * Get whether the Hotel has been modified since it was last cleaned. The
    * warehouse is cleaned when it is saved to disk.
    *
    * @return the value of the dirty flag
    */
-  public boolean isDirty() {
-    return this._dirty;
+  public boolean isModified() {
+    return this._modified;
   }
 
   /**
    * Turn the dirty flag off to indicate the warehouse state has been saved.
    */
   public void clean() {
-    this._dirty = false;
+    this._modified = false;
   }
 
 
@@ -68,7 +68,7 @@ public class Hotel implements Serializable {
    * clean-up (i.e. saved).
    */
   private void dirty() {
-    this._dirty = true;
+    this._modified = true;
   }
 
 

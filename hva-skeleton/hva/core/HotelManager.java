@@ -37,7 +37,7 @@ public class HotelManager {
     if(_filename == null || _filename.isBlank())
       throw new MissingFileAssociationException();
     
-    if(_hotel.isDirty()){
+    if(_hotel.isModified()){
       try (ObjectOutputStream out = new ObjectOutputStream(
           new BufferedOutputStream(new FileOutputStream(_filename)))){
           out.writeObject(_hotel);

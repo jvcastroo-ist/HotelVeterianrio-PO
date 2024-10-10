@@ -3,7 +3,6 @@ package hva.app.main;
 import hva.core.HotelManager;
 import hva.core.exception.MissingFileAssociationException;
 import java.io.IOException;
-import java.text.Normalizer;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
@@ -30,7 +29,6 @@ class DoSaveFile extends Command<HotelManager> {
   }
 
   private void saveAs() throws IOException {
-    String fileName = Form.requestString(hva.app.animal.Prompt.saveAs());
     try {
         _receiver.saveAs(Form.requestString(Prompt.newSaveAs()));
     } catch (MissingFileAssociationException e) {
