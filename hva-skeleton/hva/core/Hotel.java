@@ -107,11 +107,9 @@ public class Hotel implements Serializable {
     // Adiciona na HashMap
     _funcionarios.put(employeeId, f);
     // Atribui as responsabilidades ao funcionário
-    if (idResponsabilidades != null) {
       for (String id : idResponsabilidades) {
         addResponsibilidade(f, id);
       }
-    }
   }
 
   //Atribui uma responsabilidade a um funcionario
@@ -141,54 +139,48 @@ public class Hotel implements Serializable {
     _especies.put(speciesId, e);
   }
 
-  // piroca
-  public Habitat registerHabitat(String habitatId, String nome, int area) throws CoreDuplicateHabitatKeyException {
+  // Regista um habitat
+  public void registerHabitat(String habitatId, String nome, int area/*adicionar vetor arvores */) throws CoreDuplicateHabitatKeyException {
     // Verifica se o habitat já existe no mapa
-    if (_habitats.containsKey(habitatId)) {
+    if (_habitats.containsKey(habitatId)) 
       // Lança exceção se já existir
       throw new CoreDuplicateHabitatKeyException(habitatId);
-    }
-
     // Cria o novo habitat
     Habitat novoHabitat = new Habitat(habitatId, nome, area);
-
     // Adiciona o habitat ao HashMap
     _habitats.put(habitatId, novoHabitat);
-    return novoHabitat;
   }
 
   
   public void registerVaccine(String vaccineId, String nome, String[] speciesIds) throws CoreDuplicateVaccineKeyException, CoreUnknownSpeciesKeyException {
-    
+    // Inicializa a lista de especies
+    List<Especie> species = new ArrayList<>();
     // Verifica se já existe uma vacina com o mesmo identificador
-    Vacina v = getVacina(vaccineId);
-    if (v != null) {
+    if (_vacinas.containsKey(vaccineId)) 
         throw new CoreDuplicateVaccineKeyException(vaccineId);
+    // Valida as espécies fornecidas e adiciona a lista
+    for (String id : speciesIds) {
+        Especie e = getEspecie(id);  
+        species.add(e);
     }
-
-    // Lista para armazenar as espécies validadas
-    List<Especie> especies = new ArrayList<>();
-
-    // Valida as espécies fornecidas
-    for (String s : speciesIds) {
-        Especie e = getEspecie(s.trim());  // Recupera a espécie e remove espaços em branco do Id
-        if (e == null) {
-            throw new CoreUnknownSpeciesKeyException(s);
-        }
-        especies.add(e);  // Adiciona a espécie validada à lista
-    }
-
     // Cria a nova vacina com as espécies validadas
-    v = new Vacina(vaccineId, nome, (ArrayList<Especie>) especies);
-
+    Vacina v = new Vacina(vaccineId, nome, species);
     // Adiciona a vacina ao mapa
     _vacinas.put(vaccineId, v);
-}
+  }
 
-  
-  
-  public void createTree(String TreeId, String name, String type, int age, int diff){
-  // perguntar ao prof se nao recebe id Habitat
+  // Cria uma arvore **** NAO ESQUECER QUE A ARVORE PRECISA SER PRINTADA DEPOIS Q É FEITA  
+  public void registerTree(String habitatId,String treeId, String name, int age, int dificuldadeBase, String type) throws CoreDuplicateTreeKeyException, CoreUnknownHabitatKeyException {
+    // Verifica se arvore ja existe
+    if(_arvores.containsKey(treeId))
+      throw new CoreDuplicateTreeKeyException(treeId);
+    // Verifica o tipo e constroi a arvore
+    Arvore a = (type.equals("CADUCA")) ? new ArvoreCaduca(treeId, name, age, dificuldadeBase, _estacaoAno) : new ArvorePerene(treeId, name, age, dificuldadeBase, _estacaoAno);
+    // Associa a arvore ao habitat
+    Habitat h = getHabitat(habitatId);
+    h.addArvore(a);
+    // adiciona ao hashmap
+    _arvores.put(treeId, a);
   }
   
   public Collection<String> visualiza(Collection<? extends Visualiza> T) {

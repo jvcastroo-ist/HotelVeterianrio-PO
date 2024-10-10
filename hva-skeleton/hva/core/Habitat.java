@@ -34,6 +34,10 @@ public class Habitat extends Responsabilidade implements Serializable, Visualiza
     _animais.add(a);
   }
 
+  public void addArvore(Arvore a){
+    _arvores.add(a);
+  }
+
   @Override
   public String visualiza(Hotel h){    
     return String.format("HABITAT|%s|%s|%d|%d", _id, _nome, _area, _arvores.size());

@@ -7,14 +7,16 @@ public abstract class Arvore implements Visualiza, Serializable{
   private final String _nome;
   private int _idade;
   private final Estacao _estacaoInicial;
+  private final int _dificuldadeBase;
   // {CADUCA[estacao], PERENE[estacao]}
   private final Integer[][] _esforcoLimpeza = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
   private final String[][] _cicloBiologico = {{"GERARFOLHAS", "COMFOLHAS", "LARGARFOLHAS", "SEMFOLHAS"}, {"GERARFOLHAS", "COMFOLHAS", "COMFOLHAS", "LARGARFOLHAS"}}; 
 
-  public Arvore(String id, String nome, int idade, Estacao estacaoInicial) {
+  public Arvore(String id, String nome, int idade, int difB, Estacao estacaoInicial) {
     _id = id;
     _nome = nome;
     _idade = idade;
+    _dificuldadeBase = difB;
     _estacaoInicial = estacaoInicial;
   }
 
