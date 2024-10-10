@@ -17,13 +17,8 @@ class DoShowAllAnimals extends Command<Hotel> {
   
   @Override
   protected final void execute() {
-    //FIXME implement commandjava -Dimport=ficheiro.im -cp po-uilib.jar:. hva.app.App
-    
-    // Obtém todos os animais do hotel
-    Map<String, Animal> animaisMap = _receiver.getAnimals();
-
     // Ordena os animais usando o método sortIds
-    List<Animal> sortedAnimals = (List<Animal>) _receiver.sortIds(animaisMap);
+    List<Animal> sortedAnimals = _receiver.sortIds(_receiver.getAnimals());
 
     for (Animal animal : sortedAnimals) {
       _display.addLine(animal.visualiza(_receiver)); // Adiciona cada animal em uma nova linha
