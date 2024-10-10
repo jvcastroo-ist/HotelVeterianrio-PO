@@ -1,8 +1,9 @@
 package hva.core;
 
 import java.util.*;
+import java.io.*;
 
-public class Especie extends Responsabilidade{
+public class Especie extends Responsabilidade implements Serializable{
   private final String _id;
   private final String _nome;
   private List<Animal> _animais;

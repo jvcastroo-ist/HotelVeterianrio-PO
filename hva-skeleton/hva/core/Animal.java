@@ -1,8 +1,9 @@
 package hva.core;
 
 import java.util.*;
+import java.io.*;
 
-public class Animal implements Visualiza{
+public class Animal implements Visualiza, Serializable{
     private final String _id;
     private final String _nome;
     private final Especie _especie;

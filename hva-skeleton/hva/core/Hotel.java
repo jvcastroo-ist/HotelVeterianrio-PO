@@ -1,12 +1,5 @@
 package hva.core;
 
-import hva.app.exception.DuplicateAnimalKeyException;
-import hva.app.exception.DuplicateEmployeeKeyException;
-import hva.app.exception.DuplicateHabitatKeyException;
-import hva.app.exception.DuplicateVaccineKeyException;
-import hva.app.exception.NoResponsibilityException;
-import hva.app.exception.UnknownHabitatKeyException;
-import hva.app.exception.UnknownSpeciesKeyException;
 import hva.core.exception.*;
 import java.io.*;
 import java.util.*;

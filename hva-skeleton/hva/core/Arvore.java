@@ -1,6 +1,8 @@
 package hva.core;
 
-public abstract class Arvore implements Visualiza{
+import java.io.*;
+
+public abstract class Arvore implements Visualiza, Serializable{
   private final String _id;
   private final String _nome;
   private int _idade;

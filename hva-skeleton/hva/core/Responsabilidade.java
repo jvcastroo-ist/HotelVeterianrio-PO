@@ -1,8 +1,9 @@
 package hva.core;
 
 import java.util.*;
+import java.io.*;
 
-public abstract class Responsabilidade {
+public abstract class Responsabilidade implements Serializable{
   public abstract String getId();
 
   // Recebe uma lista de especies/habitats e devolve os ids numa unica String formatada 

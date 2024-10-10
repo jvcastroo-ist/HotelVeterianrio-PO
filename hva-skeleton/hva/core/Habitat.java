@@ -1,9 +1,9 @@
 package hva.core;
 
 import java.util.*;
+import java.io.*;
 
-
-public class Habitat extends Responsabilidade implements Visualiza{
+public class Habitat extends Responsabilidade implements Serializable, Visualiza{
   private final String _id;
   private final String _nome;
   private int _area;

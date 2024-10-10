@@ -1,10 +1,11 @@
 package hva.core;
 
 import java.util.*;
+import java.io.*;
 
 import hva.core.exception.CoreNoResponsibilityException;
 
-public abstract class Funcionario implements Visualiza{
+public abstract class Funcionario implements Visualiza, Serializable{
   private final String _id;
   private final String _nome;
 
