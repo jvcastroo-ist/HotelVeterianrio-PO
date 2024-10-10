@@ -12,6 +12,19 @@ import java.io.*;
 public class HotelManager {
   /** The current zoo hotel */ // Should we initialize this field?
   private Hotel _hotel = new Hotel();
+
+  /**
+   * Name of file storing current store.
+   */
+  private String _filename = "";
+
+  /**
+   * Cria um novo hotel, limpando o estado atual.
+   */
+  public void newHotel() {
+    _hotel = new Hotel();  // Cria uma nova instância do hotel
+    _filename = "";        // Reseta o nome do arquivo associado, se houver
+  }
   
   /**
    * Saves the serialized application's state into the file associated to the current network.
@@ -21,7 +34,16 @@ public class HotelManager {
    * @throws IOException if there is some error while serializing the state of the network to disk.
    **/
   public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
-    // FIXME implement serialization method
+    if(_filename == null || _filename.isBlank())
+      throw new MissingFileAssociationException();
+    
+    if(_hotel.isDirty()){
+      try (ObjectOutputStream out = new ObjectOutputStream(
+          new BufferedOutputStream(new FileOutputStream(_filename)))){
+          out.writeObject(_hotel);
+      }
+      _hotel.clean();
+    }
   }
   
   /**
@@ -34,7 +56,8 @@ public class HotelManager {
    * @throws IOException if there is some error while serializing the state of the network to disk.
    **/
   public void saveAs(String filename) throws FileNotFoundException, MissingFileAssociationException, IOException {
-    // FIXME implement serialization method
+    _filename = filename;
+    save();
   }
   
   /**
@@ -44,7 +67,13 @@ public class HotelManager {
    *         an error while processing this file.
    **/
   public void load(String filename) throws UnavailableFileException {
-    // FIXME implement serialization method
+    try(ObjectInputStream in = new ObjectInputStream(
+      new BufferedInputStream(new FileInputStream(filename)))){
+      _hotel = (Hotel) in.readObject();
+      this._filename = filename;
+    } catch(IOException | ClassNotFoundException e){
+      throw new UnavailableFileException(filename);
+    }
   }
   
   /**

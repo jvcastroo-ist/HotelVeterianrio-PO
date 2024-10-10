@@ -16,6 +16,12 @@ public class Hotel implements Serializable {
   @Serial
   private static final long serialVersionUID = 202407081733L;
   
+  /**
+   * Whether the warehouse is in a dirty state, that is, if it was modified
+   * since the last time it was saved (or created).
+   */
+  private boolean _dirty = false;
+
   private Estacao _estacaoAno;
   private Map<String, Arvore> _arvores;
   private Map<String, Funcionario> _funcionarios;
@@ -36,6 +42,40 @@ public class Hotel implements Serializable {
     _vacinas = new HashMap<>();
     _registoVacinas = new ArrayList<>();
   }
+
+  /**
+   * Get whether the warehouse has been modified since it was last cleaned. The
+   * warehouse is cleaned when it is saved to disk.
+   *
+   * @return the value of the dirty flag
+   */
+  public boolean isDirty() {
+    return this._dirty;
+  }
+
+  /**
+   * Turn the dirty flag off to indicate the warehouse state has been saved.
+   */
+  public void clean() {
+    this._dirty = false;
+  }
+
+
+  ///////////////////////////////////////77
+  ///////////////////////////////////////////77
+  //////////////////////////////////////////////////77
+  ////////////////////////////////////////////////////77
+  ///////////////////////////////////////////////////////////
+
+
+  /**
+   * Turn the dirty flag on to indicate a modification has occurred since last
+   * clean-up (i.e. saved).
+   */
+  private void dirty() {
+    this._dirty = true;
+  }
+
 
   // FIXME define more methods
   
