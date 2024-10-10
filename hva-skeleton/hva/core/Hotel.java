@@ -186,6 +186,7 @@ public class Hotel implements Serializable {
     _arvores.put(treeId, a);
   }
 
+  // Recebe uma coleção de objetos e devolve uma lista de strings(visualizaçoes) 
   public Collection<String> visualiza(Collection<? extends Visualiza> T) {
     List<String> view = new ArrayList<>();
     for (Visualiza item : T) {
@@ -193,17 +194,13 @@ public class Hotel implements Serializable {
     }
     return Collections.unmodifiableList(view);
   }
-  
 
-  // mudei o metodo para public por causa da logica impementada
-
-  // Ordena uma lista de ids e retorna os objetos ordenados pelo id
+  // Ordena uma lista de ids e retorna uma lista de objetos ordenados pelo id
   public <T>List <T>sortIds(Map<String, T> map) {
     List<String> idList = new ArrayList<>(map.keySet()); // Faz uma lista das keys do map
     idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
     return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
   }
-  /* 
   // Visualiza todos animais
   public Collection<String> visualizaTodosAnimais() {
     return visualiza(sortIds(_animais));
@@ -227,7 +224,7 @@ public class Hotel implements Serializable {
   // Visualiza todas vacinas
   public Collection<String> visualizaTodasVacinas() {
     return visualiza(sortIds(_vacinas));
-  }*/
+  }
 
   public Estacao getEstacaoAno() {
     return _estacaoAno;
