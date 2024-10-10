@@ -5,6 +5,7 @@ import hva.app.exception.DuplicateEmployeeKeyException;
 import hva.app.exception.DuplicateHabitatKeyException;
 import hva.app.exception.DuplicateVaccineKeyException;
 import hva.app.exception.NoResponsibilityException;
+import hva.app.exception.UnknownHabitatKeyException;
 import hva.app.exception.UnknownSpeciesKeyException;
 import hva.core.exception.*;
 import java.io.*;
@@ -21,128 +22,98 @@ public class Hotel implements Serializable {
   private Map<String, Funcionario> _funcionarios;
   private Map<String, Habitat> _habitats;
   private Map<String, Animal> _animais;
-  private Map<String, Especie> _especies; // alterei para discussão
+  private Map<String, Especie> _especies; 
   private Map<String, Vacina> _vacinas;
   private List<RegistoVacina> _registoVacinas;
 
   // Constructor
   public Hotel() {
-    _estacaoAno = Estacao.PRIMAVERA;
+    _estacaoAno = Estacao.PRIMAVERA; // Definição da estação global
+    // CRIAÇÃO DAS HASHS PARA CADA ENTIDADE 
     _arvores = new HashMap<>();
     _funcionarios = new HashMap<>();
     _habitats = new HashMap<>();
     _animais = new HashMap<>();
-    _especies = new HashMap<>(); // alterei para discussão
+    _especies = new HashMap<>(); 
     _vacinas = new HashMap<>();
     _registoVacinas = new ArrayList<>();
   }
 
   // FIXME define more methods
   
-  // Avança a estação
+  // Avança a estação, devolve o número
   public int avancaEstacao() {
     _estacaoAno = _estacaoAno.proximaEstacao();
     return _estacaoAno.ordinal();
   }
 
-
-  public void registerAnimal(String animalId, String nome, String habitatId, String speciesId) throws DuplicateAnimalKeyException, UnknownSpeciesKeyException{  
-    Animal a = getAnimal(animalId);
-    Habitat h = getHabitat(habitatId);
-    Especie e = getEspecie(speciesId);
-
-    // if(e == null)
-    // cria a especie efetivamente com o nome dado pelo Prompt
-    // String speciesName = Prompt.speciesName();  // Solicita o nome da espécie ao utilizador
-    // e = new Especie(speciesId, speciesName);
-    // _especies.put(speciesId, e);  // Adiciona a nova espécie à lista de espécies */
-    // perguntar ao prof se a especie nao existir como fazer para criar, qual funcao utilizar ou se pode ser esta mesmo
-    // 
-
-    if(a != null){
-      throw new DuplicateAnimalKeyException(animalId);
-      /* resolver excepcao no registerAnimal do menu try ... catch etc */
-    } else if(e == null){
-      throw new UnknownSpeciesKeyException(speciesId);
-    }
-
+  // Regista um novo animal
+  public void registerAnimal(String animalId, String nome, String speciesId, String habitatId) throws CoreDuplicateAnimalKeyException, CoreUnknownSpeciesKeyException, CoreUnknownHabitatKeyException {  
+    Especie e = getEspecie(speciesId); // Pode dar throw se nao existir a especie
+    Habitat h = getHabitat(habitatId); // Pode dar throw se nao existir o habitat
+    // Verificar exceções
+    if (_animais.containsKey(animalId)) 
+      throw new CoreDuplicateAnimalKeyException(animalId); // Se o animal já existir, lança exceção
+    // Cria o animal, após confirmação dos dados
     Animal novoAnimal = new Animal(animalId, nome, e, h);
-
-    _animais.put(animalId, novoAnimal); // Adiciona ao HashMap geral
-    e.addAnimal(novoAnimal);  // Associa novoAnimal à espécie
-    h.addAnimal(novoAnimal);  // Associa novoAnimal ao Habitat
+    // Adiciona ao HashMap geral
+    _animais.put(animalId, novoAnimal); 
+    // Associa novoAnimal à espécie
+    e.addAnimal(novoAnimal);  
+    // Associa novoAnimal ao Habitat
+    h.addAnimal(novoAnimal);  
   } 
 
-
-  public void registerEmployee(String employeeId, String name, String empType) throws DuplicateEmployeeKeyException{ 
-    Funcionario f = getFuncionario(employeeId);
-
-    if(f != null){
-      throw new DuplicateEmployeeKeyException(employeeId);
-    }
-
-    if(empType.equals("VET")){
-      f = new Veterinario(employeeId, name);
-    } else {
-      f = new Tratador(employeeId, name);
-    }
-
+  // Regista um funcionário
+  public void registerEmployee(String empType, String employeeId, String name, String[] idResponsabilidades) throws CoreDuplicateEmployeeKeyException, CoreNoResponsibilityException{ 
+    // Verificar se o funcionário já existe
+    if(_funcionarios.containsKey(employeeId))
+      throw new CoreDuplicateEmployeeKeyException(employeeId);
+    // Constroi o funcionário
+    Funcionario f = (empType.equals("VET")) ? new Veterinario(employeeId, name) : new Tratador(employeeId, name);
+    // Adiciona na HashMap
     _funcionarios.put(employeeId, f);
-  }
-
-  public void addResponsibility(String employeeId, String responsibilityId) throws NoResponsibilityException{
-    Funcionario f = _funcionarios.get(employeeId);
-    // Especie e = _especies.get(responsibility);
-    // Habitat h = _habitats.get(responsibility);
-
-
-
-    // 
-    switch (f) {
-      case Veterinario vet -> {
-        Especie e = getEspecie(responsibilityId);
-              
-        if(e == null){
-          throw new NoResponsibilityException(employeeId, responsibilityId);
-        }
-              
-        if(vet.getEspecies().contains(e)){
-          // Já tem essa responsabilidade, então não faz nada
-          return;
-        }
-        vet.getEspecies().add(e); // Atribui nova responsabilidade
-        } case Tratador tratador -> {
-          Habitat h = getHabitat(responsibilityId);
-              
-          if(h == null){
-            throw new NoResponsibilityException(employeeId, responsibilityId);
-          }
-              
-          if (tratador.getHabitats().contains(h)) {
-            // Já tem essa responsabilidade, então não faz nada
-            return;
-          }
-              
-          tratador.getHabitats().add(h);  // Atribui nova responsabilidade
-          }
-          default -> {
-          }
+    // Atribui as responsabilidades ao funcionário
+    if (idResponsabilidades != null) {
+      for (String id : idResponsabilidades) {
+        addResponsibilidade(f, id);
       }
     }
-    
-  public void registerSpecies(String speciesId, String name) {
+  }
 
-    // lançar exceçao no registaEpecie  duplicate
-    Especie novaEspecie = new Especie(speciesId, name);
-    _especies.put(speciesId, novaEspecie);
+  //Atribui uma responsabilidade a um funcionario
+  public void addResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
+    // Verifica se a responsabilidade existe(tanto especie como habitat)
+    Responsabilidade r = (_especies.containsKey(responsibilityId)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
+    // Chama o metodo do funcionario que atribui a responsabilidade
+    f.operaResponsabilidade(r, true);
+  }
+
+  //Atribui uma responsabilidade a um funcionario
+  public void removeResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
+    // Verifica se a responsabilidade existe(tanto especie como habitat)
+    Responsabilidade r = (_especies.containsKey(responsibilityId)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
+    // Chama o metodo do funcionario que retira a responsabilidade
+    f.operaResponsabilidade(r, false);
+  }
+
+  // Regista uma especie 
+  public void registerSpecies(String speciesId, String name) throws CoreDuplicateSpeciesKeyException {
+    // Verifica se a especie já existe no hashmap
+    if (_especies.containsKey(speciesId)) 
+      // Lança exceção se já existir
+      throw new CoreDuplicateSpeciesKeyException(speciesId);
+    
+    Especie e = new Especie(speciesId, name);
+    _especies.put(speciesId, e);
   }
 
   // piroca
-  public Habitat registerHabitat(String habitatId, String nome, int area) throws DuplicateHabitatKeyException {
+  public Habitat registerHabitat(String habitatId, String nome, int area) throws CoreDuplicateHabitatKeyException {
     // Verifica se o habitat já existe no mapa
     if (_habitats.containsKey(habitatId)) {
       // Lança exceção se já existir
-      throw new DuplicateHabitatKeyException(habitatId);
+      throw new CoreDuplicateHabitatKeyException(habitatId);
     }
 
     // Cria o novo habitat
@@ -154,12 +125,12 @@ public class Hotel implements Serializable {
   }
 
   
-  public void registerVaccine(String vaccineId, String nome, String[] speciesIds) throws DuplicateVaccineKeyException, UnknownSpeciesKeyException {
+  public void registerVaccine(String vaccineId, String nome, String[] speciesIds) throws CoreDuplicateVaccineKeyException, CoreUnknownSpeciesKeyException {
     
     // Verifica se já existe uma vacina com o mesmo identificador
     Vacina v = getVacina(vaccineId);
     if (v != null) {
-        throw new DuplicateVaccineKeyException(vaccineId);
+        throw new CoreDuplicateVaccineKeyException(vaccineId);
     }
 
     // Lista para armazenar as espécies validadas
@@ -169,7 +140,7 @@ public class Hotel implements Serializable {
     for (String s : speciesIds) {
         Especie e = getEspecie(s.trim());  // Recupera a espécie e remove espaços em branco do Id
         if (e == null) {
-            throw new UnknownSpeciesKeyException(s);
+            throw new CoreUnknownSpeciesKeyException(s);
         }
         especies.add(e);  // Adiciona a espécie validada à lista
     }
@@ -242,16 +213,25 @@ public class Hotel implements Serializable {
     return _arvores.get(key);
   }
 
-  public Habitat getHabitat(String key) {
-    return _habitats.get(key);
+  // Recebe um Id e devolve um habitat do hashmap _habitats 
+  public Habitat getHabitat(String key) throws CoreUnknownHabitatKeyException{
+    Habitat h = _habitats.get(key);
+    if (h == null)
+      throw new CoreUnknownHabitatKeyException(key); // Se o habitat não existir, lança exceção 
+    return h;
   }
 
   public Animal getAnimal(String key) {
     return _animais.get(key);
   }
 
-  public Especie getEspecie(String key) {
-    return _especies.get(key);
+  // Recebe um Id e devolve uma especie do hashmap _especies 
+  public Especie getEspecie(String key) throws CoreUnknownSpeciesKeyException{
+    Especie e = _especies.get(key);
+    if(e == null) {
+      throw new CoreUnknownSpeciesKeyException(key); // Se a espécie não existir, lança exceção que cria a especie
+    }
+    return e;
   }
 
 
