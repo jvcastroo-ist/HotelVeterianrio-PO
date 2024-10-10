@@ -1,18 +1,18 @@
 package hva.core;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Vacina implements Visualiza, Serializable{
     private final String _id;
     private final String _nome;
-    private ArrayList<Especie> _especies;
-    private ArrayList<RegistoVacina> _registosVacina;
+    private List<Especie> _especies;
+    private List<RegistoVacina> _registosVacina;
 
-    public Vacina(String idVacina, String nome, ArrayList<Especie> especies){
+    public Vacina(String idVacina, String nome, List<Especie> especies){
         _id = idVacina;
         _nome = nome;
-        _especies = especies;
+        _especies = new ArrayList<>(especies);
     }
 
     public String getId() {
@@ -23,11 +23,11 @@ public class Vacina implements Visualiza, Serializable{
       return _nome;
     }
 
-    public ArrayList<Especie> getEspecies() {
+    public List<Especie> getEspecies() {
       return _especies;
     }
 
-    public ArrayList<RegistoVacina> getRegistosVacina() {
+    public List<RegistoVacina> getRegistosVacina() {
       return _registosVacina;
     }
 

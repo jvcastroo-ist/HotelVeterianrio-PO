@@ -2,8 +2,8 @@ package hva.core;
 
 public class ArvorePerene extends Arvore {
   // Constructor
-  public ArvorePerene(String id, String nome, int idade, Estacao estacaoInicial) {
-    super(id, nome, idade, estacaoInicial);
+  public ArvorePerene(String id, String nome, int idade, int difB, Estacao estacaoInicial) {
+    super(id, nome, idade, difB, estacaoInicial);
   }
 
   public String visualiza(Hotel h) {
