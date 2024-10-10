@@ -18,17 +18,6 @@ class DoShowAllHabitats extends Command<Hotel> {
   
   @Override
   protected void execute() {
-    //FIXME implement command
-    // Obtém todos os habitats do hotel
-    Map<String, Habitat> habitatMap = _receiver.getHabitats();
-
-    // Ordena os habits usando o método sortIds
-    List<Habitat> sortedHabitat = (List<Habitat>) _receiver.sortIds(habitatMap);
-
-    for (Habitat habitat : sortedHabitat) {
-      _display.addLine(habitat.visualiza(_receiver)); // Adiciona cada habitat em uma nova linha
-    }
-  
-    _display.display(); // Mostra todos os habitats
+    _display.popup(_receiver.visualizaTodosHabitats()); // Mostra todos os habitats 
   }
 }

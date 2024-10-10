@@ -18,18 +18,6 @@ class DoShowAllEmployees extends Command<Hotel> {
   
   @Override
   protected void execute() {
-    //FIXME implement command
-
-    // Obtém todos os funcionários do hotel
-    Map<String, Funcionario> funcionarioMap = _receiver.getFuncionarios();
-
-    // Ordena os animais usando o método sortIds
-    List<Funcionario> sortedFuncionarios = (List<Funcionario>) _receiver.sortIds(funcionarioMap);
-
-    for (Funcionario funcionario : sortedFuncionarios) {
-      _display.addLine(funcionario.visualiza(_receiver)); // Adiciona cada funcionário em uma nova linha
-    }
-  
-    _display.display(); // Mostra todos os funcionários
+    _display.popup(_receiver.visualizaTodosFuncionarios()); // Mostra todos os funcionários
   }
 }

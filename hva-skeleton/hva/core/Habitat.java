@@ -1,6 +1,7 @@
 package hva.core;
 
 import java.util.*;
+import java.util.stream.*;
 import java.io.*;
 
 public class Habitat extends Responsabilidade implements Serializable, Visualiza{
@@ -15,6 +16,8 @@ public class Habitat extends Responsabilidade implements Serializable, Visualiza
     _id = idHabitat;
     _nome = nomeHabitat;
     _area = area;
+    _arvores = new ArrayList<>();
+    _animais = new ArrayList<>();
   }
 
   @Override
@@ -27,8 +30,12 @@ public class Habitat extends Responsabilidade implements Serializable, Visualiza
   }
 
   public List<Arvore> getArvores(){
-    return _arvores;
+    return sort();
   } 
+  
+  public List<Arvore> sort() {
+    return _arvores.stream().sorted((a1, a2) -> a1.getId().compareToIgnoreCase(a2.getId())).collect(Collectors.toList());
+  }
 
   public void addAnimal(Animal a){
     _animais.add(a);
@@ -40,6 +47,10 @@ public class Habitat extends Responsabilidade implements Serializable, Visualiza
 
   @Override
   public String visualiza(Hotel h){    
-    return String.format("HABITAT|%s|%s|%d|%d", _id, _nome, _area, _arvores.size());
+    String hab = String.format("HABITAT|%s|%s|%d|%d", _id, _nome, _area, _arvores.size());
+    for(Arvore a : _arvores) {
+      hab += ("\n" + a.visualiza(h));
+    }
+    return hab;
   }
 }
