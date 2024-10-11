@@ -26,14 +26,8 @@ public class Hotel implements Serializable {
   private List<RegistoVacina> _registoVacinas;
 
   /**
-   * Constructs a new Hotel instance.
-   * 
-   * <p>This constructor initializes the hotel with the following default settings:
-   * <ul>
-   *   <li>Sets the initial season to SPRING.</li>
-   *   <li>Initializes the maps for trees, employees, habitats, animals, species, and vaccines.</li>
-   *   <li>Initializes the list for vaccine records.</li>
-   * </ul>
+   * The Hotel class represents a veterinary hotel 
+   * It provides methods to register, retrieve, and manipulate these entities, as well as to manage the current season and track modifications.
    */
   public Hotel() {
     // Set the initial season
@@ -75,9 +69,6 @@ public class Hotel implements Serializable {
     this._modified = true;
   }
   
-  /*
-   * 
-   */
   /**
    * Advances the current season to the next one.
    * Updates the internal state to reflect the change and marks the object as modified.
@@ -94,7 +85,6 @@ public class Hotel implements Serializable {
     return str.toLowerCase();
   }
 
-  // Regista um novo animal
   /**
    * Registers a new animal in the hotel system.
    *

@@ -9,6 +9,13 @@ public class Vacina implements Serializable{
     private List<Especie> _especies;
     private List<RegistoVacina> _registosVacina;
 
+    /**
+     * Constructs a new Vacina instance.
+     *
+     * @param idVacina the unique identifier for the vaccine
+     * @param nome the name of the vaccine
+     * @param especies the list of species that the vaccine is effective for; if null, an empty list will be initialized
+     */
     public Vacina(String idVacina, String nome, List<Especie> especies){
       _id = idVacina;
       _nome = nome;
@@ -16,25 +23,50 @@ public class Vacina implements Serializable{
       _registosVacina = new ArrayList<>();
     }
 
+    /**
+     * Retrieves the unique identifier of the vaccine.
+     *
+     * @return the unique identifier of the vaccine.
+     */
     public String getId() {
       return _id;
     }
 
+    /**
+     * Retrieves the name of the vaccine.
+     *
+     * @return the name of the vaccine as a String.
+     */
     public String getNome() {
       return _nome;
     }
 
+    /**
+     * Retrieves the list of species associated with this vaccine.
+     *
+     * @return a list of {@link Especie} objects representing the species.
+     */
     public List<Especie> getEspecies() {
       return _especies;
     }
 
+    /**
+     * Retrieves the list of vaccine records.
+     *
+     * @return a list of {@link RegistoVacina} objects representing the vaccine records.
+     */
     public List<RegistoVacina> getRegistosVacina() {
       return _registosVacina;
     }
 
+    /**
+     * Returns a string representation of the Vacina object.
+     * The format of the returned string is "VACINA|<id>|<nome>|<number_of_registos>|<responsabilidade>".
+     *
+     * @return A formatted string containing the id, name, number of registros, and responsabilidade of the Vacina.
+     */
     @Override
     public String toString(){
       return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), Responsabilidade.idResponsabilidade(_especies));
-    }
-    
+    }  
 }

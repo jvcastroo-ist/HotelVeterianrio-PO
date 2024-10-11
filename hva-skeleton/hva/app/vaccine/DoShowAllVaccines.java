@@ -14,6 +14,11 @@ class DoShowAllVaccines extends Command<Hotel> {
     //FIXME add command fields
   }
   
+  /**
+   * Executes the action to display all vaccines.
+   * This method triggers the display of all vaccines by calling the 
+   * visualizaTodasVacinas method on the receiver and showing the result in a popup.
+   */
   @Override
   protected final void execute() {
     _display.popup(_receiver.visualizaTodasVacinas());
