@@ -8,6 +8,12 @@ public class Dano implements Serializable {
   private int _key;
   private TreeMap<Integer, String> _dano;
 
+  /**
+   * Constructs a Dano object with the specified key and species correctness flag.
+   *
+   * @param key the unique identifier for the Dano object
+   * @param especieCerta a boolean indicating if the species is correct
+   */
   public Dano(int key, boolean especieCerta) {
     _key = key;
     _especieCerta = especieCerta;
@@ -17,6 +23,13 @@ public class Dano implements Serializable {
     _dano.put(5, "ERRO");
   }
 
+  /**
+   * Returns a string representation of the damage.
+   * If the key is 0 and the species is not correct, it returns "ACIDENTE".
+   * Otherwise, it returns the value associated with the floor entry of the key in the damage map.
+   *
+   * @return a string representation of the damage.
+   */
   @Override
   public String toString() {
     return (_key == 0 && !_especieCerta) ? "ACIDENTE" : _dano.floorEntry(_key).getValue();  

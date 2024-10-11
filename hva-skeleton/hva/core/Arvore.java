@@ -12,6 +12,15 @@ public abstract class Arvore implements Serializable{
   private final Integer[][] _esforcoLimpeza = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
   private final String[][] _cicloBiologico = {{"GERARFOLHAS", "COMFOLHAS", "LARGARFOLHAS", "SEMFOLHAS"}, {"GERARFOLHAS", "COMFOLHAS", "COMFOLHAS", "LARGARFOLHAS"}}; 
 
+  /**
+   * Constructs an Arvore object with the specified parameters.
+   *
+   * @param id the unique identifier for the tree
+   * @param nome the name of the tree
+   * @param idade the age of the tree
+   * @param difB the base difficulty level associated with the tree
+   * @param estacaoAtual the current season associated with the tree
+   */
   public Arvore(String id, String nome, int idade, int difB, Estacao estacaoAtual) {
     _id = id;
     _nome = nome;
@@ -20,35 +29,64 @@ public abstract class Arvore implements Serializable{
     _estacaoAtual = estacaoAtual;
   }
 
-  // Getter para o ID da árvore
+  /**
+   * Retrieves the identifier of the object.
+   *
+   * @return the identifier as a String.
+   */
   public String getId() {
     return _id;
   }
 
-  // Getter para o nome da árvore
+  /**
+   * Retrieves the name of the tree.
+   *
+   * @return the name of the tree.
+   */
   public String getNome() {
     return _nome;
   }
 
-  // Getter para a idade da árvore
+  /**
+   * Retrieves the age of the tree.
+   *
+   * @return the age of the tree.
+   */
   public int getIdade() {
     return _idade;
   }
 
-  // Getter para a estação inicial da árvore
+  /**
+   * Retrieves the current season associated with the tree.
+   *
+   * @return the current season.
+   */
   public Estacao getEstacaoAtual() {
     return _estacaoAtual;
   }
 
+  /**
+   * Retrieves the biological cycle of a tree based on the given season and type.
+   *
+   * @param estacao the season index
+   * @param tipo the type index
+   * @return the biological cycle corresponding to the specified season and type
+   */
   public String getCiclo(int estacao, int tipo) {
     return _cicloBiologico[tipo][estacao];
   }
 
+  /**
+   * Retrieves the cleaning effort required for a specific type and season.
+   *
+   * @param estacao the season index
+   * @param tipo the type index
+   * @return the cleaning effort for the specified type and season
+   */
   public Integer getEsforcoLimpeza(int estacao, int tipo) {
     return _esforcoLimpeza[tipo][estacao];
   }
 
-  // Abstract method to visualize the tree, to be implemented by subclasses
   @Override
   public abstract String toString();
 
