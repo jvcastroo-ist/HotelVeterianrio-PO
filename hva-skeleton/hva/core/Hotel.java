@@ -110,8 +110,8 @@ public class Hotel implements Serializable {
     String animalIdKey = lowerCase(animalId);
     String speciesIdKey = lowerCase(speciesId);
     String habitatIdKey = lowerCase(habitatId);
-    Especie e = getEspecie(speciesIdKey); // Throes exception if species does not exist
-    Habitat h = getHabitat(habitatIdKey); // hrows exception if habitat does not exist
+    Especie e = getEspecie(speciesIdKey); // Throws exception if species does not exist
+    Habitat h = getHabitat(habitatIdKey); // Throws exception if habitat does not exist
 
     // Verifies Exceptions
     if (_animais.containsKey(animalIdKey)) 
