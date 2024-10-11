@@ -1,11 +1,10 @@
 package hva.core;
 
-import java.util.*;
-import java.io.*;
-
 import hva.core.exception.CoreNoResponsibilityException;
+import java.io.*;
+import java.util.*;
 
-public abstract class Funcionario implements Visualiza, Serializable{
+public abstract class Funcionario implements Serializable{
   private final String _id;
   private final String _nome;
 
@@ -30,10 +29,13 @@ public abstract class Funcionario implements Visualiza, Serializable{
 
   public abstract void operaResponsabilidade(Responsabilidade r, boolean atribui) throws CoreNoResponsibilityException;
 
-  public String visualiza(Hotel h, String tipo, List<? extends Responsabilidade> r){
+  public String visualiza(String tipo, List<? extends Responsabilidade> r){
     return String.format("%s|%s|%s%s", tipo, getId(), getNome(), Responsabilidade.idResponsabilidade(r));
   }
 
+
+
+  
     /*
     + satisfaçao(): int
     + visualizaFuncionario(): void

@@ -1,8 +1,7 @@
 package hva.core;
 
-import java.util.*;
-
 import hva.core.exception.CoreNoResponsibilityException;
+import java.util.*;
 
 public class Veterinario extends Funcionario{
   private List<Especie> _especies;
@@ -29,7 +28,7 @@ public class Veterinario extends Funcionario{
   }
 
   @Override
-  public String visualiza(Hotel h) {
-      return super.visualiza(h, "VETERINÁRIO", _especies);
+  public String toString() {
+      return super.visualiza("VET", _especies);
   }
 }

@@ -25,10 +25,21 @@ public class Hotel implements Serializable {
   private Map<String, Vacina> _vacinas;
   private List<RegistoVacina> _registoVacinas;
 
-  // Constructor
+  /**
+   * Constructs a new Hotel instance.
+   * 
+   * <p>This constructor initializes the hotel with the following default settings:
+   * <ul>
+   *   <li>Sets the initial season to SPRING.</li>
+   *   <li>Initializes the maps for trees, employees, habitats, animals, species, and vaccines.</li>
+   *   <li>Initializes the list for vaccine records.</li>
+   * </ul>
+   */
   public Hotel() {
-    _estacaoAno = Estacao.PRIMAVERA; // Definição da estação global
-    // CRIAÇÃO DAS HASHS PARA CADA ENTIDADE 
+    // Set the initial season
+    _estacaoAno = Estacao.PRIMAVERA;
+    
+    // Initialize the maps
     _arvores = new HashMap<>();
     _funcionarios = new HashMap<>();
     _habitats = new HashMap<>();
@@ -56,13 +67,6 @@ public class Hotel implements Serializable {
   }
 
 
-  ///////////////////////////////////////77
-  ///////////////////////////////////////////77
-  //////////////////////////////////////////////////77
-  ////////////////////////////////////////////////////77
-  ///////////////////////////////////////////////////////////
-
-
   /**
    * Turn the dirty flag on to indicate a modification has occurred since last
    * clean-up (i.e. saved).
@@ -70,122 +74,208 @@ public class Hotel implements Serializable {
   private void dirty() {
     this._modified = true;
   }
-
-
-  // FIXME define more methods
   
-  // Avança a estação, devolve o número
+  /*
+   * 
+   */
+  /**
+   * Advances the current season to the next one.
+   * Updates the internal state to reflect the change and marks the object as modified.
+   *
+   * @return the ordinal value of the new season.
+   */
   public int avancaEstacao() {
     _estacaoAno = _estacaoAno.proximaEstacao();
     dirty();
     return _estacaoAno.ordinal();
   }
 
+  private String lowerCase(String str){
+    return str.toLowerCase();
+  }
+
   // Regista um novo animal
+  /**
+   * Registers a new animal in the hotel system.
+   *
+   * @param animalId the unique identifier of the animal
+   * @param nome the name of the animal
+   * @param speciesId the unique identifier of the species
+   * @param habitatId the unique identifier of the habitat
+   * @throws CoreDuplicateAnimalKeyException if an animal with the given ID already exists
+   * @throws CoreUnknownSpeciesKeyException if the species with the given ID does not exist
+   * @throws CoreUnknownHabitatKeyException if the habitat with the given ID does not exist
+   */
   public void registerAnimal(String animalId, String nome, String speciesId, String habitatId) throws CoreDuplicateAnimalKeyException, CoreUnknownSpeciesKeyException, CoreUnknownHabitatKeyException {  
-    Especie e = getEspecie(speciesId); // Pode dar throw se nao existir a especie
-    Habitat h = getHabitat(habitatId); // Pode dar throw se nao existir o habitat
-    // Verificar exceções
-    if (_animais.containsKey(animalId)) 
+    String animalIdKey = lowerCase(animalId);
+    String speciesIdKey = lowerCase(speciesId);
+    String habitatIdKey = lowerCase(habitatId);
+    Especie e = getEspecie(speciesIdKey); // Throes exception if species does not exist
+    Habitat h = getHabitat(habitatIdKey); // hrows exception if habitat does not exist
+
+    // Verifies Exceptions
+    if (_animais.containsKey(animalIdKey)) 
       throw new CoreDuplicateAnimalKeyException(animalId); // Se o animal já existir, lança exceção
-    // Cria o animal, após confirmação dos dados
+    
+    // Create new animal 
     Animal novoAnimal = new Animal(animalId, nome, e, h);
-    // Adiciona ao HashMap geral
-    _animais.put(animalId, novoAnimal); 
-    // Associa novoAnimal à espécie
+    // Adds the animal to the hashmap
+    _animais.put(animalIdKey, novoAnimal); 
+    // Adds the animal to the species
     e.addAnimal(novoAnimal);  
-    // Associa novoAnimal ao Habitat
+    // Adds the animal to the habitat
     h.addAnimal(novoAnimal);  
 
     dirty();
   } 
 
   // Regista um funcionário
-  public void registerEmployee(String empType, String employeeId, String name) throws CoreDuplicateEmployeeKeyException { 
-    // Verificar se o funcionário já existe
-    if(_funcionarios.containsKey(employeeId))
+  /**
+   * Registers a new employee in the system.
+   *
+   * @param employeeId The unique identifier for the employee.
+   * @param name The name of the employee.
+   * @param empType The type of the employee, either "VET" for Veterinario or any other value for Tratador.
+   * @throws CoreDuplicateEmployeeKeyException if an employee with the given employeeId already exists.
+   */
+  public void registerEmployee(String employeeId, String name, String empType) throws CoreDuplicateEmployeeKeyException { 
+    String employeeIdKey = lowerCase(employeeId);
+    // Verify if the employee already exists
+    if(_funcionarios.containsKey(employeeIdKey))
       throw new CoreDuplicateEmployeeKeyException(employeeId);
-    // Constroi o funcionário
+
+    // Verifies the type of employee and creates the object
     Funcionario f = (empType.equals("VET")) ? new Veterinario(employeeId, name) : new Tratador(employeeId, name);
-    // Adiciona na HashMap
-    _funcionarios.put(employeeId, f);
+    // Adds the employee to the hashmap
+    _funcionarios.put(employeeIdKey, f);
 
     dirty();
   }
 
-  //Atribui uma responsabilidade a um funcionario
+  /**
+   * Adds a responsibility to a given employee.
+   *
+   * @param f the employee to whom the responsibility will be assigned
+   * @param responsibilityId the ID of the responsibility to be assigned
+   * @throws CoreNoResponsibilityException if the responsibility does not exist
+   */
   public void addResponsibility(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
-    // Verifica se a responsabilidade existe(tanto especie como habitat)
-    Responsabilidade r = (_especies.containsKey(responsibilityId)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
-    // Chama o metodo do funcionario que atribui a responsabilidade
+    String responsibilityIdKey = lowerCase(responsibilityId);
+    // Verifies if the responsibility exists (either species or habitat)
+    Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
+    // Calls the method of the employee that assigns the responsibility
     f.operaResponsabilidade(r, true);
 
     dirty();
   }
 
   //Atribui uma responsabilidade a um funcionario
+  /**
+   * Removes a responsibility from a given employee.
+   *
+   * @param f the employee from whom the responsibility will be removed
+   * @param responsibilityId the ID of the responsibility to be removed
+   * @throws CoreNoResponsibilityException if the responsibility does not exist
+   */
   public void removeResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
-    // Verifica se a responsabilidade existe(tanto especie como habitat)
-    Responsabilidade r = (_especies.containsKey(responsibilityId)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
-    // Chama o metodo do funcionario que retira a responsabilidade
+    String responsibilityIdKey = lowerCase(responsibilityId);
+    // Verifies if the responsibility exists (either species or habitat)
+    Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
+    // Calls the method of the employee that removes the responsibility
     f.operaResponsabilidade(r, false);
     
     dirty();
   }
 
   // Regista uma especie 
+  /**
+   * Registers a new species in the hotel system.
+   *
+   * @param speciesId The unique identifier for the species.
+   * @param name The name of the species.
+   * @throws CoreDuplicateSpeciesKeyException if a species with the given ID already exists.
+   */
   public void registerSpecies(String speciesId, String name) throws CoreDuplicateSpeciesKeyException {
-    // Verifica se a especie já existe no hashmap
-    if (_especies.containsKey(speciesId)) 
-      // Lança exceção se já existir
+    String speciesIdKey = lowerCase(speciesId);
+    // Verifies if the species already exists
+    if (_especies.containsKey(speciesIdKey)) 
+      // Throws exception if it already exists
       throw new CoreDuplicateSpeciesKeyException(speciesId);
     
     Especie e = new Especie(speciesId, name);
-    _especies.put(speciesId, e);
+    _especies.put(speciesIdKey, e);
 
     dirty();
   }
 
   // Regista um habitat
+  /**
+   * Registers a new habitat in the hotel.
+   *
+   * @param habitatId The unique identifier for the habitat.
+   * @param nome The name of the habitat.
+   * @param area The area of the habitat.
+   * @throws CoreDuplicateHabitatKeyException If a habitat with the given ID already exists.
+   */
   public void registerHabitat(String habitatId, String nome, int area/*adicionar vetor arvores */) throws CoreDuplicateHabitatKeyException {
-    // Verifica se o habitat já existe no mapa
-    if (_habitats.containsKey(habitatId)) 
-      // Lança exceção se já existir
+    String habitatIdKey = lowerCase(habitatId);
+    if (_habitats.containsKey(habitatIdKey)) 
       throw new CoreDuplicateHabitatKeyException(habitatId);
-    // Cria o novo habitat
+
     Habitat novoHabitat = new Habitat(habitatId, nome, area);
-    // Adiciona o habitat ao HashMap
-    _habitats.put(habitatId, novoHabitat);
+    
+    _habitats.put(habitatIdKey, novoHabitat);
 
     dirty();
   }
 
   
+  /**
+   * Registers a new vaccine in the system.
+   *
+   * @param vaccineId The unique identifier for the vaccine.
+   * @param nome The name of the vaccine.
+   * @param speciesIds An array of species identifiers that the vaccine is applicable to.
+   * @throws CoreDuplicateVaccineKeyException If a vaccine with the same identifier already exists.
+   * @throws CoreUnknownSpeciesKeyException If any of the provided species identifiers are unknown.
+   */
   public void registerVaccine(String vaccineId, String nome, String[] speciesIds) throws CoreDuplicateVaccineKeyException, CoreUnknownSpeciesKeyException {
-    // Inicializa a lista de especies
+    // Criates a list of species
     List<Especie> species = new ArrayList<>();
-    // Verifica se já existe uma vacina com o mesmo identificador
-    if (_vacinas.containsKey(vaccineId)) 
-        throw new CoreDuplicateVaccineKeyException(vaccineId);
-    // Valida as espécies fornecidas e adiciona a lista
+    
+    String vaccineIdKey = lowerCase(vaccineId);
+    if (_vacinas.containsKey(vaccineIdKey)) 
+      throw new CoreDuplicateVaccineKeyException(vaccineId);
+    // Check if the vaccine already exists
     for (String id : speciesIds) {
-        Especie e = getEspecie(id);  
-        species.add(e);
+      id = lowerCase(id);
+      Especie e = getEspecie(id);  
+      species.add(e);
     }
-    // Cria a nova vacina com as espécies validadas
+    // Criates a new vaccine
     Vacina v = new Vacina(vaccineId, nome, species);
-    // Adiciona a vacina ao mapa
-    _vacinas.put(vaccineId, v);
+    // Adds the vaccine to the hashmap
+    _vacinas.put(vaccineIdKey, v);
 
     dirty();
   }
 
   // Cria uma arvore **** NAO ESQUECER QUE A ARVORE PRECISA SER PRINTADA DEPOIS Q É FEITA  
+  /**
+   * Registers a tree to a specified habitat.
+   *
+   * @param habitatId The ID of the habitat to which the tree will be associated.
+   * @param idsTree An array of tree IDs to be registered to the habitat.
+   * @throws CoreUnknownHabitatKeyException If the habitat ID is not found.
+   */
   public void registerTree(String habitatId, String[] idsTree) throws CoreUnknownHabitatKeyException {
-    // Associa a arvore ao habitat
+    habitatId = lowerCase(habitatId);
+    // Associates the trees to the habitat
     Habitat hab = getHabitat(habitatId);
 
+    // Adds the trees to the habitat
     for (String id : idsTree) {
+      id = lowerCase(id);
       Arvore a = getArvore(id);
       hab.addArvore(a);
     }
@@ -193,71 +283,146 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+  /**
+   * Creates a tree and adds it to the collection of trees.
+   *
+   * @param treeId The unique identifier for the tree.
+   * @param name The name of the tree.
+   * @param age The age of the tree.
+   * @param dificuldadeBase The base difficulty level associated with the tree.
+   * @param type The type of the tree, either "CADUCA" or "PERENE".
+   * @throws CoreDuplicateTreeKeyException If a tree with the given treeId already exists.
+   */
   public void createTree(String treeId, String name, int age, int dificuldadeBase, String type) throws CoreDuplicateTreeKeyException {
-    // Verifica se arvore ja existe
-    if(_arvores.containsKey(treeId))
+    String treeIdKey = lowerCase(treeId);
+    if(_arvores.containsKey(treeIdKey))
       throw new CoreDuplicateTreeKeyException(treeId);
-    // Verifica o tipo e constroi a arvore
+
+    // Verifies the type of tree and creates the object
     Arvore a = (type.equals("CADUCA")) ? new ArvoreCaduca(treeId, name, age, dificuldadeBase, _estacaoAno) : new ArvorePerene(treeId, name, age, dificuldadeBase, _estacaoAno);
-    // adiciona ao hashmap
-    _arvores.put(treeId, a);
+    _arvores.put(treeIdKey, a);
 
     dirty();
   }
 
   // Recebe uma coleção de objetos e devolve uma lista de strings(visualizaçoes) 
-  public Collection<String> visualiza(Collection<? extends Visualiza> T) {
+  /**
+   * Converts a collection of items to a collection of their string representations.
+   *
+   * @param items the collection of items to be visualized
+   * @return an unmodifiable list of string representations of the items
+   */
+  public Collection<String> visualiza(Collection<?> items) {
     List<String> view = new ArrayList<>();
-    for (Visualiza item : T) {
-      view.add(item.visualiza(this));
+    for (Object item : items) {
+      view.add(item.toString());
     }
     return Collections.unmodifiableList(view);
   }
 
   // Ordena uma lista de ids e retorna uma lista de objetos ordenados pelo id
+  /**
+   * Sorts the keys of the given map in a case-insensitive lexicographical order and returns a list of the corresponding values.
+   *
+   * @param <T> the type of the values in the map
+   * @param map the map whose keys are to be sorted
+   * @return a list of values sorted according to the lexicographical order of their keys
+   */
   public <T>List <T>sortIds(Map<String, T> map) {
     List<String> idList = new ArrayList<>(map.keySet()); // Faz uma lista das keys do map
     idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
     return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
   }
+
   // Visualiza todos animais
+  /**
+   * Retrieves a collection of all animal IDs in the hotel, sorted in ascending order.
+   *
+   * @return a collection of sorted animal IDs.
+   */
   public Collection<String> visualizaTodosAnimais() {
     return visualiza(sortIds(_animais));
   }
 
   // Visualiza todas arvores
+  /**
+   * Retrieves a collection of all tree IDs in the hotel, sorted in a specific order.
+   *
+   * @return A collection of sorted tree IDs.
+   */
   public Collection<String> visualizaTodasArvores() {
     return visualiza(sortIds(_arvores));
   }
 
   // Visualiza todos funcionarios
+  /**
+   * Retrieves a collection of all employee IDs in the hotel.
+   * The IDs are sorted before being returned.
+   *
+   * @return a collection of sorted employee IDs.
+   */
   public Collection<String> visualizaTodosFuncionarios() {
     return visualiza(sortIds(_funcionarios)); 
   }
 
   // Visualiza todos habitats
+  /**
+   * Retrieves a collection of all habitat IDs in the hotel.
+   * The habitat IDs are sorted before being returned.
+   *
+   * @return a sorted collection of habitat IDs.
+   */
   public Collection<String> visualizaTodosHabitats() {
     return visualiza(sortIds(_habitats));
   }
 
   // Visualiza todas vacinas
+  /**
+   * Retrieves a collection of all vaccine IDs, sorted in a specific order.
+   *
+   * @return A collection of sorted vaccine IDs.
+   */
   public Collection<String> visualizaTodasVacinas() {
     return visualiza(sortIds(_vacinas));
   }
 
+  /**
+   * Retrieves the current season of the year.
+   *
+   * @return the current season of the year as an {@link Estacao} enum.
+   */
   public Estacao getEstacaoAno() {
     return _estacaoAno;
   }
 
+  /**
+   * Retrieves a Funcionario (employee) from the collection based on the provided key.
+   *
+   * @param key the unique identifier for the Funcionario to be retrieved.
+   * @return the Funcionario associated with the given key, or null if no such Funcionario exists.
+   */
   public Funcionario getFuncionario(String key) {
     return _funcionarios.get(key);
   }
 
+  /**
+   * Retrieves an Arvore object from the collection based on the provided key.
+   *
+   * @param key the key associated with the Arvore object to be retrieved
+   * @return the Arvore object corresponding to the specified key, or null if no such object exists
+   */
   public Arvore getArvore(String key) {
     return _arvores.get(key);
   }
 
   // Recebe um Id e devolve um habitat do hashmap _habitats 
+  /**
+   * Retrieves a Habitat object based on the provided key.
+   *
+   * @param key the unique identifier for the habitat
+   * @return the Habitat object associated with the given key
+   * @throws CoreUnknownHabitatKeyException if no habitat is found for the given key
+   */
   public Habitat getHabitat(String key) throws CoreUnknownHabitatKeyException{
     Habitat h = _habitats.get(key);
     if (h == null)
@@ -270,6 +435,13 @@ public class Hotel implements Serializable {
   }
 
   // Recebe um Id e devolve uma especie do hashmap _especies 
+  /**
+   * Retrieves the species associated with the given key.
+   *
+   * @param key the key associated with the species to retrieve
+   * @return the species associated with the given key
+   * @throws CoreUnknownSpeciesKeyException if no species is found for the given key
+   */
   public Especie getEspecie(String key) throws CoreUnknownSpeciesKeyException{
     Especie e = _especies.get(key);
     if(e == null) {
@@ -279,29 +451,52 @@ public class Hotel implements Serializable {
   }
 
 
+  /**
+   * Retrieves a Vacina object associated with the specified key.
+   *
+   * @param key the key associated with the desired Vacina object
+   * @return the Vacina object corresponding to the specified key, or null if no such object exists
+   */
   public Vacina getVacina(String key) {
     return _vacinas.get(key);
   }
 
 
+  /**
+   * Retrieves a map of animals in the hotel.
+   *
+   * @return a map where the keys are animal identifiers (as Strings) and the values are Animal objects.
+   */
   public Map<String, Animal> getAnimals(){
     return _animais;
   }
 
+  /**
+   * Retrieves a map of all the employees (Funcionarios) in the hotel.
+   *
+   * @return a Map where the keys are employee identifiers (String) and the values are Funcionario objects.
+   */
   public Map<String, Funcionario> getFuncionarios(){
     return _funcionarios;
   }
 
+  /**
+   * Retrieves the map of habitats in the hotel.
+   *
+   * @return a map where the keys are habitat names and the values are Habitat objects.
+   */
   public Map<String, Habitat> getHabitats(){
     return _habitats;
   }
 
+  /**
+   * Retrieves the map of vaccines.
+   *
+   * @return a map where the keys are vaccine names and the values are Vacina objects.
+   */
   public Map<String, Vacina> getVacinas(){
     return _vacinas;
   }
-
-
-
 
   /**
    * Read text input file and create corresponding domain entities.

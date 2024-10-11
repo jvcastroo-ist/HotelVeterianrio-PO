@@ -6,7 +6,12 @@ public class ArvoreCaduca extends Arvore {
     super(id, nome, idade, difB,estacaoInicial);
   }
 
-  public String visualiza(Hotel h) {
-    return super.visualiza(h, 0, "CADUCA");
+  @Override
+  public String toString() {
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getEsforcoLimpeza(getEstacaoAtual().ordinal(), 0), "CADUCA", getCiclo(getEstacaoAtual().ordinal(), 0));
   }
 }
+
+
+
+

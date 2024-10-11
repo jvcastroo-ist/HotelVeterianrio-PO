@@ -71,10 +71,10 @@ public class Parser {
     try {
       String id = components[1];
       String name = components[2];
-      String habitatId = components[4];
       String speciesId = components[3];
+      String habitatId = components[4];
 
-      _hotel.registerAnimal(id, name, habitatId, speciesId);
+      _hotel.registerAnimal(id, name, speciesId, habitatId);
     } catch (CoreDuplicateAnimalKeyException | CoreUnknownSpeciesKeyException | CoreUnknownHabitatKeyException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }

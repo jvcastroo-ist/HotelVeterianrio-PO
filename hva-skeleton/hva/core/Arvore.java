@@ -2,22 +2,22 @@ package hva.core;
 
 import java.io.*;
 
-public abstract class Arvore implements Visualiza, Serializable{
+public abstract class Arvore implements Serializable{
   private final String _id;
   private final String _nome;
   private int _idade;
-  private final Estacao _estacaoInicial;
+  private final Estacao _estacaoAtual;
   private final int _dificuldadeBase;
   // {CADUCA[estacao], PERENE[estacao]}
   private final Integer[][] _esforcoLimpeza = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
   private final String[][] _cicloBiologico = {{"GERARFOLHAS", "COMFOLHAS", "LARGARFOLHAS", "SEMFOLHAS"}, {"GERARFOLHAS", "COMFOLHAS", "COMFOLHAS", "LARGARFOLHAS"}}; 
 
-  public Arvore(String id, String nome, int idade, int difB, Estacao estacaoInicial) {
+  public Arvore(String id, String nome, int idade, int difB, Estacao estacaoAtual) {
     _id = id;
     _nome = nome;
     _idade = idade;
     _dificuldadeBase = difB;
-    _estacaoInicial = estacaoInicial;
+    _estacaoAtual = estacaoAtual;
   }
 
   // Getter para o ID da árvore
@@ -36,8 +36,8 @@ public abstract class Arvore implements Visualiza, Serializable{
   }
 
   // Getter para a estação inicial da árvore
-  public Estacao getEstacaoInicial() {
-    return _estacaoInicial;
+  public Estacao getEstacaoAtual() {
+    return _estacaoAtual;
   }
 
   public String getCiclo(int estacao, int tipo) {
@@ -49,8 +49,7 @@ public abstract class Arvore implements Visualiza, Serializable{
   }
 
   // Abstract method to visualize the tree, to be implemented by subclasses
-  public String visualiza(Hotel h, int tipo, String nome) {
-    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getEsforcoLimpeza(h.getEstacaoAno().ordinal(), tipo), nome, getCiclo(h.getEstacaoAno().ordinal(), tipo));
-  }
+  @Override
+  public abstract String toString();
 
 }

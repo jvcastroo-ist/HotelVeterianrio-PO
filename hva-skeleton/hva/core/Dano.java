@@ -1,7 +1,7 @@
 package hva.core;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Dano implements Serializable {
   private boolean _especieCerta;
@@ -17,6 +17,7 @@ public class Dano implements Serializable {
     _dano.put(5, "ERRO");
   }
 
+  @Override
   public String toString() {
     return (_key == 0 && !_especieCerta) ? "ACIDENTE" : _dano.floorEntry(_key).getValue();  
   }

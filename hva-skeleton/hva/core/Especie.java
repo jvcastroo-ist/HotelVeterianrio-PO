@@ -1,7 +1,7 @@
 package hva.core;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Especie extends Responsabilidade implements Serializable{
   private final String _id;
@@ -13,6 +13,7 @@ public class Especie extends Responsabilidade implements Serializable{
   public Especie(String id, String nome) {
     _id = id;
     _nome = nome;
+    _animais = new ArrayList<>();    
   }
 
   @Override

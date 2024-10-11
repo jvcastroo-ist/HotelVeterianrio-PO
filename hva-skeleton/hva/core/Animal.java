@@ -1,9 +1,9 @@
 package hva.core;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-public class Animal implements Visualiza, Serializable{
+public class Animal implements Serializable {
     private final String _id;
     private final String _nome;
     private final Especie _especie;
@@ -50,7 +50,7 @@ public class Animal implements Visualiza, Serializable{
     }
 
     @Override
-    public String visualiza(Hotel h) {
+    public String toString() {
         return String.format("ANIMAL|%s|%s|%s|%s|%s", getId(), getNome(), getEspecie().getId(), getRegistoVacinacao(), getHabitat().getId());
     }
 }

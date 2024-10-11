@@ -1,10 +1,10 @@
 package hva.core;
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
-import java.io.*;
 
-public class Habitat extends Responsabilidade implements Serializable, Visualiza{
+public class Habitat extends Responsabilidade implements Serializable{
   private final String _id;
   private final String _nome;
   private int _area;
@@ -46,10 +46,10 @@ public class Habitat extends Responsabilidade implements Serializable, Visualiza
   }
 
   @Override
-  public String visualiza(Hotel h){    
+  public String toString(){    
     String hab = String.format("HABITAT|%s|%s|%d|%d", _id, _nome, _area, _arvores.size());
     for(Arvore a : _arvores) {
-      hab += ("\n" + a.visualiza(h));
+      hab += ("\n" + a.toString());
     }
     return hab;
   }

@@ -1,7 +1,6 @@
 package hva.core;
-import java.util.*;
-
 import hva.core.exception.CoreNoResponsibilityException;
+import java.util.*;
 
 public class Tratador extends Funcionario{
   private List<Habitat> _habitats;
@@ -27,7 +26,7 @@ public class Tratador extends Funcionario{
 
    // Fazer derivado da classe abstrata
   @Override
-  public String visualiza(Hotel h) {
-      return super.visualiza(h, "TRATADOR", _habitats);
+  public String toString() {
+      return super.visualiza("TRT", _habitats);
   }
 }

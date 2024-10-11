@@ -6,7 +6,8 @@ public class ArvorePerene extends Arvore {
     super(id, nome, idade, difB, estacaoInicial);
   }
 
-  public String visualiza(Hotel h) {
-    return super.visualiza(h, 1, "PERENE");
+  @Override
+  public String toString() {
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getEsforcoLimpeza(getEstacaoAtual().ordinal(), 1), "PERENE", getCiclo(getEstacaoAtual().ordinal(), 1));
   }
 }
