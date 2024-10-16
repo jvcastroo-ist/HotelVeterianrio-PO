@@ -6,7 +6,7 @@ public abstract class Arvore implements Serializable{
   private final String _id;
   private final String _nome;
   private float _idade;
-  private final Estacao _estacaoAtual;
+  private  Estacao _estacaoAtual;
   private final int _dificuldadeBase;
   // {CADUCA[estacao], PERENE[estacao]}
   private final Integer[][] _esforcoSazonal = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
@@ -81,8 +81,8 @@ public abstract class Arvore implements Serializable{
    * @param tipo the type index
    * @return the biological cycle corresponding to the specified season and type
    */
-  public String getCiclo(int estacao, int tipo) {
-    return _cicloBiologico[tipo][estacao];
+  public String getCiclo(int tipo) {
+    return _cicloBiologico[tipo][_estacaoAtual.ordinal()];
   }
 
   /**
@@ -92,8 +92,8 @@ public abstract class Arvore implements Serializable{
    * @param tipo the type index
    * @return the cleaning effort for the specified type and season
    */
-  public Integer getEsforcoSazonal(int estacao, int tipo) {
-    return _esforcoSazonal[tipo][estacao];
+  public Integer getEsforcoSazonal(int tipo) {
+    return _esforcoSazonal[tipo][_estacaoAtual.ordinal()];
   }
 
   // a versão realmente utilizada desse metodo é o override das classes filho
@@ -103,6 +103,10 @@ public abstract class Arvore implements Serializable{
 
   public void aumentaIdade() {
     _idade += 0.25;
+  }
+
+  public void setEstacao(Estacao e) {
+    _estacaoAtual = e;
   }
 
   @Override

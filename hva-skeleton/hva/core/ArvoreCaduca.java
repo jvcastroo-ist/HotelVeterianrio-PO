@@ -22,12 +22,12 @@ public class ArvoreCaduca extends Arvore {
    */
   @Override
   public double getEsforcoLimpeza() {
-    return super.getEsforcoLimpeza()*getEsforcoSazonal(getEstacaoAtual().ordinal(), 0);
+    return super.getEsforcoLimpeza()*getEsforcoSazonal(0);
   }
 
   @Override
   public String toString() {
-    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "CADUCA", getCiclo(getEstacaoAtual().ordinal(), 0));
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "CADUCA", getCiclo(0));
   }
 }
 

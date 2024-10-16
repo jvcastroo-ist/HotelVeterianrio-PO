@@ -3,7 +3,7 @@ package hva.core;
 import java.io.*;
 import java.util.*;
 
-public class Animal implements Serializable {
+public class Animal implements Serializable, Satisfacao {
   private final String _id;
   private final String _nome;
   private final Especie _especie;
@@ -87,13 +87,25 @@ public class Animal implements Serializable {
       return String.join(",", danos);
   }
 
-  public long satisfacao() {
+  /**
+   * Calculates the satisfaction level of the animal based on various factors.
+   *
+   * @return the satisfaction level as a double, calculated using the following formula:
+   *         (20 + 3 * especieIgual() - 2 * especieDiferente + espacoMedio + _adequacao)
+   *         where:
+   *         - especieIgual() is the number of animals of the same species in the habitat.
+   *         - especieDiferente is the number of different species in the habitat.
+   *         - espacoMedio is the average space available per animal in the habitat.
+   *         - _adequacao is an additional adequacy factor.
+   */
+  @Override
+  public double satisfacao() {
     // Numero de especies diferentes no habitat
     int especieDiferente = _habitat.getAnimals().size() - (especieIgual() + 1);
     // AREA/POPULACAO
     double espacoMedio = _habitat.getArea()/_habitat.getAnimals().size();
     // satisfacao arredondada ao inteiro mais proximo
-    return Math.round(20 + 3*especieIgual() - 2*especieDiferente + espacoMedio + _adequacao);
+    return (20 + 3*especieIgual() - 2*especieDiferente + espacoMedio + _adequacao);
   }
 
   /**

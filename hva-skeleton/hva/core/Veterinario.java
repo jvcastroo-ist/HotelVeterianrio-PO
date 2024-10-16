@@ -29,13 +29,13 @@ public class Veterinario extends Funcionario{
   }
 
   @Override
-  public long satisfacao() {
+  public double satisfacao() {
     double sum = 0;
     for (Especie e : _especies) {
       sum += e.getAnimais().size()/e.getNumFuncionarios();
     }
     sum = 20 - sum;
-    return Math.round(sum);
+    return sum;
   }
 
 

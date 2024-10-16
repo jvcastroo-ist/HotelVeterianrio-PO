@@ -3,9 +3,9 @@ package hva.core;
 import java.io.*;
 
 public class RegistoVacina implements Serializable{
-    private final String _id;
-    private final String _idAnimal;
-    private final String _idVeterinario;
+    private final Vacina _vacina;
+    private final Animal _animal;
+    private final Veterinario _veterinario;
     private Dano _dano;
 
     /**
@@ -15,10 +15,10 @@ public class RegistoVacina implements Serializable{
      * @param idAnimal the identifier of the animal
      * @param idVeterinario the identifier of the veterinarian
      */
-    public RegistoVacina(String idVacina, String idAnimal, String idVeterinario){
-        _id = idVacina;
-        _idAnimal = idAnimal;
-        _idVeterinario = idVeterinario;
+    public RegistoVacina(Vacina v, Animal a, Veterinario vet){
+        _vacina = v;
+        _animal = a;
+        _veterinario = vet;
     }
 
     /**
@@ -26,8 +26,8 @@ public class RegistoVacina implements Serializable{
      *
      * @return the unique identifier as a String.
      */
-    public String getId() {
-      return _id;
+    public Vacina getVacina() {
+      return _vacina;
     }
 
     /**
@@ -35,8 +35,8 @@ public class RegistoVacina implements Serializable{
      *
      * @return the ID of the animal as a String.
      */
-    public String getIdAnimal() {
-      return _idAnimal;
+    public Animal getAnimal() {
+      return _animal;
     }
 
     /**
@@ -44,8 +44,8 @@ public class RegistoVacina implements Serializable{
      *
      * @return the ID of the veterinarian as a String.
      */
-    public String getIdVeterinario() {
-      return _idVeterinario;
+    public Veterinario getVeterinario() {
+      return _veterinario;
     }
 
     /**
@@ -55,5 +55,43 @@ public class RegistoVacina implements Serializable{
      */
     public Dano getDano() {
       return _dano;
+    }
+
+    private int caracteresEmComum(String str1, String str2) {
+      int count = 0;
+      int length = Math.min(str1.length(), str2.length());
+
+      for (int i = 0; i < length; i++) {
+          if (str1.charAt(i) == str2.charAt(i)) {
+              count++;
+          }
+      }
+
+      return count;
+  }
+
+    /**
+     * Calculates the maximum damage based on the species names.
+     * The damage is determined by the difference in length between the species names
+     * and the number of common characters in the names.
+     *
+     * @return the maximum damage calculated.
+     */
+    public int calculaDano() {
+      int maxDano = 0;
+    
+      for (Especie e : _vacina.getEspecies()) {
+        // verifica qual especie tem maior nome
+        int tamanhoNome = Math.max(_animal.getEspecie().getNome().length(),e.getNome().length());
+        // calcula dano apartir dos caracteres em comum dos nomes das especies
+        int dano = tamanhoNome - caracteresEmComum(_animal.getEspecie().getNome(), e.getNome());
+        // Verifica se o dano foi maior que o anterior e substitui
+        if (dano > maxDano) {maxDano = dano;}
+      } 
+      return maxDano;
+    }
+
+    public void setDano(boolean especieIgual) {
+      _dano = new Dano(calculaDano(), especieIgual);
     }
 }

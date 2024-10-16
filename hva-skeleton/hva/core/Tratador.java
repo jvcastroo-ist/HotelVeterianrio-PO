@@ -34,13 +34,13 @@ public class Tratador extends Funcionario{
    * @return the satisfaction level as a long value.
    */
   @Override
-  public long satisfacao() {
+  public double satisfacao() {
     double sum = 0;
     for(Habitat h : _habitats) {
       sum += h.trabalhoNoHabitat()/h.getNumFuncionarios();
     }
     sum = 300 - sum;
-    return Math.round(sum);
+    return sum;
   }
 
   /**

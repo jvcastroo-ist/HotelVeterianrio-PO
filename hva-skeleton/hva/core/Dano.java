@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Dano implements Serializable {
   private boolean _especieCerta;
-  private int _key;
+  private int _valor;
   private TreeMap<Integer, String> _dano;
 
   /**
@@ -14,8 +14,8 @@ public class Dano implements Serializable {
    * @param key the unique identifier for the Dano object
    * @param especieCerta a boolean indicating if the species is correct
    */
-  public Dano(int key, boolean especieCerta) {
-    _key = key;
+  public Dano(int valor, boolean especieCerta) {
+    _valor = valor;
     _especieCerta = especieCerta;
     _dano = new TreeMap<>();
     _dano.put(0, "NADA");
@@ -32,6 +32,6 @@ public class Dano implements Serializable {
    */
   @Override
   public String toString() {
-    return (_key == 0 && !_especieCerta) ? "ACIDENTE" : _dano.floorEntry(_key).getValue();  
+    return (_valor == 0 && !_especieCerta) ? "ACIDENTE" : _dano.floorEntry(_valor).getValue();  
   }
 }

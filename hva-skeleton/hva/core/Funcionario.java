@@ -4,7 +4,7 @@ import hva.core.exception.CoreNoResponsibilityException;
 import java.io.*;
 import java.util.*;
 
-public abstract class Funcionario implements Serializable{
+public abstract class Funcionario implements Serializable, Satisfacao {
   private final String _id;
   private final String _nome;
 
@@ -55,8 +55,9 @@ public abstract class Funcionario implements Serializable{
     r.operaFuncionario(atribui);
     
   }
-
-  public abstract long satisfacao();
+  
+  @Override
+  public abstract double satisfacao();
 
   /**
    * Generates a formatted string representation of the employee's details and their responsibilities.

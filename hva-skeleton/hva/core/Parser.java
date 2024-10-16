@@ -152,7 +152,7 @@ public class Parser {
 
       if (components.length == 4) {
         for(String responsibility : components[3].split(","))
-          _hotel.addResponsibility(_hotel.getFuncionarios().get(components[1]), responsibility);
+          _hotel.addResponsibility(_hotel.getFuncionario().get(components[1]), responsibility);
       }
 
     } catch (CoreDuplicateEmployeeKeyException | CoreNoResponsibilityException e) {

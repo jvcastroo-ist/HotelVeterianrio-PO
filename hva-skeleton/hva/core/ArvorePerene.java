@@ -22,11 +22,11 @@ public class ArvorePerene extends Arvore {
    */
   @Override
   public double getEsforcoLimpeza() {
-    return super.getEsforcoLimpeza()*getEsforcoSazonal(getEstacaoAtual().ordinal(), 1);
+    return super.getEsforcoLimpeza()*getEsforcoSazonal(1);
   }
 
   @Override
   public String toString() {
-    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "PERENE", getCiclo(getEstacaoAtual().ordinal(), 1));
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "PERENE", getCiclo(1));
   }
 }

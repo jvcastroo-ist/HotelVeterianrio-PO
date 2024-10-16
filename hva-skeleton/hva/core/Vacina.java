@@ -59,6 +59,12 @@ public class Vacina implements Serializable{
       return _registosVacina;
     }
 
+    public void vacinarAnimal(Animal a, Veterinario vet, boolean especieIgual) {
+      RegistoVacina novoRV = new RegistoVacina(this, a, vet);
+      novoRV.setDano(especieIgual);
+      _registosVacina.add(novoRV);
+    }
+
     /**
      * Returns a string representation of the Vacina object.
      * The format of the returned string is "VACINA|<id>|<nome>|<number_of_registos>|<responsabilidade>".

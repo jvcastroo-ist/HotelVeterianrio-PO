@@ -76,10 +76,52 @@ public class Hotel implements Serializable {
    * @return the ordinal value of the new season.
    */
   public int avancaEstacao() {
+    // Avança a estaçao global
     _estacaoAno = _estacaoAno.proximaEstacao();
+    // aumenta a idade de todas arvores e configura estacaoAtual
+    aumentaIdades();
     dirty();
     
     return _estacaoAno.ordinal();
+  }
+
+  /**
+   * Increases the age of all trees in the collection and sets their season to the current season.
+   * This method iterates over all trees in the collection and performs two actions on each tree:
+   * 1. Increases the age of the tree.
+   * 2. Sets the season of the tree to the current season of the year.
+   */
+  private void aumentaIdades() {
+    for (Arvore a : _arvores.values()) {
+      a.aumentaIdade();
+      a.setEstacao(_estacaoAno);
+    }
+  }
+
+  /**
+   * Calculates the total satisfaction score by summing the satisfaction scores 
+   * of animals and employees, and then rounding the result to the nearest integer.
+   *
+   * @return the total satisfaction score as an integer.
+   */
+  public int satisfacaoTotal() {
+    double animais = satisfacaoEntity(_animais.values());
+    double func = satisfacaoEntity(_funcionarios.values());
+    return (int)Math.round(animais+func);
+  }
+
+  /**
+   * Calculates the total satisfaction from a collection of objects that implement the Satisfacao interface.
+   *
+   * @param lst a collection of objects that implement the Satisfacao interface
+   * @return the sum of satisfaction values from all objects in the collection
+   */
+  public double satisfacaoEntity(Collection<? extends Satisfacao> lst) {
+    double sum = 0;
+    for (Satisfacao s : lst) {
+       sum += s.satisfacao();
+    }
+    return sum;
   }
 
   private String lowerCase(String str){
@@ -471,7 +513,7 @@ public class Hotel implements Serializable {
    *
    * @return a map where the keys are animal identifiers (as Strings) and the values are Animal objects.
    */
-  public Map<String, Animal> getAnimals(){
+  public Map<String, Animal> getAnimal(){
     return _animais;
   }
 
@@ -480,7 +522,7 @@ public class Hotel implements Serializable {
    *
    * @return a Map where the keys are employee identifiers (String) and the values are Funcionario objects.
    */
-  public Map<String, Funcionario> getFuncionarios(){
+  public Map<String, Funcionario> getFuncionario(){
     return _funcionarios;
   }
 
@@ -489,7 +531,7 @@ public class Hotel implements Serializable {
    *
    * @return a map where the keys are habitat names and the values are Habitat objects.
    */
-  public Map<String, Habitat> getHabitats(){
+  public Map<String, Habitat> getHabitat(){
     return _habitats;
   }
 
@@ -498,7 +540,7 @@ public class Hotel implements Serializable {
    *
    * @return a map where the keys are vaccine names and the values are Vacina objects.
    */
-  public Map<String, Vacina> getVacinas(){
+  public Map<String, Vacina> getVacina(){
     return _vacinas;
   }
 
