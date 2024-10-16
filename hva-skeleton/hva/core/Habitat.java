@@ -4,12 +4,9 @@ import java.util.*;
 import java.util.stream.*;
 
 public class Habitat extends Responsabilidade {
-  private final String _id;
-  private final String _nome;
   private int _area;
   private List<Arvore> _arvores;
   private List<Animal> _animais;
-  private int _numTratador;
 
   /**
    * Constructs a new Habitat with the specified ID, name, and area.
@@ -18,31 +15,11 @@ public class Habitat extends Responsabilidade {
    * @param nomeHabitat the name of the habitat
    * @param area the area of the habitat in square meters
    */
-  public Habitat(String idHabitat, String nomeHabitat, int area){
-    _id = idHabitat;
-    _nome = nomeHabitat;
+  public Habitat(String id, String nome, int area){
+    super(id, nome);
     _area = area;
     _arvores = new ArrayList<>();
     _animais = new ArrayList<>();
-  }
-
-  /**
-   * Retrieves the unique identifier of the habitat.
-   *
-   * @return the unique identifier of the habitat as a String.
-   */
-  @Override
-  public String getId(){
-    return _id;
-  }
-
-  /**
-   * Retrieves the name of the habitat.
-   *
-   * @return the name of the habitat.
-   */
-  public String getNome() {
-    return _nome;
   }
 
   /**
@@ -52,16 +29,6 @@ public class Habitat extends Responsabilidade {
    */
   public int getArea() {
     return _area;
-  }
-
-  /**
-   * Alters the influence of a given species by setting the adequacy value for each animal of that species.
-   *
-   * @param e   the species whose influence is to be altered
-   * @param inf the new adequacy value to be set for each animal of the specified species
-   */
-  public void alteraInfluencia(Especie e, int inf) {
-    getAnimals(e).forEach(a -> a.setAdequacao(inf));
   }
 
   /**
@@ -91,6 +58,16 @@ public class Habitat extends Responsabilidade {
    */
   public List<Animal> getAnimals(Especie e) {
     return _animais.stream().filter(a -> (a.getEspecie() == e)).collect(Collectors.toList());
+  }
+
+  /**
+   * Alters the influence of a given species by setting the adequacy value for each animal of that species.
+   *
+   * @param e   the species whose influence is to be altered
+   * @param inf the new adequacy value to be set for each animal of the specified species
+   */
+  public void alteraInfluencia(Especie e, int inf) {
+    getAnimals(e).forEach(a -> a.setAdequacao(inf));
   }
 
   /**
@@ -130,22 +107,25 @@ public class Habitat extends Responsabilidade {
   }
 
   /**
-   * Modifies the number of tratadores in the habitat.
+   * Calculates the total cleaning effort required for all trees in the habitat.
    *
-   * @param adiciona if true, increments the number of handlers by 1; 
-   *                 if false, decrements the number of handlers by 1.
+   * @return the sum of the cleaning efforts for all trees.
    */
-  public void operaTratador(boolean adiciona) {
-    _numTratador += (adiciona) ? 1 : -1;
+  public double esforcoLimpezaArvores() {
+    return _arvores.stream().mapToDouble(Arvore::getEsforcoLimpeza).sum();
   }
 
+  
   /**
-   * Retrieves the number of tratadores assigned to the habitat.
-   *
-   * @return the number of tratadores.
+   * Calculates the total work required in the habitat.
+   * 
+   * The calculation is based on the area of the habitat, the number of animals,
+   * and the effort required for cleaning trees.
+   * 
+   * @return the total work required in the habitat.
    */
-  public int getNumTratador() {
-    return _numTratador;
+  public double trabalhoNoHabitat() {
+    return _area + 3*_animais.size() + esforcoLimpezaArvores();  
   }
 
   /**
@@ -157,7 +137,7 @@ public class Habitat extends Responsabilidade {
    */
   @Override
   public String toString(){    
-    String hab = String.format("HABITAT|%s|%s|%d|%d", _id, _nome, _area, _arvores.size());
+    String hab = String.format("HABITAT|%s|%s|%d|%d", getId(), getNome(), getArea(), _arvores.size());
     for(Arvore a : _arvores) {
       hab += ("\n" + a.toString());
     }

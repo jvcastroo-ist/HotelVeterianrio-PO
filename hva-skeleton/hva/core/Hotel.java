@@ -78,6 +78,7 @@ public class Hotel implements Serializable {
   public int avancaEstacao() {
     _estacaoAno = _estacaoAno.proximaEstacao();
     dirty();
+    
     return _estacaoAno.ordinal();
   }
 
@@ -143,6 +144,17 @@ public class Hotel implements Serializable {
   }
 
   /**
+   * Verifies if the given responsibility is not null.
+   *
+   * @param r the responsibility to be verified
+   * @throws CoreNoResponsibilityException if the responsibility is null
+   */
+  protected void verifyResponsabilidade(String employeeId, String responsabilityId, Responsabilidade r) throws CoreNoResponsibilityException {
+    if(r == null)
+      throw new CoreNoResponsibilityException(employeeId, responsabilityId);
+  }
+
+  /**
    * Adds a responsibility to a given employee.
    *
    * @param f the employee to whom the responsibility will be assigned
@@ -153,13 +165,14 @@ public class Hotel implements Serializable {
     String responsibilityIdKey = lowerCase(responsibilityId);
     // Verifies if the responsibility exists (either species or habitat)
     Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
+    verifyResponsabilidade(f.getId(), responsibilityId, r);
     // Calls the method of the employee that assigns the responsibility
-    f.operaResponsabilidade(r, true);
+    f.operaResponsabilidade(r, f.getResponsabilidades(), true);
 
     dirty();
   }
 
-  //Atribui uma responsabilidade a um funcionario
+  
   /**
    * Removes a responsibility from a given employee.
    *
@@ -171,9 +184,10 @@ public class Hotel implements Serializable {
     String responsibilityIdKey = lowerCase(responsibilityId);
     // Verifies if the responsibility exists (either species or habitat)
     Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
+    verifyResponsabilidade(f.getId(), responsibilityId, r);
     // Calls the method of the employee that removes the responsibility
-    f.operaResponsabilidade(r, false);
-    
+    f.operaResponsabilidade(r, f.getResponsabilidades(), false);
+
     dirty();
   }
 

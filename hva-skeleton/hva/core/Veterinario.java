@@ -1,6 +1,5 @@
 package hva.core;
 
-import hva.core.exception.CoreNoResponsibilityException;
 import java.util.*;
 
 public class Veterinario extends Funcionario{
@@ -20,30 +19,25 @@ public class Veterinario extends Funcionario{
   }
 
   /**
-   * Retrieves the collection of species associated with the veterinarian.
+   * Retrieves the collection of species for which the veterinarian is responsible.
    *
-   * @return a collection of Especie objects representing the species.
+   * @return a collection of species representing the species under the veterinarian's care.
    */
-  public Collection<Especie> getEspecies(){
+  @Override
+  public List<Especie> getResponsabilidades(){
     return _especies;
   }
 
-  /**
-   * Manages the responsibility of a veterinarian by either assigning or removing a responsibility.
-   *
-   * @param r the responsibility to be managed
-   * @param atribui if true, the responsibility is assigned; if false, the responsibility is removed
-   * @throws CoreNoResponsibilityException if the responsibility is not valid
-   */
   @Override
-  public void operaResponsabilidade(Responsabilidade r, boolean atribui) throws CoreNoResponsibilityException{
-    verifyResponsabilidade(r);
-    if (atribui) {
-      _especies.add((Especie)r);
-    } else {
-      _especies.remove((Especie)r);
+  public long satisfacao() {
+    double sum = 0;
+    for (Especie e : _especies) {
+      sum += e.getAnimais().size()/e.getNumFuncionarios();
     }
+    sum = 20 - sum;
+    return Math.round(sum);
   }
+
 
   /**
    * Returns a string representation of the Veterinario object.

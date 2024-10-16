@@ -37,16 +37,7 @@ public abstract class Funcionario implements Serializable{
     return _nome;
   }
 
-  /**
-   * Verifies if the given responsibility is not null.
-   *
-   * @param r the responsibility to be verified
-   * @throws CoreNoResponsibilityException if the responsibility is null
-   */
-  protected void verifyResponsabilidade(Responsabilidade r) throws CoreNoResponsibilityException {
-    if(r == null)
-      throw new CoreNoResponsibilityException();
-  }
+  public abstract List<? extends Responsabilidade> getResponsabilidades();
 
   /**
    * Operates on a given responsibility for the employee.
@@ -55,7 +46,17 @@ public abstract class Funcionario implements Serializable{
    * @param atribui a boolean indicating whether to assign (true) or remove (false) the responsibility
    * @throws CoreNoResponsibilityException if the operation cannot be performed due to lack of responsibility
    */
-  public abstract void operaResponsabilidade(Responsabilidade r, boolean atribui) throws CoreNoResponsibilityException;
+  public <T extends Responsabilidade> void operaResponsabilidade(Responsabilidade r, List<T> lst, boolean atribui) {
+    if (atribui) {
+      lst.add((T)r);
+    } else {
+      lst.remove((T)r);
+    }
+    r.operaFuncionario(atribui);
+    
+  }
+
+  public abstract long satisfacao();
 
   /**
    * Generates a formatted string representation of the employee's details and their responsibilities.

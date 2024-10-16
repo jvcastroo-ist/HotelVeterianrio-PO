@@ -1,5 +1,4 @@
 package hva.core;
-import hva.core.exception.CoreNoResponsibilityException;
 import java.util.*;
 
 public class Tratador extends Funcionario{
@@ -16,30 +15,32 @@ public class Tratador extends Funcionario{
     _habitats = new ArrayList<>();
   }
 
+
   /**
-   * Retrieves the collection of habitats associated with this handler.
+   * Retrieves the collection of habitats that the Tratador is responsible for.
    *
-   * @return a collection of Habitat objects.
+   * @return a collection of Habitat objects representing the Tratador's responsibilities.
    */
-  public Collection<Habitat> getHabitats(){
+  @Override
+  public List<Habitat> getResponsabilidades(){
     return _habitats;
   }
 
   /**
-   * Operates on the given responsibility by either assigning or removing it.
+   * Calculates the satisfaction level of the handler based on the work done in each habitat.
+   * The satisfaction is computed by summing the ratio of work done in each habitat to the number of employees,
+   * subtracting this sum from 300, and then rounding the result to the nearest whole number.
    *
-   * @param r the responsibility to be operated on
-   * @param atribui if true, the responsibility will be assigned; if false, it will be removed
-   * @throws CoreNoResponsibilityException if the responsibility is not valid
+   * @return the satisfaction level as a long value.
    */
   @Override
-  public void operaResponsabilidade(Responsabilidade r, boolean atribui) throws CoreNoResponsibilityException{
-    verifyResponsabilidade(r);
-    if (atribui) {
-      _habitats.add((Habitat)r);
-    } else {
-      _habitats.remove((Habitat)r);
+  public long satisfacao() {
+    double sum = 0;
+    for(Habitat h : _habitats) {
+      sum += h.trabalhoNoHabitat()/h.getNumFuncionarios();
     }
+    sum = 300 - sum;
+    return Math.round(sum);
   }
 
   /**

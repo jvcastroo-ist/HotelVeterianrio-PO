@@ -5,7 +5,7 @@ import java.io.*;
 public abstract class Arvore implements Serializable{
   private final String _id;
   private final String _nome;
-  private int _idade;
+  private float _idade;
   private final Estacao _estacaoAtual;
   private final int _dificuldadeBase;
   // {CADUCA[estacao], PERENE[estacao]}
@@ -96,8 +96,13 @@ public abstract class Arvore implements Serializable{
     return _esforcoSazonal[tipo][estacao];
   }
 
+  // a versão realmente utilizada desse metodo é o override das classes filho
   public double getEsforcoLimpeza() {
     return getDificuldadeBase()*Math.log(getIdade()+1);
+  }
+
+  public void aumentaIdade() {
+    _idade += 0.25;
   }
 
   @Override
