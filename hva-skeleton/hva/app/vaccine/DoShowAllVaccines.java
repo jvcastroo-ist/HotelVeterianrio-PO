@@ -1,6 +1,8 @@
 package hva.app.vaccine;
 
 import hva.core.Hotel;
+import hva.core.Vacina;
+import java.util.List;
 import pt.tecnico.uilib.menus.Command;
 //FIXME add more imports if needed
 
@@ -21,6 +23,10 @@ class DoShowAllVaccines extends Command<Hotel> {
    */
   @Override
   protected final void execute() {
-    _display.popup(_receiver.visualizaTodasVacinas());
+    List<Vacina> vacinas = _receiver.sortIds(_receiver.getVacinas());
+    for (Vacina v: vacinas) {
+      _display.addLine(v.toString());
+    }
+    _display.display();
   }
 }

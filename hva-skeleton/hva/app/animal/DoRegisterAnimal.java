@@ -37,6 +37,7 @@ class DoRegisterAnimal extends Command<Hotel> {
       throw new DuplicateAnimalKeyException(e.getId());
     } catch (CoreUnknownSpeciesKeyException e){
       System.out.println("DuplicateSpeciesId");
+      // registar a especie Promp nome da especie
     } catch (CoreUnknownHabitatKeyException e){
       throw new DuplicateHabitatKeyException(e.getId());
     }
