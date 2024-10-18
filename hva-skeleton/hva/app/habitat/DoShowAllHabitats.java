@@ -1,9 +1,8 @@
 package hva.app.habitat;
 
-import hva.core.Habitat;  // adicionei caso mudarmos tirar
-import hva.core.Hotel;
+import hva.core.Habitat;
+import hva.core.Hotel;  // adicionei caso mudarmos tirar
 import java.util.List;
-import java.util.Map;
 import pt.tecnico.uilib.menus.Command;
 //FIXME add more imports if needed
 
@@ -23,6 +22,10 @@ class DoShowAllHabitats extends Command<Hotel> {
    */
   @Override
   protected void execute() {
-    _display.popup(_receiver.visualizaTodosHabitats()); // Mostra todos os habitats 
+    List<Habitat> habitats = _receiver.sortIds(_receiver.getHabitats());
+    for (Habitat h : habitats) {
+      _display.addLine(h.toString());
+    }
+    _display.display();
   }
 }

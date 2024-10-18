@@ -1,6 +1,8 @@
 package hva.app.animal;
 
-import hva.core.Hotel;
+import hva.core.Animal;     // verificar estes dois imports
+import hva.core.Hotel;       // verificar estes dois imports
+import java.util.List;
 import pt.tecnico.uilib.menus.Command;
 
 /**
@@ -19,6 +21,10 @@ class DoShowAllAnimals extends Command<Hotel> {
    */
   @Override
   protected final void execute() {
-    _display.popup(_receiver.visualizaTodosAnimais()); // Mostra todos os animais
+    List<Animal> animals = _receiver.sortIds(_receiver.getAnimals());
+    for (Animal a : animals) {
+      _display.addLine(a.toString());
+    }
+    _display.display();
   }
 }

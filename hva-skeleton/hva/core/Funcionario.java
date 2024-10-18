@@ -4,7 +4,7 @@ import hva.core.exception.CoreNoResponsibilityException;
 import java.io.*;
 import java.util.*;
 
-public abstract class Funcionario implements Serializable, Satisfacao {
+public abstract class Funcionario implements Serializable, Satisfacao, Comparable<Funcionario>{
   private final String _id;
   private final String _nome;
 
@@ -63,6 +63,11 @@ public abstract class Funcionario implements Serializable, Satisfacao {
       ids.add(r.getId());
     }
     return "|" + String.join(",", ids);
+  }
+
+  @Override
+  public int compareTo(Funcionario f){
+    return _id.compareTo(f.getId());
   }
 
   /**

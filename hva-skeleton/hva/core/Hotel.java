@@ -612,8 +612,8 @@ public class Hotel implements Serializable {
    *
    * @return a map where the keys are animal identifiers (as Strings) and the values are Animal objects.
    */
-  public Map<String, Animal> getAnimal(){
-    return _animais;
+  public Collection<Animal> getAnimals(){
+    return _animais.values();
   }
 
   /**
@@ -630,8 +630,8 @@ public class Hotel implements Serializable {
    *
    * @return a map where the keys are habitat names and the values are Habitat objects.
    */
-  public Map<String, Habitat> getHabitat(){
-    return _habitats;
+  public Collection<Habitat> getHabitats(){
+    return _habitats.values();
   }
 
   /**
@@ -639,8 +639,8 @@ public class Hotel implements Serializable {
    *
    * @return a map where the keys are vaccine names and the values are Vacina objects.
    */
-  public Map<String, Vacina> getVacina(){
-    return _vacinas;
+  public Collection<Vacina> getVacinas(){
+    return _vacinas.values();
   }
 
   /**

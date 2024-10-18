@@ -3,7 +3,7 @@ package hva.core;
 import java.util.*;
 import java.util.stream.*;
 
-public class Habitat extends Responsabilidade {
+public class Habitat extends Responsabilidade implements Comparable<Habitat> {
   private int _area;
   private List<Arvore> _arvores;
   private List<Animal> _animais;
@@ -104,6 +104,11 @@ public class Habitat extends Responsabilidade {
    */
   public void addArvore(Arvore a){
     _arvores.add(a);
+  }
+
+  @Override
+  public int compareTo(Habitat h){
+    return getId().compareTo(h.getId());
   }
 
   /**
