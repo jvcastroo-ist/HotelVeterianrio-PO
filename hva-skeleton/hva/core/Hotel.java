@@ -498,7 +498,11 @@ public class Hotel implements Serializable {
     return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
   }
 
-
+  public <T extends Comparable<? super T>> List<T> sortIds(Collection<T> items) {
+    List<T> sortedItems = new ArrayList<>(items);
+    Collections.sort(sortedItems); // Usa o método compareTo da interface Comparable
+    return Collections.unmodifiableList(sortedItems);
+  }
   // Visualiza todas arvores
   /**
    * Retrieves a collection of all tree IDs in the hotel, sorted in a specific order.
