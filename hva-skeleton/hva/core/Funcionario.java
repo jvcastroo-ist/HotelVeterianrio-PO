@@ -4,7 +4,7 @@ import hva.core.exception.CoreNoResponsibilityException;
 import java.io.*;
 import java.util.*;
 
-public abstract class Funcionario implements Serializable{
+public abstract class Funcionario implements Serializable, Comparable<Funcionario>{
   private final String _id;
   private final String _nome;
 
@@ -56,6 +56,11 @@ public abstract class Funcionario implements Serializable{
    * @throws CoreNoResponsibilityException if the operation cannot be performed due to lack of responsibility
    */
   public abstract void operaResponsabilidade(Responsabilidade r, boolean atribui) throws CoreNoResponsibilityException;
+
+  @Override
+  public int compareTo(Funcionario f){
+    return _id.compareTo(f.getId());
+  }
 
   /**
    * Generates a formatted string representation of the employee's details and their responsibilities.

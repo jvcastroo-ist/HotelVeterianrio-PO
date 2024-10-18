@@ -1,9 +1,6 @@
 package hva.app.employee;
 
-import hva.core.Funcionario;
 import hva.core.Hotel;
-import java.util.List;
-import java.util.Map;
 import pt.tecnico.uilib.menus.Command;
 //FIXME add more imports if needed
 

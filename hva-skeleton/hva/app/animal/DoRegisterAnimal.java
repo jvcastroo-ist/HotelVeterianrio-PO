@@ -1,11 +1,14 @@
 package hva.app.animal;
 
-import hva.core.Hotel;
 import hva.app.exception.DuplicateAnimalKeyException;
-import hva.app.exception.UnknownHabitatKeyException;
-import pt.tecnico.uilib.forms.Form;
+import hva.app.exception.DuplicateHabitatKeyException;
+import hva.core.Hotel;
+import hva.core.exception.CoreDuplicateAnimalKeyException;
+import hva.core.exception.CoreUnknownHabitatKeyException;
+import hva.core.exception.CoreUnknownSpeciesKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
+
 //FIXME add more imports if needed
 
 /**
@@ -15,11 +18,27 @@ class DoRegisterAnimal extends Command<Hotel> {
 
   DoRegisterAnimal(Hotel receiver) {
     super(Label.REGISTER_ANIMAL, receiver);
-    //FIXME add command fields
+    addStringField("id", Prompt.animalKey());
+    addStringField("name", Prompt.animalName());
+    addStringField("specie", Prompt.speciesKey());
+    addStringField("habitat", hva.app.habitat.Prompt.habitatKey());
   }
   
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+    try {
+      _receiver.registerAnimal(
+                stringField("id"),
+                stringField("name"),
+                stringField("specie"),
+                stringField("habitat")
+      );
+    } catch (CoreDuplicateAnimalKeyException e) {
+      throw new DuplicateAnimalKeyException(e.getId());
+    } catch (CoreUnknownSpeciesKeyException e){
+      System.out.println("DuplicateSpeciesId");
+    } catch (CoreUnknownHabitatKeyException e){
+      throw new DuplicateHabitatKeyException(e.getId());
+    }
   }
 }

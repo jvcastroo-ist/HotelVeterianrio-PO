@@ -3,7 +3,7 @@ package hva.core;
 import java.io.*;
 import java.util.*;
 
-public class Vacina implements Serializable{
+public class Vacina implements Serializable, Comparable<Vacina>{
     private final String _id;
     private final String _nome;
     private List<Especie> _especies;
@@ -59,14 +59,26 @@ public class Vacina implements Serializable{
       return _registosVacina;
     }
 
-    /**
-     * Returns a string representation of the Vacina object.
-     * The format of the returned string is "VACINA|<id>|<nome>|<number_of_registos>|<responsabilidade>".
-     *
-     * @return A formatted string containing the id, name, number of registros, and responsabilidade of the Vacina.
-     */
-    @Override
-    public String toString(){
-      return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), Responsabilidade.idResponsabilidade(_especies));
-    }  
+    public List<Especie> sortIds(){
+      List<Especie> especiesOrd = new ArrayList<>(_especies);
+      Collections.sort(especiesOrd);
+      return especiesOrd;
+    } 
+
+  @Override
+  public int compareTo(Vacina v){
+    return _id.compareTo(v.getId());
+  }
+
+  /**
+  * Returns a string representation of the Vacina object.
+  * The format of the returned string is "VACINA|<id>|<nome>|<number_of_registos>|<responsabilidade>".
+  *
+  * @return A formatted string containing the id, name, number of registros, and responsabilidade of the Vacina.
+  */
+  @Override
+  public String toString(){
+    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), Responsabilidade.idResponsabilidade(sortIds()));
+  }  
+
 }

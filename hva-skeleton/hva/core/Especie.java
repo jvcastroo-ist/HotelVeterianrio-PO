@@ -2,7 +2,7 @@ package hva.core;
 
 import java.util.*;
 
-public class Especie extends Responsabilidade {
+public class Especie extends Responsabilidade implements Comparable<Especie>{
   private final String _id;
   private final String _nome;
   private List<Animal> _animais;
@@ -55,5 +55,15 @@ public class Especie extends Responsabilidade {
    */
   public void addAnimal(Animal a){
     _animais.add(a);
+  }
+
+  @Override
+  public String toString(){
+    return _id;
+  }
+
+  @Override
+  public int compareTo(Especie e){
+    return _id.compareTo(e.getId());
   }
 }

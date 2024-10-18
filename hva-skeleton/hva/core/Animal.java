@@ -3,7 +3,7 @@ package hva.core;
 import java.io.*;
 import java.util.*;
 
-public class Animal implements Serializable {
+public class Animal implements Serializable, Comparable<Animal> {
   private final String _id;
   private final String _nome;
   private final Especie _especie;
@@ -85,6 +85,11 @@ public class Animal implements Serializable {
    */
   public Habitat getHabitat() {
     return _habitat;
+  }
+
+  @Override
+  public int compareTo(Animal a){
+    return _id.compareTo(a.getId());
   }
 
   /**
