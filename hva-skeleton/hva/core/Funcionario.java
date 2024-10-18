@@ -37,8 +37,6 @@ public abstract class Funcionario implements Serializable, Satisfacao {
     return _nome;
   }
 
-  public abstract List<? extends Responsabilidade> getResponsabilidades();
-
   /**
    * Operates on a given responsibility for the employee.
    *
@@ -46,18 +44,26 @@ public abstract class Funcionario implements Serializable, Satisfacao {
    * @param atribui a boolean indicating whether to assign (true) or remove (false) the responsibility
    * @throws CoreNoResponsibilityException if the operation cannot be performed due to lack of responsibility
    */
-  public <T extends Responsabilidade> void operaResponsabilidade(Responsabilidade r, List<T> lst, boolean atribui) {
-    if (atribui) {
-      lst.add((T)r);
-    } else {
-      lst.remove((T)r);
-    }
-    r.operaFuncionario(atribui);
-    
-  }
+  public abstract void operaResponsabilidade(Responsabilidade r, boolean atribui);
   
   @Override
   public abstract double satisfacao();
+
+  /**
+   * Generates a concatenated string of IDs from a collection of Responsabilidade objects.
+   *
+   * @param R a collection of objects that extend the Responsabilidade class
+   * @return a string containing the IDs of the Responsabilidade objects, separated by commas and prefixed with a "|". 
+   *         Returns an empty string if the collection is empty.
+   */
+  public String idResponsabilidade(Collection<? extends Responsabilidade> R) {
+    List<String> ids = new ArrayList<>();
+    if (R.isEmpty()) {return "";}
+    for (Responsabilidade r : R) { 
+      ids.add(r.getId());
+    }
+    return "|" + String.join(",", ids);
+  }
 
   /**
    * Generates a formatted string representation of the employee's details and their responsibilities.
@@ -67,6 +73,6 @@ public abstract class Funcionario implements Serializable, Satisfacao {
    * @return A formatted string containing the type, ID, name, and responsibilities of the employee.
    */
   public String visualiza(String tipo, List<? extends Responsabilidade> r){
-    return String.format("%s|%s|%s%s", tipo, getId(), getNome(), Responsabilidade.idResponsabilidade(r));
+    return String.format("%s|%s|%s%s", tipo, getId(), getNome(), idResponsabilidade(r));
   }
 }

@@ -162,6 +162,8 @@ public class Hotel implements Serializable {
     dirty();
   } 
 
+  
+
   // Regista um funcionário
   /**
    * Registers a new employee in the system.
@@ -191,7 +193,7 @@ public class Hotel implements Serializable {
    * @param r the responsibility to be verified
    * @throws CoreNoResponsibilityException if the responsibility is null
    */
-  protected void verifyResponsabilidade(String employeeId, String responsabilityId, Responsabilidade r) throws CoreNoResponsibilityException {
+  private void verifyResponsabilidade(String employeeId, String responsabilityId, Responsabilidade r) throws CoreNoResponsibilityException {
     if(r == null)
       throw new CoreNoResponsibilityException(employeeId, responsabilityId);
   }
@@ -209,7 +211,7 @@ public class Hotel implements Serializable {
     Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
     verifyResponsabilidade(f.getId(), responsibilityId, r);
     // Calls the method of the employee that assigns the responsibility
-    f.operaResponsabilidade(r, f.getResponsabilidades(), true);
+    f.operaResponsabilidade(r, true);
 
     dirty();
   }
@@ -228,7 +230,7 @@ public class Hotel implements Serializable {
     Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
     verifyResponsabilidade(f.getId(), responsibilityId, r);
     // Calls the method of the employee that removes the responsibility
-    f.operaResponsabilidade(r, f.getResponsabilidades(), false);
+    f.operaResponsabilidade(r, false);
 
     dirty();
   }
@@ -374,7 +376,7 @@ public class Hotel implements Serializable {
    * @param map the map whose keys are to be sorted
    * @return a list of values sorted according to the lexicographical order of their keys
    */
-  public <T>List <T>sortIds(Map<String, T> map) {
+  private <T>List <T>sortIds(Map<String, T> map) {
     List<String> idList = new ArrayList<>(map.keySet()); // Faz uma lista das keys do map
     idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
     return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos

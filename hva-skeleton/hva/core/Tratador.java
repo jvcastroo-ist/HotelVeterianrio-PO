@@ -15,15 +15,18 @@ public class Tratador extends Funcionario{
     _habitats = new ArrayList<>();
   }
 
-
-  /**
-   * Retrieves the collection of habitats that the Tratador is responsible for.
-   *
-   * @return a collection of Habitat objects representing the Tratador's responsibilities.
-   */
-  @Override
-  public List<Habitat> getResponsabilidades(){
+  public List<Habitat> getHabitats(){
     return _habitats;
+  }
+
+  @Override
+  public void operaResponsabilidade(Responsabilidade r, boolean atribui) {
+    if (atribui) {
+      _habitats.add((Habitat)r);
+    } else {
+      _habitats.remove((Habitat)r);
+    }
+    r.operaFuncionario(atribui);
   }
 
   /**

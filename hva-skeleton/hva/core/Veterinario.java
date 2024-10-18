@@ -2,7 +2,7 @@ package hva.core;
 
 import java.util.*;
 
-public class Veterinario extends Funcionario{
+public class Veterinario extends Funcionario {
   private List<Especie> _especies;
   private List<RegistoVacina> _registoVacinas;
 
@@ -18,14 +18,18 @@ public class Veterinario extends Funcionario{
     _registoVacinas = new ArrayList<>();
   }
 
-  /**
-   * Retrieves the collection of species for which the veterinarian is responsible.
-   *
-   * @return a collection of species representing the species under the veterinarian's care.
-   */
-  @Override
-  public List<Especie> getResponsabilidades(){
+  public List<Especie> getEspecies(){
     return _especies;
+  }
+
+  @Override
+  public void operaResponsabilidade(Responsabilidade r, boolean atribui) {
+    if (atribui) {
+      _especies.add((Especie)r);
+    } else {
+      _especies.remove((Especie)r);
+    }
+    r.operaFuncionario(atribui);
   }
 
   @Override
