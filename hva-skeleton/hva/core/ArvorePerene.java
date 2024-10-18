@@ -14,8 +14,19 @@ public class ArvorePerene extends Arvore {
     super(id, nome, idade, difB, estacaoInicial);
   }
 
+  /**
+   * Calculates the cleaning effort for the current season.
+   * This method overrides the superclass method to include seasonal effort adjustment.
+   *
+   * @return the adjusted cleaning effort based on the current season.
+   */
+  @Override
+  public double getEsforcoLimpeza() {
+    return super.getEsforcoLimpeza()*getEsforcoSazonal(getEstacaoAtual().ordinal(), 1);
+  }
+
   @Override
   public String toString() {
-    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getEsforcoLimpeza(getEstacaoAtual().ordinal(), 1), "PERENE", getCiclo(getEstacaoAtual().ordinal(), 1));
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "PERENE", getCiclo(getEstacaoAtual().ordinal(), 1));
   }
 }

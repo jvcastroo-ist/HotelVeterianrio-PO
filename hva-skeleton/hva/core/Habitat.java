@@ -37,12 +37,31 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
   }
 
   /**
-   * Sets the area of the habitat.
+   * Retrieves the name of the habitat.
    *
-   * @param area the area to set for the habitat
+   * @return the name of the habitat.
    */
-  public void setArea(int area){
-    _area = area;
+  public String getNome() {
+    return _nome;
+  }
+
+  /**
+   * Retrieves the area of the habitat.
+   *
+   * @return the area of the habitat.
+   */
+  public int getArea() {
+    return _area;
+  }
+
+  /**
+   * Alters the influence of a given species by setting the adequacy value for each animal of that species.
+   *
+   * @param e   the species whose influence is to be altered
+   * @param inf the new adequacy value to be set for each animal of the specified species
+   */
+  public void alteraInfluencia(Especie e, int inf) {
+    getAnimals(e).forEach(a -> a.setAdequacao(inf));
   }
 
   /**
@@ -51,10 +70,38 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
    *
    * @return a sorted list of Arvore objects.
    */
-  public List<Arvore> getArvores(){
+  public List<Arvore> getArvores() {
     return sort();
   } 
-  
+
+  /**
+   * Retrieves the list of animals in the habitat.
+   *
+   * @return a list of Animal objects representing the animals in the habitat.
+   */
+  public List<Animal> getAnimals() {
+    return _animais;
+  }
+
+  /**
+   * Retrieves a list of animals that belong to the specified species.
+   *
+   * @param e the species to filter animals by
+   * @return a list of animals that belong to the specified species
+   */
+  public List<Animal> getAnimals(Especie e) {
+    return _animais.stream().filter(a -> (a.getEspecie() == e)).collect(Collectors.toList());
+  }
+
+  /**
+   * Sets the area of the habitat.
+   *
+   * @param area the area to set for the habitat
+   */
+  public void setArea(int area){
+    _area = area;
+  }
+
   /**
    * Sorts the list of Arvore objects by their IDs in a case-insensitive manner.
    *
@@ -85,6 +132,25 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
   @Override
   public int compareTo(Habitat h){
     return _id.compareTo(h.getId());
+  }
+
+  /**
+   * Modifies the number of tratadores in the habitat.
+   *
+   * @param adiciona if true, increments the number of handlers by 1; 
+   *                 if false, decrements the number of handlers by 1.
+   */
+  public void operaTratador(boolean adiciona) {
+    _numTratador += (adiciona) ? 1 : -1;
+  }
+
+  /**
+   * Retrieves the number of tratadores assigned to the habitat.
+   *
+   * @return the number of tratadores.
+   */
+  public int getNumTratador() {
+    return _numTratador;
   }
 
   /**

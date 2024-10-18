@@ -9,7 +9,7 @@ public abstract class Arvore implements Serializable{
   private final Estacao _estacaoAtual;
   private final int _dificuldadeBase;
   // {CADUCA[estacao], PERENE[estacao]}
-  private final Integer[][] _esforcoLimpeza = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
+  private final Integer[][] _esforcoSazonal = {{1, 2, 5, 0}, {1, 1, 1, 2}}; 
   private final String[][] _cicloBiologico = {{"GERARFOLHAS", "COMFOLHAS", "LARGARFOLHAS", "SEMFOLHAS"}, {"GERARFOLHAS", "COMFOLHAS", "COMFOLHAS", "LARGARFOLHAS"}}; 
 
   /**
@@ -53,7 +53,16 @@ public abstract class Arvore implements Serializable{
    * @return the age of the tree.
    */
   public int getIdade() {
-    return _idade;
+    return (int) Math.floor(_idade);
+  }
+
+  /**
+   * Retrieves the base difficulty level.
+   *
+   * @return the base difficulty level as an integer.
+   */
+  public int getDificuldadeBase() {
+    return _dificuldadeBase;
   }
 
   /**
@@ -83,8 +92,12 @@ public abstract class Arvore implements Serializable{
    * @param tipo the type index
    * @return the cleaning effort for the specified type and season
    */
-  public Integer getEsforcoLimpeza(int estacao, int tipo) {
-    return _esforcoLimpeza[tipo][estacao];
+  public Integer getEsforcoSazonal(int estacao, int tipo) {
+    return _esforcoSazonal[tipo][estacao];
+  }
+
+  public double getEsforcoLimpeza() {
+    return getDificuldadeBase()*Math.log(getIdade()+1);
   }
 
   @Override
