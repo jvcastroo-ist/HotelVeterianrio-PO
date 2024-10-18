@@ -43,6 +43,10 @@ public class Hotel implements Serializable {
     _registoVacinas = new ArrayList<>();
   }
 
+  /* ************************************* *
+   * ************ MENU PRINCIPAL ********* *
+   * ************************************* */
+
   /**
    * Get whether the Hotel has been modified since it was last cleaned. The
    * warehouse is cleaned when it is saved to disk.
@@ -104,10 +108,10 @@ public class Hotel implements Serializable {
    *
    * @return the total satisfaction score as an integer.
    */
-  public int satisfacaoTotal() {
+  public long satisfacaoTotal() {
     double animais = satisfacaoEntity(_animais.values());
     double func = satisfacaoEntity(_funcionarios.values());
-    return (int)Math.round(animais+func);
+    return Math.round(animais+func);
   }
 
   /**
@@ -116,7 +120,7 @@ public class Hotel implements Serializable {
    * @param lst a collection of objects that implement the Satisfacao interface
    * @return the sum of satisfaction values from all objects in the collection
    */
-  public double satisfacaoEntity(Collection<? extends Satisfacao> lst) {
+  private double satisfacaoEntity(Collection<? extends Satisfacao> lst) {
     double sum = 0;
     for (Satisfacao s : lst) {
        sum += s.satisfacao();
@@ -124,10 +128,29 @@ public class Hotel implements Serializable {
     return sum;
   }
 
+  /**
+   * Converts the given string to lowercase.
+   *
+   * @param str the string to be converted to lowercase
+   * @return the lowercase version of the input string
+   */
   private String lowerCase(String str){
     return str.toLowerCase();
   }
 
+  /* ************************************* *
+   * ************ MENU ANIMAL ************ *
+   * ************************************* */
+
+  /**
+   * Retrieves a collection of all animal IDs in the hotel, sorted in ascending order.
+   *
+   * @return a collection of sorted animal IDs.
+   */
+  public Collection<String> visualizaTodosAnimais() {
+    return visualiza(sortIds(_animais));
+  }
+  
   /**
    * Registers a new animal in the hotel system.
    *
@@ -140,20 +163,17 @@ public class Hotel implements Serializable {
    * @throws CoreUnknownHabitatKeyException if the habitat with the given ID does not exist
    */
   public void registerAnimal(String animalId, String nome, String speciesId, String habitatId) throws CoreDuplicateAnimalKeyException, CoreUnknownSpeciesKeyException, CoreUnknownHabitatKeyException {  
-    String animalIdKey = lowerCase(animalId);
-    String speciesIdKey = lowerCase(speciesId);
-    String habitatIdKey = lowerCase(habitatId);
-    Especie e = getEspecie(speciesIdKey); // Throws exception if species does not exist
-    Habitat h = getHabitat(habitatIdKey); // Throws exception if habitat does not exist
-
+    // Throws exception if species does not exist
+    Especie e = getEspecie(lowerCase(speciesId)); 
+    // Throws exception if habitat does not exist
+    Habitat h = getHabitat(lowerCase(habitatId)); 
     // Verifies Exceptions
-    if (_animais.containsKey(animalIdKey)) 
+    if (_animais.containsKey(lowerCase(animalId))) 
       throw new CoreDuplicateAnimalKeyException(animalId); // Se o animal já existir, lança exceção
-    
     // Create new animal 
     Animal novoAnimal = new Animal(animalId, nome, e, h);
     // Adds the animal to the hashmap
-    _animais.put(animalIdKey, novoAnimal); 
+    _animais.put(lowerCase(animalId), novoAnimal); 
     // Adds the animal to the species
     e.addAnimal(novoAnimal);  
     // Adds the animal to the habitat
@@ -162,9 +182,54 @@ public class Hotel implements Serializable {
     dirty();
   } 
 
-  
+  /**
+   * Transfers an animal to a new habitat.
+   *
+   * @param animalId the identifier of the animal to be transferred
+   * @param habitatId the identifier of the habitat to which the animal will be transferred
+   * @throws CoreUnknownAnimalKeyException if the animal with the specified identifier does not exist
+   * @throws CoreUnknownHabitatKeyException if the habitat with the specified identifier does not exist
+   */
+  public void transfereAnimal(String animalId, String habitatId) throws CoreUnknownAnimalKeyException, CoreUnknownHabitatKeyException{
+    // Throws exception if animal does not exist
+    Animal a = getAnimal(lowerCase(animalId));
+    // Throws exception if habitat does not exist
+    Habitat h = getHabitat(lowerCase(habitatId));
+    // Transfere o animal para o habitat
+    a.transfereAnimal(h);
+    // Adiciona animal ao novo habitat
+    h.addAnimal(a);
 
-  // Regista um funcionário
+    dirty();
+  }
+
+  /**
+   * Calculates the satisfaction level of an animal.
+   *
+   * @param animalId the ID of the animal whose satisfaction level is to be calculated.
+   * @return the rounded satisfaction level of the animal.
+   * @throws CoreUnknownAnimalKeyException if the animal with the given ID does not exist.
+   */
+  public long calculaSatisfacaoAnimal(String animalId) throws CoreUnknownAnimalKeyException{
+    // Throws exception if animal does not exist
+    Animal a = getAnimal(lowerCase(animalId));
+    
+    return Math.round(a.satisfacao());
+  }
+
+  /* ************************************* *
+   * ********* MENU FUNCIONÁRIO ********** *
+   * ************************************* */
+  
+  /**
+   * Retrieves a collection of all employee toString in the hotel, sorted in ascending order.
+   *
+   * @return a collection of sorted employee toString.
+   */
+  public Collection<String> visualizaTodosFuncionarios() {
+    return visualiza(sortIds(_funcionarios)); 
+  }
+
   /**
    * Registers a new employee in the system.
    *
@@ -178,7 +243,6 @@ public class Hotel implements Serializable {
     // Verify if the employee already exists
     if(_funcionarios.containsKey(employeeIdKey))
       throw new CoreDuplicateEmployeeKeyException(employeeId);
-
     // Verifies the type of employee and creates the object
     Funcionario f = (empType.equals("VET")) ? new Veterinario(employeeId, name) : new Tratador(employeeId, name);
     // Adds the employee to the hashmap
@@ -235,7 +299,81 @@ public class Hotel implements Serializable {
     dirty();
   }
 
-  // Regista uma especie 
+  /**
+   * Calculates the satisfaction level of an employee.
+   *
+   * @param employeeId The ID of the employee whose satisfaction level is to be calculated.
+   * @return The rounded satisfaction level of the employee.
+   * @throws CoreUnknownEmployeeKeyException If the employee with the given ID does not exist.
+   */
+  public long calculaSatisfacaoFuncionario(String employeeId) throws CoreUnknownEmployeeKeyException{
+    // Throws exception if employee does not exist
+    Funcionario f = getFuncionario(lowerCase(employeeId));
+    
+    return Math.round(f.satisfacao());
+  }
+
+  /* ************************************* *
+   * *********** MENU HABITAT ************ *
+   * ************************************* */
+
+  /**
+   * Retrieves a collection of all habitat toString in the hotel.
+   * The habitat IDs are sorted before being returned.
+   *
+   * @return a sorted collection of habitat toString
+   */
+  public Collection<String> visualizaTodosHabitats() {
+    return visualiza(sortIds(_habitats));
+  }
+
+  /**
+   * Registers a new habitat in the hotel.
+   *
+   * @param habitatId The unique identifier for the habitat.
+   * @param nome The name of the habitat.
+   * @param area The area of the habitat.
+   * @throws CoreDuplicateHabitatKeyException If a habitat with the given ID already exists.
+   */
+  public void registerHabitat(String habitatId, String nome, int area/*adicionar vetor arvores */) throws CoreDuplicateHabitatKeyException {
+    String habitatIdKey = lowerCase(habitatId);
+    // Verify if the habitat already exists
+    if (_habitats.containsKey(habitatIdKey)) 
+      throw new CoreDuplicateHabitatKeyException(habitatId);
+    // Create the new habitat
+    Habitat novoHabitat = new Habitat(habitatId, nome, area);
+    // Puts it in the hashmap
+    _habitats.put(habitatIdKey, novoHabitat);
+
+    dirty();
+  }
+
+  /**
+   * Changes the area of a specified habitat.
+   *
+   * @param habitatId The identifier of the habitat whose area is to be changed.
+   * @param area The new area value to be set for the habitat.
+   * @throws CoreUnknownHabitatKeyException if the habitat with the specified ID does not exist.
+   */
+  public void alteraAreaHabitat(String habitatId, int area) throws CoreUnknownHabitatKeyException{
+    // Throws exception if habitat does not exist
+    Habitat h = getHabitat(lowerCase(habitatId));
+    // Changes the area of the habitat
+    h.setArea(area);
+
+    dirty();
+  }
+
+
+
+
+  // public void alteraInfluenciaEspecie(String habitatId, String especiesId, String ) {}
+
+
+
+
+
+  
   /**
    * Registers a new species in the hotel system.
    *
@@ -249,30 +387,8 @@ public class Hotel implements Serializable {
     if (_especies.containsKey(speciesIdKey)) 
       // Throws exception if it already exists
       throw new CoreDuplicateSpeciesKeyException(speciesId);
-    
     Especie e = new Especie(speciesId, name);
     _especies.put(speciesIdKey, e);
-
-    dirty();
-  }
-
-  // Regista um habitat
-  /**
-   * Registers a new habitat in the hotel.
-   *
-   * @param habitatId The unique identifier for the habitat.
-   * @param nome The name of the habitat.
-   * @param area The area of the habitat.
-   * @throws CoreDuplicateHabitatKeyException If a habitat with the given ID already exists.
-   */
-  public void registerHabitat(String habitatId, String nome, int area/*adicionar vetor arvores */) throws CoreDuplicateHabitatKeyException {
-    String habitatIdKey = lowerCase(habitatId);
-    if (_habitats.containsKey(habitatIdKey)) 
-      throw new CoreDuplicateHabitatKeyException(habitatId);
-
-    Habitat novoHabitat = new Habitat(habitatId, nome, area);
-    
-    _habitats.put(habitatIdKey, novoHabitat);
 
     dirty();
   }
@@ -382,15 +498,6 @@ public class Hotel implements Serializable {
     return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
   }
 
-  // Visualiza todos animais
-  /**
-   * Retrieves a collection of all animal IDs in the hotel, sorted in ascending order.
-   *
-   * @return a collection of sorted animal IDs.
-   */
-  public Collection<String> visualizaTodosAnimais() {
-    return visualiza(sortIds(_animais));
-  }
 
   // Visualiza todas arvores
   /**
@@ -400,28 +507,6 @@ public class Hotel implements Serializable {
    */
   public Collection<String> visualizaTodasArvores() {
     return visualiza(sortIds(_arvores));
-  }
-
-  // Visualiza todos funcionarios
-  /**
-   * Retrieves a collection of all employee IDs in the hotel.
-   * The IDs are sorted before being returned.
-   *
-   * @return a collection of sorted employee IDs.
-   */
-  public Collection<String> visualizaTodosFuncionarios() {
-    return visualiza(sortIds(_funcionarios)); 
-  }
-
-  // Visualiza todos habitats
-  /**
-   * Retrieves a collection of all habitat IDs in the hotel.
-   * The habitat IDs are sorted before being returned.
-   *
-   * @return a sorted collection of habitat IDs.
-   */
-  public Collection<String> visualizaTodosHabitats() {
-    return visualiza(sortIds(_habitats));
   }
 
   // Visualiza todas vacinas
@@ -449,9 +534,11 @@ public class Hotel implements Serializable {
    * @param key the unique identifier for the Funcionario to be retrieved.
    * @return the Funcionario associated with the given key, or null if no such Funcionario exists.
    */
-  public Funcionario getFuncionario(String key) {
-    return _funcionarios.get(key);
-  }
+  public Funcionario getFuncionario(String key) throws CoreUnknownEmployeeKeyException{
+    Funcionario f = _funcionarios.get(key);
+    if (f == null)
+      throw new CoreUnknownEmployeeKeyException(key); // Se o habitat não existir, lança exceção 
+    return f;  }
 
   /**
    * Retrieves an Arvore object from the collection based on the provided key.
@@ -478,8 +565,18 @@ public class Hotel implements Serializable {
     return h;
   }
 
-  public Animal getAnimal(String key) {
-    return _animais.get(key);
+  /**
+   * Retrieves an animal from the hotel using the provided key.
+   *
+   * @param key the unique identifier for the animal.
+   * @return the Animal object associated with the given key.
+   * @throws CoreUnknownAnimalKeyException if no animal is found with the provided key.
+   */
+  public Animal getAnimal(String key) throws CoreUnknownAnimalKeyException{
+    Animal a = _animais.get(key);
+    if (a == null)
+      throw new CoreUnknownAnimalKeyException(key); // Se o animal não existir, lança exceção 
+    return a;
   }
 
   // Recebe um Id e devolve uma especie do hashmap _especies 

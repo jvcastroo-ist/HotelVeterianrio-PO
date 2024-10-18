@@ -66,13 +66,30 @@ public class Vacina implements Serializable{
     }
 
     /**
-     * Returns a string representation of the Vacina object.
-     * The format of the returned string is "VACINA|<id>|<nome>|<number_of_registos>|<responsabilidade>".
+     * Generates a string of species IDs from a list of Especie objects.
      *
-     * @return A formatted string containing the id, name, number of registros, and responsabilidade of the Vacina.
+     * @param e the list of Especie objects
+     * @return a string containing the IDs of the species, separated by commas and prefixed with a "|".
+     *         If the list is empty, returns an empty string.
+     */
+    public String idEspecies(List<Especie> e) {
+      List<String> ids = new ArrayList<>();
+      if (e.isEmpty()) {return "";}
+      for (Especie especie : e) { 
+        ids.add(especie.getId());
+      }
+      return "|" + String.join(",", ids);
+    }
+
+    
+    /**
+     * Returns a string representation of the Vacina object.
+     * The format of the returned string is "VACINA|<id>|<nome>|<number_of_registos>|<id_especies>".
+     *
+     * @return A formatted string representing the Vacina object.
      */
     @Override
     public String toString(){
-      return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), Responsabilidade.idResponsabilidade(_especies));
+      return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(_especies));
     }  
 }
