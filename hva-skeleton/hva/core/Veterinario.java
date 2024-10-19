@@ -18,8 +18,22 @@ public class Veterinario extends Funcionario {
     _registoVacinas = new ArrayList<>();
   }
 
+  /**
+   * Retrieves a sorted list of species.
+   *
+   * @return a sorted list of species.
+   */
   public List<Especie> getEspecies(){
-    return _especies;
+    return sort(_especies);
+  }
+
+  /**
+   * Retrieves the list of vaccine records.
+   *
+   * @return a list of {@link RegistoVacina} objects representing the vaccine records.
+   */
+  public List<RegistoVacina> getRegistos() {
+    return _registoVacinas;
   }
 
   @Override
@@ -30,6 +44,15 @@ public class Veterinario extends Funcionario {
       _especies.remove((Especie)r);
     }
     r.operaFuncionario(atribui);
+  }
+
+  /**
+   * Adds a new vaccination record to the list of vaccination records.
+   *
+   * @param rv the vaccination record to be added
+   */
+  public void addRegisto(RegistoVacina rv) {
+    _registoVacinas.add(rv);
   }
 
   @Override
@@ -53,6 +76,6 @@ public class Veterinario extends Funcionario {
    */
   @Override
   public String toString() {
-      return super.visualiza("VET", _especies);
+      return super.visualiza("VET", getEspecies());
   }
 }

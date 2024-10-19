@@ -373,7 +373,237 @@ public class Hotel implements Serializable {
 
 
 
+  /**
+   * Registers a tree to a specified habitat.
+   *
+   * @param habitatId The ID of the habitat to which the tree will be associated.
+   * @param idsTree An array of tree IDs to be registered to the habitat.
+   * @throws CoreUnknownHabitatKeyException If the habitat ID is not found.
+   */
+  public void registerTree(String habitatId, String treeId) throws CoreUnknownHabitatKeyException {
+    // Associates the trees to the habitat
+    Habitat hab = getHabitat(lowerCase(habitatId));
+    // Adds the tree to the habitat
+    Arvore a = getArvore(lowerCase(treeId));
+    hab.addArvore(a);
+    // Print the new tree
+    a.toString();
+
+    dirty();
+  }
+
+  /**
+   * Creates a tree and adds it to the collection of trees.
+   *
+   * @param treeId The unique identifier for the tree.
+   * @param name The name of the tree.
+   * @param age The age of the tree.
+   * @param dificuldadeBase The base difficulty level associated with the tree.
+   * @param type The type of the tree, either "CADUCA" or "PERENE".
+   * @throws CoreDuplicateTreeKeyException If a tree with the given treeId already exists.
+   */
+  public void createTree(String treeId, String name, int age, int dificuldadeBase, String type) throws CoreDuplicateTreeKeyException {
+    String treeIdKey = lowerCase(treeId);
+    // Verefies if the tree already exists
+    if(_arvores.containsKey(treeIdKey))
+      throw new CoreDuplicateTreeKeyException(treeId);
+    // Verifies the type of tree and creates the object
+    Arvore a = (type.equals("CADUCA")) ? new ArvoreCaduca(treeId, name, age, dificuldadeBase, _estacaoAno) : new ArvorePerene(treeId, name, age, dificuldadeBase, _estacaoAno);
+    // Puts it in the hashmap
+    _arvores.put(treeIdKey, a);
+
+    dirty();
+  }
+
+  /**
+   * Retrieves a list of trees (Arvore) for a given habitat.
+   *
+   * @param habitatId The identifier of the habitat.
+   * @return A list of trees (Arvore) associated with the specified habitat, sorted by their ID.
+   * @throws CoreUnknownHabitatKeyException If the habitat with the specified ID does not exist.
+   */
+  public List<Arvore> mostraArvorePorHabitat(String habitatId) throws CoreUnknownHabitatKeyException{
+    // Verefies if the habitat exists
+    Habitat h = getHabitat(lowerCase(habitatId));
+    // returns the list of trees sorted by id.
+    return h.getArvores();
+  }
+
+  /* ************************************* *
+   * *********** MENU VACINAS ************ *
+   * ************************************* */
+
+  /**
+   * Retrieves a collection of all vaccine IDs, sorted in a specific order.
+   *
+   * @return A collection of sorted vaccine IDs.
+   */
+  public Collection<String> visualizaTodasVacinas() {
+    return visualiza(sortIds(_vacinas));
+  }
+
+  /**
+   * Registers a new vaccine in the system.
+   *
+   * @param vaccineId The unique identifier for the vaccine.
+   * @param nome The name of the vaccine.
+   * @param speciesIds An array of species identifiers that the vaccine is applicable to.
+   * @throws CoreDuplicateVaccineKeyException If a vaccine with the same identifier already exists.
+   * @throws CoreUnknownSpeciesKeyException If any of the provided species identifiers are unknown.
+   */
+  public void registerVaccine(String vaccineId, String nome, String[] speciesIds) throws CoreDuplicateVaccineKeyException, CoreUnknownSpeciesKeyException {
+    // Criates a list of species
+    List<Especie> species = new ArrayList<>();
+    String vaccineIdKey = lowerCase(vaccineId);
+    // Check if the vaccine already exists
+    if (_vacinas.containsKey(vaccineIdKey)) 
+      throw new CoreDuplicateVaccineKeyException(vaccineId);
+    for (String id : speciesIds) {
+      // Verefies if the species exists
+      Especie e = getEspecie(lowerCase(id));  
+      // adds it to the list 
+      species.add(e);
+    }
+    // Criates a new vaccine
+    Vacina v = new Vacina(vaccineId, nome, species);
+    // Adds the vaccine to the hashmap
+    _vacinas.put(vaccineIdKey, v);
+
+    dirty();
+  }
+
+  /**
+   * Vaccinates an animal with a specified vaccine by a veterinarian.
+   *
+   * @param vaccineId The ID of the vaccine to be administered.
+   * @param vetId The ID of the veterinarian administering the vaccine.
+   * @param animalId The ID of the animal to be vaccinated.
+   * @throws CoreUnknownVaccineKeyException If the vaccine ID is unknown.
+   * @throws CoreUnknownVeterinarianKeyException If the veterinarian ID is unknown or the employee is not a veterinarian.
+   * @throws CoreUnknownAnimalKeyException If the animal ID is unknown.
+   * @throws CoreVeterinarianNotAuthorizedException If the veterinarian is not authorized to vaccinate the species of the animal.
+   * @throws CoreWrongVaccineException If the vaccine causes an abnormal reaction in the animal.
+   */
+  public void vacinarAnimal(String vaccineId, String vetId,String animalId) throws CoreUnknownVaccineKeyException, CoreUnknownVeterinarianKeyException, CoreUnknownAnimalKeyException, CoreVeterinarianNotAuthorizedException, CoreWrongVaccineException {
+    Vacina v = getVacina(lowerCase(vaccineId));
+    Animal a = getAnimal(lowerCase(animalId));
+    try {
+      // Verefies if the veterinarian exists 
+      Funcionario f = getFuncionario(lowerCase(vetId));
+      // Checks if f is of type Veterinario
+      verificaVeterinario(f);
+      // Cast to Veterinario
+      Veterinario vet = (Veterinario)f;
+      // Verefies if the vet can vaccinate the species
+      verificaPermissaoVacina(vet, a.getEspecie()); // throws CoreVeterinarianNotAuthorizedException
+      // creates the record
+      RegistoVacina rv = v.vacinarAnimal(a, vet); 
+      // adds to the hashmap
+      _registoVacinas.add(rv);
+      // vaccinate the animal, throws exception if damage is not "NORMAL"
+      dirty();
+      if (!(rv.getDano().toString().equals("NORMAL"))){
+        throw new CoreWrongVaccineException(vaccineId, animalId);
+      }
+    } catch(CoreUnknownEmployeeKeyException e) {throw new CoreUnknownVeterinarianKeyException(vetId);}
+
+  }
+
+  private void verificaVeterinario(Funcionario f) throws CoreUnknownVeterinarianKeyException {
+    if (!(f instanceof Veterinario)) 
+      throw new CoreUnknownVeterinarianKeyException(f.getId());
+  }
+
+  /**
+   * Verifies if the veterinarian has permission to vaccinate the given species.
+   *
+   * @param vet the veterinarian whose permissions are being checked
+   * @param e the species that needs to be vaccinated
+   * @throws CoreVeterinarianNotAuthorizedException if the veterinarian is not authorized to vaccinate the given species
+   */
+  private void verificaPermissaoVacina(Veterinario vet, Especie e) throws CoreVeterinarianNotAuthorizedException{
+    if (!(vet.getEspecies().contains(e))) {
+      throw new CoreVeterinarianNotAuthorizedException(vet.getId(), e.getId());
+    }
+  }
+
+  /* ************************************* *
+   * ********** MENU CONSULTAS *********** *
+   * ************************************* */
+
+  /**
+   * Consults and retrieves a list of animals residing in a specified habitat.
+   *
+   * @param habitatId The identifier of the habitat to be queried.
+   * @return A list of animals residing in the specified habitat, sorted by their ID.
+   * @throws CoreUnknownHabitatKeyException If the specified habitat ID does not exist.
+   */
+  public List<Animal> consultaAnimaisPorHabitat(String habitatId) throws CoreUnknownHabitatKeyException {
+    // Verefies if the habitat exists
+    Habitat h = getHabitat(lowerCase(habitatId));
+    // returns the list of animals sorted by the id
+    return h.getAnimals();
+  }
+
+  /**
+   * Retrieves the list of vaccination records for a specific animal.
+   *
+   * @param animalId The unique identifier of the animal.
+   * @return A list of vaccination records associated with the specified animal.
+   * @throws CoreUnknownAnimalKeyException If the animal with the given ID does not exist.
+   */
+  public List<RegistoVacina> consultaRegistoPorAnimal(String animalId) throws CoreUnknownAnimalKeyException {
+    // Verefies if the animal exists
+    Animal a = getAnimal(lowerCase(animalId));
+    // returns the list of records of the animal
+    return a.getRegistos();
+  }
+
+  /**
+   * Consults the medical records of a veterinarian.
+   *
+   * @param vetId The identifier of the veterinarian.
+   * @return A list of medical records associated with the veterinarian.
+   * @throws CoreUnknownEmployeeKeyException If the employee key is unknown.
+   * @throws CoreUnknownVeterinarianKeyException If the veterinarian key is unknown.
+   */
+  public List<RegistoVacina> consultaAtosMedicos(String vetId) throws CoreUnknownEmployeeKeyException, CoreUnknownVeterinarianKeyException{
+    try {
+      // Verefies if the veterinarian exists 
+      Funcionario f = getFuncionario(lowerCase(vetId));
+      // Checks if f is of type Veterinario
+      verificaVeterinario(f);
+      // Cast to Veterinario
+      Veterinario vet = (Veterinario)f;
+      // returns the list of records of the veterinarian
+      return vet.getRegistos();
+    } catch(CoreUnknownEmployeeKeyException e) {throw new CoreUnknownVeterinarianKeyException(vetId);}
+  }
+
+  /**
+   * Retrieves a list of vaccine records that were administered carelessly.
+   * 
+   * This method iterates through the list of vaccine records and checks if the 
+   * vaccine has caused any damage to the animal. If the damage is not classified 
+   * as "NORMAL", the vaccine record is added to the list of careless vaccines.
+   * 
+   * @return a list of {@link RegistoVacina} objects that represent vaccines 
+   *         given carelessly.
+   */
+  public List<RegistoVacina> consultaVacinaComIncuria() {
+    // a list that will hold all vaccines given carelessly
+    List<RegistoVacina> incuria = new ArrayList<>();
+    for (RegistoVacina rv : _registoVacinas) 
+      // if the vaccine has caused damage to the animal its added to the list
+      if (!(rv.getDano().toString().equals("NORMAL")))
+        incuria.add(rv);
+    return incuria;
+  }
   
+  /* ************************************* *
+   * ********* AUXILIAR METHODS ********** *
+   * ************************************* */
+
   /**
    * Registers a new species in the hotel system.
    *
@@ -393,83 +623,7 @@ public class Hotel implements Serializable {
     dirty();
   }
 
-  
-  /**
-   * Registers a new vaccine in the system.
-   *
-   * @param vaccineId The unique identifier for the vaccine.
-   * @param nome The name of the vaccine.
-   * @param speciesIds An array of species identifiers that the vaccine is applicable to.
-   * @throws CoreDuplicateVaccineKeyException If a vaccine with the same identifier already exists.
-   * @throws CoreUnknownSpeciesKeyException If any of the provided species identifiers are unknown.
-   */
-  public void registerVaccine(String vaccineId, String nome, String[] speciesIds) throws CoreDuplicateVaccineKeyException, CoreUnknownSpeciesKeyException {
-    // Criates a list of species
-    List<Especie> species = new ArrayList<>();
-    
-    String vaccineIdKey = lowerCase(vaccineId);
-    if (_vacinas.containsKey(vaccineIdKey)) 
-      throw new CoreDuplicateVaccineKeyException(vaccineId);
-    // Check if the vaccine already exists
-    for (String id : speciesIds) {
-      id = lowerCase(id);
-      Especie e = getEspecie(id);  
-      species.add(e);
-    }
-    // Criates a new vaccine
-    Vacina v = new Vacina(vaccineId, nome, species);
-    // Adds the vaccine to the hashmap
-    _vacinas.put(vaccineIdKey, v);
 
-    dirty();
-  }
-
-  // Cria uma arvore **** NAO ESQUECER QUE A ARVORE PRECISA SER PRINTADA DEPOIS Q É FEITA  
-  /**
-   * Registers a tree to a specified habitat.
-   *
-   * @param habitatId The ID of the habitat to which the tree will be associated.
-   * @param idsTree An array of tree IDs to be registered to the habitat.
-   * @throws CoreUnknownHabitatKeyException If the habitat ID is not found.
-   */
-  public void registerTree(String habitatId, String[] idsTree) throws CoreUnknownHabitatKeyException {
-    habitatId = lowerCase(habitatId);
-    // Associates the trees to the habitat
-    Habitat hab = getHabitat(habitatId);
-
-    // Adds the trees to the habitat
-    for (String id : idsTree) {
-      id = lowerCase(id);
-      Arvore a = getArvore(id);
-      hab.addArvore(a);
-    }
-
-    dirty();
-  }
-
-  /**
-   * Creates a tree and adds it to the collection of trees.
-   *
-   * @param treeId The unique identifier for the tree.
-   * @param name The name of the tree.
-   * @param age The age of the tree.
-   * @param dificuldadeBase The base difficulty level associated with the tree.
-   * @param type The type of the tree, either "CADUCA" or "PERENE".
-   * @throws CoreDuplicateTreeKeyException If a tree with the given treeId already exists.
-   */
-  public void createTree(String treeId, String name, int age, int dificuldadeBase, String type) throws CoreDuplicateTreeKeyException {
-    String treeIdKey = lowerCase(treeId);
-    if(_arvores.containsKey(treeIdKey))
-      throw new CoreDuplicateTreeKeyException(treeId);
-
-    // Verifies the type of tree and creates the object
-    Arvore a = (type.equals("CADUCA")) ? new ArvoreCaduca(treeId, name, age, dificuldadeBase, _estacaoAno) : new ArvorePerene(treeId, name, age, dificuldadeBase, _estacaoAno);
-    _arvores.put(treeIdKey, a);
-
-    dirty();
-  }
-
-  // Recebe uma coleção de objetos e devolve uma lista de strings(visualizaçoes) 
   /**
    * Converts a collection of items to a collection of their string representations.
    *
@@ -484,7 +638,6 @@ public class Hotel implements Serializable {
     return Collections.unmodifiableList(view);
   }
 
-  // Ordena uma lista de ids e retorna uma lista de objetos ordenados pelo id
   /**
    * Sorts the keys of the given map in a case-insensitive lexicographical order and returns a list of the corresponding values.
    *
@@ -498,30 +651,25 @@ public class Hotel implements Serializable {
     return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
   }
 
+  /**
+   * Sorts a collection of items that implement the {@link Comparable} interface.
+   * The items are sorted by their ids, as defined by their {@code compareTo} method.
+   * The sorted list is returned as an unmodifiable list.
+   *
+   * @param <T> the type of elements in the collection, which must extend {@link Comparable}
+   * @param items the collection of items to be sorted
+   * @return an unmodifiable list of the sorted items
+   * @throws NullPointerException if the specified collection is null
+   */
   public <T extends Comparable<? super T>> List<T> sortIds(Collection<T> items) {
     List<T> sortedItems = new ArrayList<>(items);
     Collections.sort(sortedItems); // Usa o método compareTo da interface Comparable
     return Collections.unmodifiableList(sortedItems);
   }
-  // Visualiza todas arvores
-  /**
-   * Retrieves a collection of all tree IDs in the hotel, sorted in a specific order.
-   *
-   * @return A collection of sorted tree IDs.
-   */
-  public Collection<String> visualizaTodasArvores() {
-    return visualiza(sortIds(_arvores));
-  }
 
-  // Visualiza todas vacinas
-  /**
-   * Retrieves a collection of all vaccine IDs, sorted in a specific order.
-   *
-   * @return A collection of sorted vaccine IDs.
-   */
-  public Collection<String> visualizaTodasVacinas() {
-    return visualiza(sortIds(_vacinas));
-  }
+  /* ************************************* *
+   * *************** GETS **************** *
+   * ************************************* */
 
   /**
    * Retrieves the current season of the year.
@@ -531,30 +679,32 @@ public class Hotel implements Serializable {
   public Estacao getEstacaoAno() {
     return _estacaoAno;
   }
-
+  
   /**
-   * Retrieves a Funcionario (employee) from the collection based on the provided key.
+   * Retrieves a Funcionario (employee) from the hotel system based on the provided key.
    *
-   * @param key the unique identifier for the Funcionario to be retrieved.
-   * @return the Funcionario associated with the given key, or null if no such Funcionario exists.
+   * @param key The unique identifier for the employee.
+   * @return The Funcionario object associated with the given key.
+   * @throws CoreUnknownEmployeeKeyException If no employee is found with the provided key.
    */
   public Funcionario getFuncionario(String key) throws CoreUnknownEmployeeKeyException{
     Funcionario f = _funcionarios.get(key);
     if (f == null)
-      throw new CoreUnknownEmployeeKeyException(key); // Se o habitat não existir, lança exceção 
-    return f;  }
+      throw new CoreUnknownEmployeeKeyException(key); // Se o funcionario não existir, lança exceção 
+    return f;  
+  }
 
+  
   /**
-   * Retrieves an Arvore object from the collection based on the provided key.
+   * Retrieves an Arvore (tree) object associated with the given key.
    *
-   * @param key the key associated with the Arvore object to be retrieved
-   * @return the Arvore object corresponding to the specified key, or null if no such object exists
+   * @param key the key associated with the desired Arvore object
+   * @return the Arvore object associated with the given key
    */
   public Arvore getArvore(String key) {
     return _arvores.get(key);
   }
 
-  // Recebe um Id e devolve um habitat do hashmap _habitats 
   /**
    * Retrieves a Habitat object based on the provided key.
    *
@@ -583,7 +733,6 @@ public class Hotel implements Serializable {
     return a;
   }
 
-  // Recebe um Id e devolve uma especie do hashmap _especies 
   /**
    * Retrieves the species associated with the given key.
    *
@@ -606,8 +755,12 @@ public class Hotel implements Serializable {
    * @param key the key associated with the desired Vacina object
    * @return the Vacina object corresponding to the specified key, or null if no such object exists
    */
-  public Vacina getVacina(String key) {
-    return _vacinas.get(key);
+  public Vacina getVacina(String key) throws CoreUnknownVaccineKeyException {
+    Vacina v = _vacinas.get(key);
+    if(v == null) {
+      throw new CoreUnknownVaccineKeyException(key); // Se a vacina não existir, lança exceção que cria a especie
+    }
+    return v;
   }
 
 

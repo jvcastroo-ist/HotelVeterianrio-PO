@@ -38,7 +38,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
    * @return a sorted list of Arvore objects.
    */
   public List<Arvore> getArvores() {
-    return sort();
+    return sort(_arvores);
   } 
 
   /**
@@ -47,7 +47,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
    * @return a list of Animal objects representing the animals in the habitat.
    */
   public List<Animal> getAnimals() {
-    return _animais;
+    return sort(_animais);
   }
 
   /**
@@ -77,15 +77,6 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
    */
   public void setArea(int area){
     _area = area;
-  }
-
-  /**
-   * Sorts the list of Arvore objects by their IDs in a case-insensitive manner.
-   *
-   * @return A sorted list of Arvore objects based on their IDs.
-   */
-  public List<Arvore> sort() {
-    return _arvores.stream().sorted((a1, a2) -> a1.getId().compareToIgnoreCase(a2.getId())).collect(Collectors.toList());
   }
 
   /**
@@ -143,7 +134,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
   @Override
   public String toString(){    
     String hab = String.format("HABITAT|%s|%s|%d|%d", getId(), getNome(), getArea(), _arvores.size());
-    for(Arvore a : _arvores) {
+    for(Arvore a : getArvores()) {
       hab += ("\n" + a.toString());
     }
     return hab;

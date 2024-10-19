@@ -2,9 +2,7 @@ package hva.core;
 
 import java.io.*;
 
-public abstract class Arvore implements Serializable{
-  private final String _id;
-  private final String _nome;
+public abstract class Arvore extends HotelEntity implements Serializable{
   private float _idade;
   private  Estacao _estacaoAtual;
   private final int _dificuldadeBase;
@@ -22,29 +20,10 @@ public abstract class Arvore implements Serializable{
    * @param estacaoAtual the current season associated with the tree
    */
   public Arvore(String id, String nome, int idade, int difB, Estacao estacaoAtual) {
-    _id = id;
-    _nome = nome;
+    super(id, nome);
     _idade = idade;
     _dificuldadeBase = difB;
     _estacaoAtual = estacaoAtual;
-  }
-
-  /**
-   * Retrieves the identifier of the object.
-   *
-   * @return the identifier as a String.
-   */
-  public String getId() {
-    return _id;
-  }
-
-  /**
-   * Retrieves the name of the tree.
-   *
-   * @return the name of the tree.
-   */
-  public String getNome() {
-    return _nome;
   }
 
   /**

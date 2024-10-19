@@ -3,9 +3,7 @@ package hva.core;
 import java.io.*;
 import java.util.*;
 
-public class Vacina implements Serializable, Comparable<Vacina>{
-  private final String _id;
-  private final String _nome;
+public class Vacina extends HotelEntity implements Serializable, Comparable<Vacina>{
   private List<Especie> _especies;
   private List<RegistoVacina> _registosVacina;
 
@@ -17,28 +15,9 @@ public class Vacina implements Serializable, Comparable<Vacina>{
    * @param especies the list of species that the vaccine is effective for; if null, an empty list will be initialized
    */
   public Vacina(String idVacina, String nome, List<Especie> especies){
-    _id = idVacina;
-    _nome = nome;
+    super(idVacina, nome);
     _especies = especies != null ? new ArrayList<>(especies) : new ArrayList<>();
     _registosVacina = new ArrayList<>();
-  }
-
-  /**
-   * Retrieves the unique identifier of the vaccine.
-   *
-   * @return the unique identifier of the vaccine.
-   */
-  public String getId() {
-    return _id;
-  }
-
-  /**
-   * Retrieves the name of the vaccine.
-   *
-   * @return the name of the vaccine as a String.
-   */
-  public String getNome() {
-    return _nome;
   }
 
   /**
@@ -47,7 +26,7 @@ public class Vacina implements Serializable, Comparable<Vacina>{
    * @return a list of {@link Especie} objects representing the species.
    */
   public List<Especie> getEspecies() {
-    return _especies;
+    return sort(_especies);
   }
 
   /**
@@ -59,10 +38,38 @@ public class Vacina implements Serializable, Comparable<Vacina>{
     return _registosVacina;
   }
 
-  public void vacinarAnimal(Animal a, Veterinario vet, boolean especieIgual) {
+  /**
+   * Vaccinates an animal and registers the vaccination.
+   *
+   * @param a   The animal to be vaccinated.
+   * @param vet The veterinarian administering the vaccine.
+   * @return    A record of the vaccination.
+   */
+  public RegistoVacina vacinarAnimal(Animal a, Veterinario vet) {
+    // Verefies if this vaccine is allowed to vaccinate the species of the animal
+    boolean especieIgual = verificaEspecie(a.getEspecie());
+    // Registers the vaccination
     RegistoVacina novoRV = new RegistoVacina(this, a, vet);
+    // calulates the damage of the vacciantion
     novoRV.setDano(especieIgual);
+    // add to the list of vaccination records
     _registosVacina.add(novoRV);
+    // adds to the veterinarian records
+    vet.addRegisto(novoRV);
+    // adds to the animal records
+    a.addRegisto(novoRV);
+    // returns the record
+    return novoRV;
+  }
+
+  /**
+   * Checks if the given species is contained within the list of species.
+   *
+   * @param e the species to be checked
+   * @return true if the species is contained in the list, false otherwise
+   */
+  private boolean verificaEspecie(Especie e) {
+    return _especies.contains(e);
   }
 
   /**
@@ -81,15 +88,9 @@ public class Vacina implements Serializable, Comparable<Vacina>{
     return "|" + String.join(",", ids);
   }
 
-  public List<Especie> sortIds(){
-    List<Especie> especiesOrd = new ArrayList<>(_especies);
-    Collections.sort(especiesOrd);
-    return especiesOrd;
-  } 
-
   @Override
   public int compareTo(Vacina v){
-    return _id.compareTo(v.getId());
+    return getId().compareTo(v.getId());
   }
  
   /**
@@ -100,6 +101,6 @@ public class Vacina implements Serializable, Comparable<Vacina>{
    */
   @Override
   public String toString(){
-    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(_especies));
+    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(getEspecies()));
   }  
 }

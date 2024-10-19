@@ -3,9 +3,7 @@ package hva.core;
 import java.io.*;
 import java.util.*;
 
-public class Animal implements Serializable, Satisfacao, Comparable<Animal> {
-  private final String _id;
-  private final String _nome;
+public class Animal extends HotelEntity implements Serializable, Satisfacao, Comparable<Animal> {
   private final Especie _especie;
   private Habitat _habitat;
   private int _adequacao;
@@ -20,30 +18,11 @@ public class Animal implements Serializable, Satisfacao, Comparable<Animal> {
   * @param habitat the habitat of the animal
   */
   public Animal(String id, String nome, Especie especie, Habitat habitat) {
-    _id = id;
-    _nome = nome;
+    super(id, nome);
     _especie = especie;
     _habitat = habitat;
     _registoVacinacao = new ArrayList<>();
     }
-
-  /**
-  * Retrieves the unique identifier of the animal.
-  *
-  * @return the unique identifier (_id) of the animal.
-  */
-  public String getId() {
-    return _id;
-  }
-
-  /**
-  * Retrieves the name of the animal.
-  *
-  * @return the name of the animal.
-  */
-  public String getNome() {
-    return _nome;
-  }
 
   /**
   * Retrieves the adequacy value of the animal.
@@ -73,18 +52,12 @@ public class Animal implements Serializable, Satisfacao, Comparable<Animal> {
   }
 
   /**
-   * Retrieves the vaccination record of the animal.
+   * Retrieves the list of vaccination records for the animal.
    *
-   * @return A string representation of the vaccination record. If the record is empty, returns "VOID".
-   *         Otherwise, returns a comma-separated list of damages from the vaccination records.
+   * @return a list of {@link RegistoVacina} representing the vaccination records.
    */
-  public String getRegistoVacinacao() {
-    List<String> danos = new ArrayList<>();
-    if (_registoVacinacao.isEmpty()) {return "VOID";}
-    for (RegistoVacina rv : _registoVacinacao) {
-      danos.add(rv.getDano().toString());
-    }
-      return String.join(",", danos);
+  public List<RegistoVacina> getRegistos() {
+    return _registoVacinacao;
   }
 
   /**
@@ -147,7 +120,22 @@ public class Animal implements Serializable, Satisfacao, Comparable<Animal> {
 
   @Override
   public int compareTo(Animal a){
-    return _id.compareTo(a.getId());
+    return getId().compareTo(a.getId());
+  }
+
+  /**
+   * Retrieves the vaccination record of the animal.
+   *
+   * @return A string representation of the vaccination record. If the record is empty, returns "VOID".
+   *         Otherwise, returns a comma-separated list of damages from the vaccination records.
+   */
+  public String getRegistoVacinacao() {
+    List<String> danos = new ArrayList<>();
+    if (_registoVacinacao.isEmpty()) {return "VOID";}
+    for (RegistoVacina rv : _registoVacinacao) {
+      danos.add(rv.getDano().toString());
+    }
+      return String.join(",", danos);
   }
 
   /**

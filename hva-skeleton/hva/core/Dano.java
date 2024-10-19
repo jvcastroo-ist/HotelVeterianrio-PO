@@ -18,7 +18,7 @@ public class Dano implements Serializable {
     _valor = valor;
     _especieCerta = especieCerta;
     _dano = new TreeMap<>();
-    _dano.put(0, "NADA");
+    _dano.put(0, "NORMAL");
     _dano.put(1, "ACIDENTE");
     _dano.put(5, "ERRO");
   }
@@ -32,6 +32,6 @@ public class Dano implements Serializable {
    */
   @Override
   public String toString() {
-    return (_valor == 0 && !_especieCerta) ? "ACIDENTE" : _dano.floorEntry(_valor).getValue();  
+    return (_valor == 0 && !_especieCerta) ? "CONFUSÃO" : _dano.floorEntry(_valor).getValue();  
   }
 }

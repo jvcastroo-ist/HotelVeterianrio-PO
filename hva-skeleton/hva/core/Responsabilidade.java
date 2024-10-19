@@ -1,34 +1,12 @@
 package hva.core;
 
-import java.util.*;
 import java.io.*;
 
-public abstract class Responsabilidade implements Serializable{
-  private final String _id;
-  private final String _nome;
+public abstract class Responsabilidade extends HotelEntity implements Serializable{
   private int _numFuncionarios;
 
   protected Responsabilidade(String id, String nome) {
-    _id = id;
-    _nome = nome;
-  }
-
-  /**
-   * Retrieves the unique identifier for the responsibility
-   *
-   * @return the unique identifier as a String.
-   */
-  public String getId() {
-    return _id;
-  }
-
-   /**
-   * Retrieves the name of the responsibility
-   *
-   * @return the name of the responsibility.
-   */
-  public String getNome() {
-    return _nome;
+    super(id, nome);
   }
 
   /**

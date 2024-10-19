@@ -94,4 +94,9 @@ public class RegistoVacina implements Serializable{
     public void setDano(boolean especieIgual) {
       _dano = new Dano(calculaDano(), especieIgual);
     }
+
+    @Override
+    public String toString() {
+      return String.format("REGISTO-VACINA|%s|%s|%s", _vacina.getId(), _veterinario.getId(), _animal.getEspecie().getId());
+    }
 }

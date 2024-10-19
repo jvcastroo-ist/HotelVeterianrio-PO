@@ -4,9 +4,7 @@ import hva.core.exception.CoreNoResponsibilityException;
 import java.io.*;
 import java.util.*;
 
-public abstract class Funcionario implements Serializable, Satisfacao, Comparable<Funcionario>{
-  private final String _id;
-  private final String _nome;
+public abstract class Funcionario extends HotelEntity implements Serializable, Satisfacao, Comparable<Funcionario>{
 
   /**
    * Constructs a new Funcionario with the specified ID and name.
@@ -14,27 +12,8 @@ public abstract class Funcionario implements Serializable, Satisfacao, Comparabl
    * @param idFuncionario the unique identifier for the Funcionario
    * @param nome the name of the Funcionario
    */
-  public Funcionario(String idFuncionario, String nome) {
-    _id = idFuncionario;
-    _nome = nome;
-  }
-
-  /**
-   * Retrieves the unique identifier of the employee.
-   *
-   * @return the unique identifier of the employee.
-   */
-  public String getId(){
-    return _id;
-  }
-
-  /**
-   * Retrieves the name of the employee.
-   *
-   * @return the name of the employee.
-   */
-  public String getNome(){
-    return _nome;
+  public Funcionario(String id, String nome) {
+   super(id, nome);
   }
 
   /**
@@ -67,7 +46,7 @@ public abstract class Funcionario implements Serializable, Satisfacao, Comparabl
 
   @Override
   public int compareTo(Funcionario f){
-    return _id.compareTo(f.getId());
+    return getId().compareTo(f.getId());
   }
 
   /**

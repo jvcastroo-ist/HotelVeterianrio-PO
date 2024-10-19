@@ -16,7 +16,7 @@ public class Tratador extends Funcionario{
   }
 
   public List<Habitat> getHabitats(){
-    return _habitats;
+    return sort(_habitats);
   }
 
   @Override
@@ -56,6 +56,6 @@ public class Tratador extends Funcionario{
    */
   @Override
   public String toString() {
-      return super.visualiza("TRT", _habitats);
+      return super.visualiza("TRT", getHabitats());
   }
 }

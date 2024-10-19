@@ -226,7 +226,9 @@ public class Parser {
 
       if (components.length == 5) {
         String[] listOfTree = components[4].split(",");
-        _hotel.registerTree(id, listOfTree);
+        for (String tree : listOfTree) {
+          _hotel.registerTree(id, tree);
+        }
       }
     } catch (CoreDuplicateHabitatKeyException | CoreUnknownHabitatKeyException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
