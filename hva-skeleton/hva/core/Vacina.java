@@ -90,7 +90,7 @@ public class Vacina extends HotelEntity implements Serializable, Comparable<Vaci
 
   @Override
   public int compareTo(Vacina v){
-    return getId().compareTo(v.getId());
+    return getId().compareToIgnoreCase(v.getId());
   }
  
   /**
@@ -101,6 +101,6 @@ public class Vacina extends HotelEntity implements Serializable, Comparable<Vaci
    */
   @Override
   public String toString(){
-    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(getEspecies()));
+    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(_especies));
   }  
 }

@@ -70,6 +70,10 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     getAnimals(e).forEach(a -> a.setAdequacao(inf));
   }
 
+  public void removeAnimal(Animal a){
+    _animais.remove(a);
+  }
+
   /**
    * Sets the area of the habitat.
    *
@@ -99,7 +103,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
 
   @Override
   public int compareTo(Habitat h){
-    return getId().compareTo(h.getId());
+    return getId().compareToIgnoreCase(h.getId());
   }
 
   /**

@@ -23,7 +23,7 @@ class DoShowAllVaccines extends Command<Hotel> {
    */
   @Override
   protected final void execute() {
-    List<Vacina> vacinas = _receiver.sortIds(_receiver.getVacinas());
+    List<Vacina> vacinas = _receiver.sortIds(_receiver.getVaccines());
     for (Vacina v: vacinas) {
       _display.addLine(v.toString());
     }

@@ -1,7 +1,7 @@
 package hva.app.animal;
 
 import hva.app.exception.DuplicateAnimalKeyException;
-import hva.app.exception.DuplicateHabitatKeyException;
+import hva.app.exception.UnknownHabitatKeyException;
 import hva.core.Hotel;
 import hva.core.exception.CoreDuplicateAnimalKeyException;
 import hva.core.exception.CoreUnknownHabitatKeyException;
@@ -36,10 +36,10 @@ class DoRegisterAnimal extends Command<Hotel> {
     } catch (CoreDuplicateAnimalKeyException e) {
       throw new DuplicateAnimalKeyException(e.getId());
     } catch (CoreUnknownSpeciesKeyException e){
-      System.out.println("DuplicateSpeciesId");
+      System.out.println("UnknownSpeciesKey");
       // registar a especie Promp nome da especie
     } catch (CoreUnknownHabitatKeyException e){
-      throw new DuplicateHabitatKeyException(e.getId());
+      throw new UnknownHabitatKeyException(e.getId());
     }
   }
 }

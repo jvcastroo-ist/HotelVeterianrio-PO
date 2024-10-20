@@ -1,6 +1,8 @@
 package hva.app.employee;
 
+import hva.core.Funcionario;
 import hva.core.Hotel;
+import java.util.List;
 import pt.tecnico.uilib.menus.Command;
 //FIXME add more imports if needed
 
@@ -21,6 +23,10 @@ class DoShowAllEmployees extends Command<Hotel> {
    */
   @Override
   protected void execute() {
-    _display.popup(_receiver.visualizaTodosFuncionarios()); // Mostra todos os funcionários
+    List<Funcionario> employees = _receiver.sortIds(_receiver.getEmployees());
+    for (Funcionario f : employees) {
+      _display.addLine(f.toString());
+    }
+    _display.display();
   }
 }

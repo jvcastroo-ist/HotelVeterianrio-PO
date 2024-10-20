@@ -36,6 +36,6 @@ public class Especie extends Responsabilidade implements Comparable<Especie>{
 
   @Override
   public int compareTo(Especie e){
-    return getId().compareTo(e.getId());
+    return getId().compareToIgnoreCase(e.getId());
   }
 }

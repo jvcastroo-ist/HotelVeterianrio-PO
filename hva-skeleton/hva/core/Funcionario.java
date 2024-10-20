@@ -46,7 +46,7 @@ public abstract class Funcionario extends HotelEntity implements Serializable, S
 
   @Override
   public int compareTo(Funcionario f){
-    return getId().compareTo(f.getId());
+    return getId().compareToIgnoreCase(f.getId());
   }
 
   /**

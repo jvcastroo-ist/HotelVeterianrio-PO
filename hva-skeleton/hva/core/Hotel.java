@@ -3,7 +3,6 @@ package hva.core;
 import hva.core.exception.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 
 public class Hotel implements Serializable {
 
@@ -142,14 +141,7 @@ public class Hotel implements Serializable {
    * ************ MENU ANIMAL ************ *
    * ************************************* */
 
-  /**
-   * Retrieves a collection of all animal IDs in the hotel, sorted in ascending order.
-   *
-   * @return a collection of sorted animal IDs.
-   */
-  public Collection<String> visualizaTodosAnimais() {
-    return visualiza(sortIds(_animais));
-  }
+  
   
   /**
    * Registers a new animal in the hotel system.
@@ -195,11 +187,13 @@ public class Hotel implements Serializable {
     Animal a = getAnimal(lowerCase(animalId));
     // Throws exception if habitat does not exist
     Habitat h = getHabitat(lowerCase(habitatId));
+    // remover o animal do habitat onde está
+    h.removeAnimal(a);
     // Transfere o animal para o habitat
     a.transfereAnimal(h);
     // Adiciona animal ao novo habitat
     h.addAnimal(a);
-
+    
     dirty();
   }
 
@@ -221,15 +215,6 @@ public class Hotel implements Serializable {
    * ********* MENU FUNCIONÁRIO ********** *
    * ************************************* */
   
-  /**
-   * Retrieves a collection of all employee toString in the hotel, sorted in ascending order.
-   *
-   * @return a collection of sorted employee toString.
-   */
-  public Collection<String> visualizaTodosFuncionarios() {
-    return visualiza(sortIds(_funcionarios)); 
-  }
-
   /**
    * Registers a new employee in the system.
    *
@@ -315,18 +300,9 @@ public class Hotel implements Serializable {
 
   /* ************************************* *
    * *********** MENU HABITAT ************ *
-   * ************************************* */
-
-  /**
-   * Retrieves a collection of all habitat toString in the hotel.
-   * The habitat IDs are sorted before being returned.
-   *
-   * @return a sorted collection of habitat toString
-   */
-  public Collection<String> visualizaTodosHabitats() {
-    return visualiza(sortIds(_habitats));
-  }
-
+   * ************************************* *
+    
+   
   /**
    * Registers a new habitat in the hotel.
    *
@@ -623,7 +599,7 @@ public class Hotel implements Serializable {
     dirty();
   }
 
-
+  // Recebe uma coleção de objetos e devolve uma lista de strings(visualizaçoes) 
   /**
    * Converts a collection of items to a collection of their string representations.
    *
@@ -638,6 +614,7 @@ public class Hotel implements Serializable {
     return Collections.unmodifiableList(view);
   }
 
+  // Ordena uma lista de ids e retorna uma lista de objetos ordenados pelo id
   /**
    * Sorts the keys of the given map in a case-insensitive lexicographical order and returns a list of the corresponding values.
    *
@@ -666,10 +643,25 @@ public class Hotel implements Serializable {
     Collections.sort(sortedItems); // Usa o método compareTo da interface Comparable
     return Collections.unmodifiableList(sortedItems);
   }
+  // Visualiza todas arvores
+  /**
+   * Retrieves a collection of all tree IDs in the hotel, sorted in a specific order.
+   *
+   * @return A collection of sorted tree IDs.
+   */
+  public Collection<String> visualizaTodasArvores() {
+    return visualiza(sortIds(_arvores));
+  }
 
-  /* ************************************* *
-   * *************** GETS **************** *
-   * ************************************* */
+  // Visualiza todas vacinas
+  /**
+   * Retrieves a collection of all vaccine IDs, sorted in a specific order.
+   *
+   * @return A collection of sorted vaccine IDs.
+   */
+  public Collection<String> visualizaTodasVacinas() {
+    return visualiza(sortIds(_vacinas));
+  }
 
   /**
    * Retrieves the current season of the year.
@@ -778,8 +770,8 @@ public class Hotel implements Serializable {
    *
    * @return a Map where the keys are employee identifiers (String) and the values are Funcionario objects.
    */
-  public Map<String, Funcionario> getFuncionario(){
-    return _funcionarios;
+  public Collection<Funcionario> getEmployees(){
+    return _funcionarios.values();
   }
 
   /**
@@ -796,7 +788,7 @@ public class Hotel implements Serializable {
    *
    * @return a map where the keys are vaccine names and the values are Vacina objects.
    */
-  public Collection<Vacina> getVacinas(){
+  public Collection<Vacina> getVaccines(){
     return _vacinas.values();
   }
 

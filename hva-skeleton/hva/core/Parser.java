@@ -7,6 +7,7 @@ import hva.core.exception.CoreDuplicateSpeciesKeyException;
 import hva.core.exception.CoreDuplicateTreeKeyException;
 import hva.core.exception.CoreDuplicateVaccineKeyException;
 import hva.core.exception.CoreNoResponsibilityException;
+import hva.core.exception.CoreUnknownEmployeeKeyException;
 import hva.core.exception.CoreUnknownHabitatKeyException;
 import hva.core.exception.CoreUnknownSpeciesKeyException;
 import hva.core.exception.UnrecognizedEntryException;
@@ -151,10 +152,13 @@ public class Parser {
       _hotel.registerEmployee(id, name, empType);
 
       if (components.length == 4) {
-        for(String responsibility : components[3].split(","))
-          _hotel.addResponsibility(_hotel.getFuncionario().get(components[1]), responsibility);
+        try{
+          Funcionario f = _hotel.getFuncionario(id);
+          for(String responsibility : components[3].split(",")){
+            _hotel.addResponsibility(f, responsibility);
+          }
+        } catch(CoreUnknownEmployeeKeyException e){}
       }
-
     } catch (CoreDuplicateEmployeeKeyException | CoreNoResponsibilityException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }

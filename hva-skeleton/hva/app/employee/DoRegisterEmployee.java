@@ -1,6 +1,8 @@
 package hva.app.employee;
 
+import hva.app.exception.DuplicateEmployeeKeyException;
 import hva.core.Hotel;
+import hva.core.exception.CoreDuplicateEmployeeKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
@@ -12,10 +14,20 @@ class DoRegisterEmployee extends Command<Hotel> {
 
   DoRegisterEmployee(Hotel receiver) {
     super(Label.REGISTER_EMPLOYEE, receiver);
+    addStringField("id", Prompt.employeeKey());
+    addStringField("name", Prompt.employeeName());
+    addStringField("employeeType", Prompt.employeeType());
   }
   
   @Override
   protected void execute() throws CommandException {
-    //FIXME implement command
+    try {
+        _receiver.registerEmployee(stringField("id"),
+                  stringField("name"),
+                  stringField("employeeType")
+        );
+    } catch (CoreDuplicateEmployeeKeyException e) {
+      throw new DuplicateEmployeeKeyException(e.getId());
+    }
   }
 }
