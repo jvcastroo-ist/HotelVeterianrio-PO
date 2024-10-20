@@ -1,8 +1,6 @@
 package hva.core;
 
-import java.io.*;
-
-public abstract class Responsabilidade extends HotelEntity implements Serializable{
+public abstract class Responsabilidade extends HotelEntity {
   private int _numFuncionarios;
 
   protected Responsabilidade(String id, String nome) {

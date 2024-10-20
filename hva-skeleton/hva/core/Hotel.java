@@ -391,6 +391,11 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+  public List<Animal> mostraAnimaisPorHabitat(String habitatId) throws CoreUnknownHabitatKeyException{
+    Habitat h = getHabitat(lowerCase(habitatId));
+    return h.getAnimals();
+  }
+
   /**
    * Retrieves a list of trees (Arvore) for a given habitat.
    *
@@ -409,15 +414,7 @@ public class Hotel implements Serializable {
    * *********** MENU VACINAS ************ *
    * ************************************* */
 
-  /**
-   * Retrieves a collection of all vaccine IDs, sorted in a specific order.
-   *
-   * @return A collection of sorted vaccine IDs.
-   */
-  public Collection<String> visualizaTodasVacinas() {
-    return visualiza(sortIds(_vacinas));
-  }
-
+ 
   /**
    * Registers a new vaccine in the system.
    *
@@ -614,19 +611,20 @@ public class Hotel implements Serializable {
     return Collections.unmodifiableList(view);
   }
 
-  // Ordena uma lista de ids e retorna uma lista de objetos ordenados pelo id
-  /**
-   * Sorts the keys of the given map in a case-insensitive lexicographical order and returns a list of the corresponding values.
-   *
-   * @param <T> the type of the values in the map
-   * @param map the map whose keys are to be sorted
-   * @return a list of values sorted according to the lexicographical order of their keys
-   */
-  private <T>List <T>sortIds(Map<String, T> map) {
-    List<String> idList = new ArrayList<>(map.keySet()); // Faz uma lista das keys do map
-    idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
-    return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
-  }
+
+
+
+
+  // NOT BEING USED
+
+  // private <T>List <T>sortIds(Map<String, T> map) {
+  //   List<String> idList = new ArrayList<>(map.keySet()); // Faz uma lista das keys do map
+  //   idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
+  //   return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
+  // }
+
+
+
 
   /**
    * Sorts a collection of items that implement the {@link Comparable} interface.
@@ -643,25 +641,19 @@ public class Hotel implements Serializable {
     Collections.sort(sortedItems); // Usa o método compareTo da interface Comparable
     return Collections.unmodifiableList(sortedItems);
   }
-  // Visualiza todas arvores
-  /**
-   * Retrieves a collection of all tree IDs in the hotel, sorted in a specific order.
-   *
-   * @return A collection of sorted tree IDs.
-   */
-  public Collection<String> visualizaTodasArvores() {
-    return visualiza(sortIds(_arvores));
-  }
 
-  // Visualiza todas vacinas
-  /**
-   * Retrieves a collection of all vaccine IDs, sorted in a specific order.
-   *
-   * @return A collection of sorted vaccine IDs.
-   */
-  public Collection<String> visualizaTodasVacinas() {
-    return visualiza(sortIds(_vacinas));
-  }
+
+
+  // // Visualiza todas arvores
+  // /**
+  //  * Retrieves a collection of all tree IDs in the hotel, sorted in a specific order.
+  //  *
+  //  * @return A collection of sorted tree IDs.
+  //  */
+  // public Collection<String> visualizaTodasArvores() {
+  //   return visualiza(sortIds(_arvores));
+  // }
+
 
   /**
    * Retrieves the current season of the year.

@@ -1,7 +1,10 @@
 package hva.app.search;
 
-import hva.core.Hotel;
 import hva.app.exception.UnknownHabitatKeyException;
+import hva.core.Animal;
+import hva.core.Hotel;
+import hva.core.exception.CoreUnknownHabitatKeyException;
+import java.util.List;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
@@ -13,11 +16,19 @@ class DoShowAnimalsInHabitat extends Command<Hotel> {
 
   DoShowAnimalsInHabitat(Hotel receiver) {
     super(Label.ANIMALS_IN_HABITAT, receiver);
-    //FIXME add command fields
+    addStringField("id", hva.app.habitat.Prompt.habitatKey());
   }
 
   @Override
   protected void execute() throws CommandException {
-    //FIXME implement command
+    try {
+        List<Animal> animals = _receiver.mostraAnimaisPorHabitat(stringField("id"));
+         for(Animal a : animals){
+          _display.addLine(a.toString());
+         }
+         _display.display();
+    } catch (CoreUnknownHabitatKeyException e) {
+      throw new UnknownHabitatKeyException(e.getId());
+    }
   }
 }

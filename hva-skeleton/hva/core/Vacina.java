@@ -101,6 +101,6 @@ public class Vacina extends HotelEntity implements Serializable, Comparable<Vaci
    */
   @Override
   public String toString(){
-    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(_especies));
+    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(sort(_especies)));
   }  
 }

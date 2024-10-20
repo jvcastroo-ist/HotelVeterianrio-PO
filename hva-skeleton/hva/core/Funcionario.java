@@ -1,10 +1,9 @@
 package hva.core;
 
 import hva.core.exception.CoreNoResponsibilityException;
-import java.io.*;
 import java.util.*;
 
-public abstract class Funcionario extends HotelEntity implements Serializable, Satisfacao, Comparable<Funcionario>{
+public abstract class Funcionario extends HotelEntity implements Satisfacao, Comparable<Funcionario>{
 
   /**
    * Constructs a new Funcionario with the specified ID and name.

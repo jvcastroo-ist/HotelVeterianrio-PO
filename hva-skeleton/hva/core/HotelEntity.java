@@ -1,9 +1,10 @@
 package hva.core;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.*;
 
-public class HotelEntity {
+public class HotelEntity implements Serializable{
   private final String _id;
   private final String _nome;
 
