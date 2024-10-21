@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.*;
 
-public class HotelEntity implements Serializable{
+public abstract class HotelEntity implements Serializable{
   private final String _id;
   private final String _nome;
 
@@ -14,7 +14,7 @@ public class HotelEntity implements Serializable{
    * @param id   the unique identifier for the hotel entity
    * @param nome the name of the hotel entity
    */
-  public HotelEntity(String id, String nome) {
+  protected HotelEntity(String id, String nome) {
     this._id = id;
     this._nome = nome;
   }

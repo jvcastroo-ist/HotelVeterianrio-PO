@@ -1,8 +1,6 @@
 package hva.core;
 
-import java.io.*;
-
-public abstract class Arvore extends HotelEntity implements Serializable{
+public abstract class Arvore extends HotelEntity {
   private float _idade;
   private  Estacao _estacaoAtual;
   private final int _dificuldadeBase;
@@ -19,7 +17,7 @@ public abstract class Arvore extends HotelEntity implements Serializable{
    * @param difB the base difficulty level associated with the tree
    * @param estacaoAtual the current season associated with the tree
    */
-  public Arvore(String id, String nome, int idade, int difB, Estacao estacaoAtual) {
+  protected Arvore(String id, String nome, int idade, int difB, Estacao estacaoAtual) {
     super(id, nome);
     _idade = idade;
     _dificuldadeBase = difB;

@@ -11,7 +11,7 @@ public abstract class Funcionario extends HotelEntity implements Satisfacao, Com
    * @param idFuncionario the unique identifier for the Funcionario
    * @param nome the name of the Funcionario
    */
-  public Funcionario(String id, String nome) {
+  protected Funcionario(String id, String nome) {
    super(id, nome);
   }
 

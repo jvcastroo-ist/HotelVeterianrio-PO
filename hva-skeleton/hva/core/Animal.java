@@ -1,9 +1,8 @@
 package hva.core;
 
-import java.io.*;
 import java.util.*;
 
-public class Animal extends HotelEntity implements Serializable, Satisfacao, Comparable<Animal> {
+public class Animal extends HotelEntity implements Satisfacao, Comparable<Animal> {
   private final Especie _especie;
   private Habitat _habitat;
   private int _adequacao;

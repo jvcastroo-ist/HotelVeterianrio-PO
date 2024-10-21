@@ -1,9 +1,8 @@
 package hva.core;
 
-import java.io.*;
 import java.util.*;
 
-public class Vacina extends HotelEntity implements Serializable, Comparable<Vacina>{
+public class Vacina extends HotelEntity implements Comparable<Vacina>{
   private List<Especie> _especies;
   private List<RegistoVacina> _registosVacina;
 
