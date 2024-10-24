@@ -98,7 +98,6 @@ public class Hotel implements Serializable {
     for (Arvore a : _arvores.values()) {
       a.aumentaIdade();
       a.mudarEstacao(a._estacaoState.mudarEstacao());
-      // a.setEstacao(_estacaoAno);
     }
   }
 
@@ -643,17 +642,31 @@ public class Hotel implements Serializable {
    * @param name The name of the species.
    * @throws CoreDuplicateSpeciesKeyException if a species with the given ID already exists.
    */
-  public void registerSpecies(String speciesId, String name) throws CoreDuplicateSpeciesKeyException {
+  public void registerSpecies(String speciesId, String name) throws CoreDuplicateSpeciesKeyException, CoreDuplicateSpeciesNameException{
     String speciesIdKey = lowerCase(speciesId);
     // Verifies if the species already exists
-    if (_especies.containsKey(speciesIdKey)) 
+    if (_especies.containsKey(speciesIdKey)){ 
       // Throws exception if it already exists
       throw new CoreDuplicateSpeciesKeyException(speciesId);
+    }
+
+    isNameInSpecie(name);
+    
+    
     Especie e = new Especie(speciesId, name);
     _especies.put(lowerCase(speciesIdKey), e);
 
     dirty();
   }
+
+  private void isNameInSpecie(String name) throws CoreDuplicateSpeciesNameException {
+    List<Especie> especies = new ArrayList<>(getSpecies());
+    for (Especie e : especies) {
+      if (e.getNome().equalsIgnoreCase(name)) {
+        throw new CoreDuplicateSpeciesNameException(name);
+      }
+    }
+  }   
 
   // Recebe uma coleção de objetos e devolve uma lista de strings(visualizaçoes) 
   /**
@@ -838,6 +851,10 @@ public class Hotel implements Serializable {
     return _habitats.values();
   }
 
+  public Collection<Especie> getSpecies(){
+    return _especies.values();
+  }
+
   /**
    * Retrieves the map of vaccines.
    *
@@ -846,6 +863,8 @@ public class Hotel implements Serializable {
   public Collection<Vacina> getVaccines(){
     return _vacinas.values();
   }
+
+ 
 
   public List<RegistoVacina> getRegistoVacinas(){
     return _registoVacinas;
