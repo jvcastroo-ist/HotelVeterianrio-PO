@@ -88,17 +88,6 @@ public class Hotel implements Serializable {
     return _estacaoAno.ordinal();
   }
 
-  public static void main(String[] args) {
-    Hotel h = new Hotel();
-    Arvore ac1 = new ArvoreCaduca("a1", "lol", 2, 3, h._estacaoAno);
-    h._arvores.put("a1", ac1);
-    int e = h._estacaoAno.ordinal(); 
-    System.out.println(e);    
-    e = h.avancaEstacao();
-    System.out.println(e);
-    System.out.println(ac1);
-  }
-
   /**
    * Increases the age of all trees in the collection and sets their season to the current season.
    * This method iterates over all trees in the collection and performs two actions on each tree:
@@ -109,7 +98,6 @@ public class Hotel implements Serializable {
     for (Arvore a : _arvores.values()) {
       a.aumentaIdade();
       a.mudarEstacao(a._estacaoState.mudarEstacao());
-      // a.setEstacao(_estacaoAno);
     }
   }
 
@@ -645,17 +633,31 @@ public class Hotel implements Serializable {
    * @param name The name of the species.
    * @throws CoreDuplicateSpeciesKeyException if a species with the given ID already exists.
    */
-  public void registerSpecies(String speciesId, String name) throws CoreDuplicateSpeciesKeyException {
+  public void registerSpecies(String speciesId, String name) throws CoreDuplicateSpeciesKeyException, CoreDuplicateSpeciesNameException{
     String speciesIdKey = lowerCase(speciesId);
     // Verifies if the species already exists
-    if (_especies.containsKey(speciesIdKey)) 
+    if (_especies.containsKey(speciesIdKey)){ 
       // Throws exception if it already exists
       throw new CoreDuplicateSpeciesKeyException(speciesId);
+    }
+
+    isNameInSpecie(name);
+    
+    
     Especie e = new Especie(speciesId, name);
     _especies.put(lowerCase(speciesIdKey), e);
 
     dirty();
   }
+
+  private void isNameInSpecie(String name) throws CoreDuplicateSpeciesNameException {
+    List<Especie> especies = new ArrayList<>(getSpecies());
+    for (Especie e : especies) {
+      if (e.getNome().equalsIgnoreCase(name)) {
+        throw new CoreDuplicateSpeciesNameException(name);
+      }
+    }
+  }   
 
   // Recebe uma coleção de objetos e devolve uma lista de strings(visualizaçoes) 
   /**
@@ -840,6 +842,10 @@ public class Hotel implements Serializable {
     return _habitats.values();
   }
 
+  public Collection<Especie> getSpecies(){
+    return _especies.values();
+  }
+
   /**
    * Retrieves the map of vaccines.
    *
@@ -848,6 +854,8 @@ public class Hotel implements Serializable {
   public Collection<Vacina> getVaccines(){
     return _vacinas.values();
   }
+
+ 
 
   public List<RegistoVacina> getRegistoVacinas(){
     return _registoVacinas;

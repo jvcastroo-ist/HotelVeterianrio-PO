@@ -4,6 +4,7 @@ import hva.core.exception.CoreDuplicateAnimalKeyException;
 import hva.core.exception.CoreDuplicateEmployeeKeyException;
 import hva.core.exception.CoreDuplicateHabitatKeyException;
 import hva.core.exception.CoreDuplicateSpeciesKeyException;
+import hva.core.exception.CoreDuplicateSpeciesNameException;
 import hva.core.exception.CoreDuplicateTreeKeyException;
 import hva.core.exception.CoreDuplicateVaccineKeyException;
 import hva.core.exception.CoreNoResponsibilityException;
@@ -126,7 +127,7 @@ public class Parser {
       String name = components[2];
 
       _hotel.registerSpecies(id, name);
-    } catch (CoreDuplicateSpeciesKeyException e) {
+    } catch (CoreDuplicateSpeciesKeyException | CoreDuplicateSpeciesNameException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }
