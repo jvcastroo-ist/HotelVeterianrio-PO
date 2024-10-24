@@ -7,6 +7,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
   private int _area;
   private List<Arvore> _arvores;
   private List<Animal> _animais;
+  private Map<Especie, String> _adequacao;
 
   /**
    * Constructs a new Habitat with the specified ID, name, and area.
@@ -20,6 +21,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     _area = area;
     _arvores = new ArrayList<>();
     _animais = new ArrayList<>();
+    _adequacao = new HashMap<>();
   }
 
   /**
@@ -67,7 +69,9 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
    * @param inf the new adequacy value to be set for each animal of the specified species
    */
   public void alteraInfluencia(Especie e, int inf) {
-    getAnimals(e).forEach(a -> a.setAdequacao(inf));
+    if (_adequacao.containsKey(e)) {
+      
+    }
   }
 
   public void removeAnimal(Animal a){

@@ -11,7 +11,13 @@ public class ArvorePerene extends Arvore {
    * @param estacaoInicial the initial season of the tree
    */
   public ArvorePerene(String id, String nome, int idade, int difB, Estacao estacaoInicial) {
-    super(id, nome, idade, difB, estacaoInicial);
+    super(id, nome, idade, difB);
+    setEstacaoState(estacaoInicial);
+  }
+
+  @Override
+  protected void setEstacaoState(Estacao e) {
+    _estacaoState = e.criarEstacaoStatePerene();
   }
 
   /**
@@ -22,11 +28,11 @@ public class ArvorePerene extends Arvore {
    */
   @Override
   public double getEsforcoLimpeza() {
-    return super.getEsforcoLimpeza()*getEsforcoSazonal(1);
+    return super.getEsforcoLimpeza()*_estacaoState.getEsforcoSazonal();
   }
 
   @Override
   public String toString() {
-    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "PERENE", getCiclo(1));
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "PERENE", _estacaoState.getCicloBio());
   }
 }

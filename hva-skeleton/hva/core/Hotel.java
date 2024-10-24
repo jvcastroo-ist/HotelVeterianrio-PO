@@ -88,6 +88,17 @@ public class Hotel implements Serializable {
     return _estacaoAno.ordinal();
   }
 
+  public static void main(String[] args) {
+    Hotel h = new Hotel();
+    Arvore ac1 = new ArvoreCaduca("a1", "lol", 2, 3, h._estacaoAno);
+    h._arvores.put("a1", ac1);
+    int e = h._estacaoAno.ordinal(); 
+    System.out.println(e);    
+    e = h.avancaEstacao();
+    System.out.println(e);
+    System.out.println(ac1);
+  }
+
   /**
    * Increases the age of all trees in the collection and sets their season to the current season.
    * This method iterates over all trees in the collection and performs two actions on each tree:
@@ -97,7 +108,8 @@ public class Hotel implements Serializable {
   private void aumentaIdades() {
     for (Arvore a : _arvores.values()) {
       a.aumentaIdade();
-      a.setEstacao(_estacaoAno);
+      a.mudarEstacao(a._estacaoState.mudarEstacao());
+      // a.setEstacao(_estacaoAno);
     }
   }
 
@@ -261,7 +273,7 @@ public class Hotel implements Serializable {
     verifyResponsabilidade(f.getId(), responsibilityId, r);
     // Calls the method of the employee that assigns the responsibility
     f.operaResponsabilidade(r, true);
-
+    
     dirty();
   }
 
