@@ -3,7 +3,8 @@ package hva.core;
 import hva.core.exception.CoreNoResponsibilityException;
 import java.util.*;
 
-public abstract class Funcionario extends HotelEntity implements Satisfacao, Comparable<Funcionario>{
+public abstract class Funcionario extends HotelEntity implements Comparable<Funcionario>{
+  protected Satisfacao _satisfacao;
 
   /**
    * Constructs a new Funcionario with the specified ID and name.
@@ -29,12 +30,6 @@ public abstract class Funcionario extends HotelEntity implements Satisfacao, Com
   public abstract void retiraResponsabilidade(Responsabilidade r);
   public abstract boolean isResponsabilidadeAtribuida(Responsabilidade r);
   public abstract String getType();
-
-
-
-
-  @Override
-  public abstract double satisfacao();
 
   /**
    * Generates a concatenated string of IDs from a collection of Responsabilidade objects.

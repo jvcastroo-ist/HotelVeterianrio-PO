@@ -13,6 +13,7 @@ public class Tratador extends Funcionario{
   public Tratador(String idTratador, String nome){
     super(idTratador, nome);
     _habitats = new ArrayList<>();
+    _satisfacao = new SatisfacaoTratador(this);
   }
 
   public List<Habitat> getHabitats(){
@@ -55,25 +56,6 @@ public class Tratador extends Funcionario{
   public void retiraResponsabilidade(Responsabilidade r){
     _habitats.remove((Habitat)r);  
     r.operaFuncionario(false); // removes -1 to responsability TRT
-  }
-
-
-
-  /**
-   * Calculates the satisfaction level of the handler based on the work done in each habitat.
-   * The satisfaction is computed by summing the ratio of work done in each habitat to the number of employees,
-   * subtracting this sum from 300, and then rounding the result to the nearest whole number.
-   *
-   * @return the satisfaction level as a long value.
-   */
-  @Override
-  public double satisfacao() {
-    double sum = 0;
-    for(Habitat h : _habitats) {
-      sum += h.trabalhoNoHabitat()/h.getNumFuncionarios();
-    }
-    sum = 300 - sum;
-    return sum;
   }
 
   /**

@@ -16,6 +16,7 @@ public class Veterinario extends Funcionario {
     super(idVeterinario, nome);
     _especies = new ArrayList<>();
     _registoVacinas = new ArrayList<>();
+    _satisfacao = new SatisfacaoVeterinario(this);
   }
 
   /**
@@ -72,7 +73,6 @@ public class Veterinario extends Funcionario {
     r.operaFuncionario(false);  // removes -1 to responsability VET
   }
 
-
   /**
    * Adds a new vaccination record to the list of vaccination records.
    *
@@ -81,17 +81,6 @@ public class Veterinario extends Funcionario {
   public void addRegisto(RegistoVacina rv) {
     _registoVacinas.add(rv);
   }
-
-  @Override
-  public double satisfacao() {
-    double sum = 0;
-    for (Especie e : _especies) {
-      sum += e.getAnimais().size()/e.getNumFuncionarios();
-    }
-    sum = 20 - sum;
-    return sum;
-  }
-
 
   /**
    * Returns a string representation of the Veterinario object.

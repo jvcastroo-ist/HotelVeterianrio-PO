@@ -7,7 +7,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
   private int _area;
   private List<Arvore> _arvores;
   private List<Animal> _animais;
-  private Map<Especie, String> _adequacao;
+  private Map<Especie, Integer> _adequacao;
 
   /**
    * Constructs a new Habitat with the specified ID, name, and area.
@@ -67,15 +67,15 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     return _animais.stream().filter(a -> (a.getEspecie() == e)).collect(Collectors.toList());
   }
 
-  /**
-   * Alters the influence of a given species by setting the adequacy value for each animal of that species.
-   *
-   * @param e   the species whose influence is to be altered
-   * @param inf the new adequacy value to be set for each animal of the specified species
-   */
   public void alteraInfluencia(Especie e, int inf) {
-    if (_adequacao.containsKey(e)) {
-      
+    if (_adequacao.containsKey(e))
+      // If the species is inside the map, it replaces the influence 
+      _adequacao.replace(e, inf);
+    // puts the new species influence  
+    _adequacao.put(e, inf);
+    // changes the influence of each animal of species e 
+    for (Animal a : getAnimals(e)) {
+      a.setAdequacao(inf);
     }
   }
 
@@ -92,12 +92,17 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     _area = area;
   }
 
-  /**
-   * Adds an animal to the habitat.
-   *
-   * @param a the animal to be added
-   */
   public void addAnimal(Animal a){
+    // animal's species
+    Especie e = a.getEspecie();
+    if (_adequacao.containsKey(e)){
+      // set the animal's influence if the species is inside the map
+      a.setAdequacao(_adequacao.get(e));
+    } else {
+      // set the influence to neutral
+      a.setAdequacao(0);
+    }
+    // add the animal to the habitat  
     _animais.add(a);
   }
 

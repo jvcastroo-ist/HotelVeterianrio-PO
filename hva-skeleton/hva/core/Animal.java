@@ -2,10 +2,11 @@ package hva.core;
 
 import java.util.*;
 
-public class Animal extends HotelEntity implements Satisfacao, Comparable<Animal> {
+public class Animal extends HotelEntity implements Comparable<Animal> {
   private final Especie _especie;
   private Habitat _habitat;
   private int _adequacao;
+  protected Satisfacao _satisfacao;
   private List<RegistoVacina> _registoVacinacao;
             
   /**
@@ -21,16 +22,8 @@ public class Animal extends HotelEntity implements Satisfacao, Comparable<Animal
     _especie = especie;
     _habitat = habitat;
     _registoVacinacao = new ArrayList<>();
+    _satisfacao = new SatisfacaoAnimal(this);
     }
-
-  /**
-  * Retrieves the adequacy value of the animal.
-  *
-  * @return the adequacy value as an integer.
-  */
-  public int getAdequacao() {
-    return _adequacao;
-  }
 
   /**
    * Retrieves the species of the animal.
@@ -51,33 +44,21 @@ public class Animal extends HotelEntity implements Satisfacao, Comparable<Animal
   }
 
   /**
+  * Retrieves the adequacy value of the animal.
+  *
+  * @return the adequacy value as an integer.
+  */
+  public int getAdequacao() {
+    return _adequacao;
+  }
+
+  /**
    * Retrieves the list of vaccination records for the animal.
    *
    * @return a list of {@link RegistoVacina} representing the vaccination records.
    */
   public List<RegistoVacina> getRegistos() {
     return _registoVacinacao;
-  }
-
-  /**
-   * Calculates the satisfaction level of the animal based on various factors.
-   *
-   * @return the satisfaction level as a double, calculated using the following formula:
-   *         (20 + 3 * especieIgual() - 2 * especieDiferente + espacoMedio + _adequacao)
-   *         where:
-   *         - especieIgual() is the number of animals of the same species in the habitat.
-   *         - especieDiferente is the number of different species in the habitat.
-   *         - espacoMedio is the average space available per animal in the habitat.
-   *         - _adequacao is an additional adequacy factor.
-   */
-  @Override
-  public double satisfacao() {
-    // Numero de especies diferentes no habitat
-    int especieDiferente = _habitat.getAnimals().size() - (especieIgual() + 1);
-    // AREA/POPULACAO
-    double espacoMedio = _habitat.getArea()/_habitat.getAnimals().size();
-    // satisfacao arredondada ao inteiro mais proximo
-    return (20 + 3*especieIgual() - 2*especieDiferente + espacoMedio + _adequacao);
   }
 
   /**

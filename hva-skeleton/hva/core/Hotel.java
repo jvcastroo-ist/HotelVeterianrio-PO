@@ -88,17 +88,6 @@ public class Hotel implements Serializable {
     return _estacaoAno.ordinal();
   }
 
-  public static void main(String[] args) {
-    Hotel h = new Hotel();
-    Arvore ac1 = new ArvoreCaduca("a1", "lol", 2, 3, h._estacaoAno);
-    h._arvores.put("a1", ac1);
-    int e = h._estacaoAno.ordinal(); 
-    System.out.println(e);    
-    e = h.avancaEstacao();
-    System.out.println(e);
-    System.out.println(ac1);
-  }
-
   /**
    * Increases the age of all trees in the collection and sets their season to the current season.
    * This method iterates over all trees in the collection and performs two actions on each tree:
@@ -119,22 +108,24 @@ public class Hotel implements Serializable {
    *
    * @return the total satisfaction score as an integer.
    */
-  public long satisfacaoTotal() {
-    double animais = satisfacaoEntity(_animais.values());
-    double func = satisfacaoEntity(_funcionarios.values());
-    return Math.round(animais+func);
+  public int satisfacaoTotal() {
+    int animais = satisfacaoAnimais(_animais.values());
+    int func = satisfacaoFuncionarios(_funcionarios.values());
+    return animais+func;
   }
 
-  /**
-   * Calculates the total satisfaction from a collection of objects that implement the Satisfacao interface.
-   *
-   * @param lst a collection of objects that implement the Satisfacao interface
-   * @return the sum of satisfaction values from all objects in the collection
-   */
-  private double satisfacaoEntity(Collection<? extends Satisfacao> lst) {
-    double sum = 0;
-    for (Satisfacao s : lst) {
-       sum += s.satisfacao();
+  private int satisfacaoFuncionarios(Collection<Funcionario> lst) {
+    int sum = 0;
+    for (Funcionario f : lst) {
+       sum += f._satisfacao.satisfacao();
+    }
+    return sum;
+  }
+
+  private int satisfacaoAnimais(Collection<Animal> lst) {
+    int sum = 0;
+    for (Animal a: lst) {
+       sum += a._satisfacao.satisfacao();
     }
     return sum;
   }
@@ -220,7 +211,7 @@ public class Hotel implements Serializable {
     // Throws exception if animal does not exist
     Animal a = getAnimal(animalId);
     
-    return Math.round(a.satisfacao());
+    return a._satisfacao.satisfacao();
   }
 
   /* ************************************* *
@@ -304,25 +295,25 @@ public class Hotel implements Serializable {
   
 
 
-  /////////////////////////////////// DESCONTINUADO....
-  /**
-   * Removes a responsibility from a given employee.
-   *
-   * @param f the employee from whom the responsibility will be removed
-   * @param responsibilityId the ID of the responsibility to be removed
-   * @throws CoreNoResponsibilityException if the responsibility does not exist
-   */
-  public void removeResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
-    String responsibilityIdKey = lowerCase(responsibilityId);
-    // Verifies if the responsibility exists (either species or habitat)
-    Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
-    verifyResponsabilidade(f.getId(), responsibilityId, r);
-    // Calls the method of the employee that removes the responsibility
-    f.operaResponsabilidade(r, false);
+  // /////////////////////////////////// DESCONTINUADO....
+  // /**
+  //  * Removes a responsibility from a given employee.
+  //  *
+  //  * @param f the employee from whom the responsibility will be removed
+  //  * @param responsibilityId the ID of the responsibility to be removed
+  //  * @throws CoreNoResponsibilityException if the responsibility does not exist
+  //  */
+  // public void removeResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
+  //   String responsibilityIdKey = lowerCase(responsibilityId);
+  //   // Verifies if the responsibility exists (either species or habitat)
+  //   Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
+  //   verifyResponsabilidade(f.getId(), responsibilityId, r);
+  //   // Calls the method of the employee that removes the responsibility
+  //   f.operaResponsabilidade(r, false);
 
-    dirty();
-  }
-  ///////////////////////////////77
+  //   dirty();
+  // }
+  // ///////////////////////////////77
 
   public void removeResponsibility(String funcionarioId, String responsibilityId) throws CoreUnknownEmployeeKeyException, CoreNoResponsibilityException{
     String funcionarioIdKey = lowerCase(funcionarioId);
@@ -355,7 +346,7 @@ public class Hotel implements Serializable {
     // Throws exception if employee does not exist
     Funcionario f = getFuncionario(employeeId);
     
-    return Math.round(f.satisfacao());
+    return f._satisfacao.satisfacao();
   }
 
   /* ************************************* *
@@ -400,14 +391,21 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+  private int getInfluence(String inf) {
+    // set the enum by the string given
+    Influencia i = Influencia.valueOf(inf);
+    // gets the int associated with the enum
+    return i.getInfluencia();
+  }
 
-
-
-  // public void alteraInfluenciaEspecie(String habitatId, String especiesId, String ) {}
-
-
-
-
+  public void alteraInfluenciaEspecie(String habitatId, String speciesId, String inf) throws CoreUnknownHabitatKeyException, CoreUnknownSpeciesKeyException {
+    // Throws exception if habitat does not exist
+    Habitat h = getHabitat(habitatId);
+    // Throws exception if the species does not exist
+    Especie e = getEspecie(speciesId);
+    // set the influence of the species
+    h.alteraInfluencia(e, getInfluence(inf));
+  }
 
   /**
    * Registers a tree to a specified habitat.
