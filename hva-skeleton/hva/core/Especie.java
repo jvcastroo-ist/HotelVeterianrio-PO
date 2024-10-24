@@ -16,6 +16,11 @@ public class Especie extends Responsabilidade implements Comparable<Especie>{
     _animais = new ArrayList<>();    
   }
 
+  @Override
+  public String getType(){
+    return "ESP";
+  }
+
   /**
    * Adds an animal to the list of animals.
    *

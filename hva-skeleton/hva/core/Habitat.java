@@ -24,6 +24,11 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     _adequacao = new HashMap<>();
   }
 
+  @Override
+  public String getType(){
+    return "HAB";
+  }
+
   /**
    * Retrieves the area of the habitat.
    *

@@ -19,6 +19,9 @@ public class Tratador extends Funcionario{
     return sort(_habitats);
   }
 
+
+
+  //  DESCONTINUADO - DESCONTINUADO - DESCONTINUADO
   @Override
   public void operaResponsabilidade(Responsabilidade r, boolean atribui) {
     if (atribui) {
@@ -28,6 +31,33 @@ public class Tratador extends Funcionario{
     }
     r.operaFuncionario(atribui);
   }
+
+  @Override
+  public String getType(){
+    return "TRT";
+  }
+
+  @Override
+  public boolean isResponsabilidadeAtribuida(Responsabilidade r){
+    return _habitats.contains((Habitat)r);
+  }
+
+  @Override
+  public void atribuiResponsabilidade(Responsabilidade r){
+    if(!(isResponsabilidadeAtribuida(r))){
+      _habitats.add((Habitat)r);
+      r.operaFuncionario(true); // add +1 to responsability TRT
+    }
+    
+  }
+
+  @Override
+  public void retiraResponsabilidade(Responsabilidade r){
+    _habitats.remove((Habitat)r);  
+    r.operaFuncionario(false); // removes -1 to responsability TRT
+  }
+
+
 
   /**
    * Calculates the satisfaction level of the handler based on the work done in each habitat.
