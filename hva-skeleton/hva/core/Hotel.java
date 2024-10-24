@@ -156,9 +156,9 @@ public class Hotel implements Serializable {
    */
   public void registerAnimal(String animalId, String nome, String speciesId, String habitatId) throws CoreDuplicateAnimalKeyException, CoreUnknownSpeciesKeyException, CoreUnknownHabitatKeyException {  
     // Throws exception if species does not exist
-    Especie e = getEspecie(lowerCase(speciesId)); 
+    Especie e = getEspecie(speciesId); 
     // Throws exception if habitat does not exist
-    Habitat h = getHabitat(lowerCase(habitatId)); 
+    Habitat h = getHabitat(habitatId); 
     // Verifies Exceptions
     if (_animais.containsKey(lowerCase(animalId))) 
       throw new CoreDuplicateAnimalKeyException(animalId); // Se o animal já existir, lança exceção
@@ -184,9 +184,9 @@ public class Hotel implements Serializable {
    */
   public void transfereAnimal(String animalId, String habitatId) throws CoreUnknownAnimalKeyException, CoreUnknownHabitatKeyException{
     // Throws exception if animal does not exist
-    Animal a = getAnimal(lowerCase(animalId));
+    Animal a = getAnimal(animalId);
     // Throws exception if habitat does not exist
-    Habitat h = getHabitat(lowerCase(habitatId));
+    Habitat h = getHabitat(habitatId);
     // remover o animal do habitat onde está
     h.removeAnimal(a);
     // Transfere o animal para o habitat
@@ -206,7 +206,7 @@ public class Hotel implements Serializable {
    */
   public long calculaSatisfacaoAnimal(String animalId) throws CoreUnknownAnimalKeyException{
     // Throws exception if animal does not exist
-    Animal a = getAnimal(lowerCase(animalId));
+    Animal a = getAnimal(animalId);
     
     return Math.round(a.satisfacao());
   }
@@ -231,7 +231,7 @@ public class Hotel implements Serializable {
     // Verifies the type of employee and creates the object
     Funcionario f = (empType.equals("VET")) ? new Veterinario(employeeId, name) : new Tratador(employeeId, name);
     // Adds the employee to the hashmap
-    _funcionarios.put(employeeIdKey, f);
+    _funcionarios.put(lowerCase(employeeIdKey), f);
 
     dirty();
   }
@@ -254,7 +254,7 @@ public class Hotel implements Serializable {
    * @param responsibilityId the ID of the responsibility to be assigned
    * @throws CoreNoResponsibilityException if the responsibility does not exist
    */
-  public void addResponsibility(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
+  public void AUXaddResponsibility(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
     String responsibilityIdKey = lowerCase(responsibilityId);
     // Verifies if the responsibility exists (either species or habitat)
     Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
@@ -265,7 +265,34 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+
+  // // verificar se é preciso esta funcao, secalhar ja vem tudo direitinho
+  // private boolean verifyResponsibility(Funcionario f, Responsabilidade r) {
+  //   String typeF = f.getType();
+  //   String typeR = r.getType();
+
+  //   // verifica se Funcionario recebe Responsabilidade do seu tipo
+  //   // VET -> ESP | TRT -> HAB
+  //   return (typeF.equals("VET") && typeR.equals("ESP")) || (typeF.equals("TRT") && typeR.equals("HAB"));
+  // }
+
+  public void addResponsibility(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException{
+    String responsibilityIdKey = lowerCase(responsibilityId);
+    //String funcionarioIdKey = lowerCase(f.getId()); MUDAR ISTO RECEBER O STRING SO -> MUDAR NO PARSE
+    try {
+      Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? getEspecie(responsibilityId) : getHabitat(responsibilityId);
+      //if(verifyResponsibility(f, r))
+      f.atribuiResponsabilidade(r);
+      dirty();
+    } catch (CoreUnknownSpeciesKeyException | CoreUnknownHabitatKeyException e) {
+      throw new CoreNoResponsibilityException(f.getId(), responsibilityId);
+    }
+  }
+
   
+
+
+  /////////////////////////////////// DESCONTINUADO....
   /**
    * Removes a responsibility from a given employee.
    *
@@ -276,12 +303,33 @@ public class Hotel implements Serializable {
   public void removeResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
     String responsibilityIdKey = lowerCase(responsibilityId);
     // Verifies if the responsibility exists (either species or habitat)
-    Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
+    Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
     verifyResponsabilidade(f.getId(), responsibilityId, r);
     // Calls the method of the employee that removes the responsibility
     f.operaResponsabilidade(r, false);
 
     dirty();
+  }
+  ///////////////////////////////77
+
+  public void removeResponsibility(String funcionarioId, String responsibilityId) throws CoreUnknownEmployeeKeyException, CoreNoResponsibilityException{
+    String funcionarioIdKey = lowerCase(funcionarioId);
+    String responsibilityIdKey = lowerCase(responsibilityId);
+
+    Funcionario f = getFuncionario(funcionarioIdKey);
+    try {
+      Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? getEspecie(responsibilityId) : getHabitat(responsibilityId);
+
+      if(!(f.isResponsabilidadeAtribuida(r))){
+        throw new CoreNoResponsibilityException(funcionarioId, responsibilityId);
+      }
+
+      f.retiraResponsabilidade(r);
+      dirty();
+
+    } catch (CoreUnknownSpeciesKeyException | CoreUnknownHabitatKeyException e) {
+      throw new CoreNoResponsibilityException(funcionarioId, responsibilityId);
+    }
   }
 
   /**
@@ -293,7 +341,7 @@ public class Hotel implements Serializable {
    */
   public long calculaSatisfacaoFuncionario(String employeeId) throws CoreUnknownEmployeeKeyException{
     // Throws exception if employee does not exist
-    Funcionario f = getFuncionario(lowerCase(employeeId));
+    Funcionario f = getFuncionario(employeeId);
     
     return Math.round(f.satisfacao());
   }
@@ -319,7 +367,7 @@ public class Hotel implements Serializable {
     // Create the new habitat
     Habitat novoHabitat = new Habitat(habitatId, nome, area);
     // Puts it in the hashmap
-    _habitats.put(habitatIdKey, novoHabitat);
+    _habitats.put(lowerCase(habitatIdKey), novoHabitat);
 
     dirty();
   }
@@ -333,7 +381,7 @@ public class Hotel implements Serializable {
    */
   public void alteraAreaHabitat(String habitatId, int area) throws CoreUnknownHabitatKeyException{
     // Throws exception if habitat does not exist
-    Habitat h = getHabitat(lowerCase(habitatId));
+    Habitat h = getHabitat(habitatId);
     // Changes the area of the habitat
     h.setArea(area);
 
@@ -356,11 +404,11 @@ public class Hotel implements Serializable {
    * @param idsTree An array of tree IDs to be registered to the habitat.
    * @throws CoreUnknownHabitatKeyException If the habitat ID is not found.
    */
-  public void registerTree(String habitatId, String treeId) throws CoreUnknownHabitatKeyException {
+  public void registerTree(String habitatId, String treeId) throws CoreUnknownHabitatKeyException, CoreUnknownTreeKeyException {
     // Associates the trees to the habitat
-    Habitat hab = getHabitat(lowerCase(habitatId));
+    Habitat hab = getHabitat(habitatId);
     // Adds the tree to the habitat
-    Arvore a = getArvore(lowerCase(treeId));
+    Arvore a = getArvore(treeId);
     hab.addArvore(a);
     // Print the new tree
     a.toString();
@@ -386,13 +434,13 @@ public class Hotel implements Serializable {
     // Verifies the type of tree and creates the object
     Arvore a = (type.equals("CADUCA")) ? new ArvoreCaduca(treeId, name, age, dificuldadeBase, _estacaoAno) : new ArvorePerene(treeId, name, age, dificuldadeBase, _estacaoAno);
     // Puts it in the hashmap
-    _arvores.put(treeIdKey, a);
+    _arvores.put(lowerCase(treeIdKey), a);
 
     dirty();
   }
 
   public List<Animal> mostraAnimaisPorHabitat(String habitatId) throws CoreUnknownHabitatKeyException{
-    Habitat h = getHabitat(lowerCase(habitatId));
+    Habitat h = getHabitat(habitatId);
     return h.getAnimals();
   }
 
@@ -405,7 +453,7 @@ public class Hotel implements Serializable {
    */
   public List<Arvore> mostraArvorePorHabitat(String habitatId) throws CoreUnknownHabitatKeyException{
     // Verefies if the habitat exists
-    Habitat h = getHabitat(lowerCase(habitatId));
+    Habitat h = getHabitat(habitatId);
     // returns the list of trees sorted by id.
     return h.getArvores();
   }
@@ -433,14 +481,14 @@ public class Hotel implements Serializable {
       throw new CoreDuplicateVaccineKeyException(vaccineId);
     for (String id : speciesIds) {
       // Verefies if the species exists
-      Especie e = getEspecie(lowerCase(id));  
+      Especie e = getEspecie(id);  
       // adds it to the list 
       species.add(e);
     }
     // Criates a new vaccine
     Vacina v = new Vacina(vaccineId, nome, species);
     // Adds the vaccine to the hashmap
-    _vacinas.put(vaccineIdKey, v);
+    _vacinas.put(lowerCase(vaccineIdKey), v);
 
     dirty();
   }
@@ -458,11 +506,11 @@ public class Hotel implements Serializable {
    * @throws CoreWrongVaccineException If the vaccine causes an abnormal reaction in the animal.
    */
   public void vacinarAnimal(String vaccineId, String vetId,String animalId) throws CoreUnknownVaccineKeyException, CoreUnknownVeterinarianKeyException, CoreUnknownAnimalKeyException, CoreVeterinarianNotAuthorizedException, CoreWrongVaccineException {
-    Vacina v = getVacina(lowerCase(vaccineId));
-    Animal a = getAnimal(lowerCase(animalId));
+    Vacina v = getVacina(vaccineId);
+    Animal a = getAnimal(animalId);
     try {
       // Verefies if the veterinarian exists 
-      Funcionario f = getFuncionario(lowerCase(vetId));
+      Funcionario f = getFuncionario(vetId);
       // Checks if f is of type Veterinario
       verificaVeterinario(f);
       // Cast to Veterinario
@@ -482,6 +530,7 @@ public class Hotel implements Serializable {
 
   }
 
+  // VERIFICAR ESTE GETID - NULL POINT
   private void verificaVeterinario(Funcionario f) throws CoreUnknownVeterinarianKeyException {
     if (!(f instanceof Veterinario)) 
       throw new CoreUnknownVeterinarianKeyException(f.getId());
@@ -513,7 +562,7 @@ public class Hotel implements Serializable {
    */
   public List<Animal> consultaAnimaisPorHabitat(String habitatId) throws CoreUnknownHabitatKeyException {
     // Verefies if the habitat exists
-    Habitat h = getHabitat(lowerCase(habitatId));
+    Habitat h = getHabitat(habitatId);
     // returns the list of animals sorted by the id
     return h.getAnimals();
   }
@@ -527,7 +576,7 @@ public class Hotel implements Serializable {
    */
   public List<RegistoVacina> consultaRegistoPorAnimal(String animalId) throws CoreUnknownAnimalKeyException {
     // Verefies if the animal exists
-    Animal a = getAnimal(lowerCase(animalId));
+    Animal a = getAnimal(animalId);
     // returns the list of records of the animal
     return a.getRegistos();
   }
@@ -543,7 +592,7 @@ public class Hotel implements Serializable {
   public List<RegistoVacina> consultaAtosMedicos(String vetId) throws CoreUnknownEmployeeKeyException, CoreUnknownVeterinarianKeyException{
     try {
       // Verefies if the veterinarian exists 
-      Funcionario f = getFuncionario(lowerCase(vetId));
+      Funcionario f = getFuncionario(vetId);
       // Checks if f is of type Veterinario
       verificaVeterinario(f);
       // Cast to Veterinario
@@ -591,7 +640,7 @@ public class Hotel implements Serializable {
       // Throws exception if it already exists
       throw new CoreDuplicateSpeciesKeyException(speciesId);
     Especie e = new Especie(speciesId, name);
-    _especies.put(speciesIdKey, e);
+    _especies.put(lowerCase(speciesIdKey), e);
 
     dirty();
   }
@@ -672,7 +721,7 @@ public class Hotel implements Serializable {
    * @throws CoreUnknownEmployeeKeyException If no employee is found with the provided key.
    */
   public Funcionario getFuncionario(String key) throws CoreUnknownEmployeeKeyException{
-    Funcionario f = _funcionarios.get(key);
+    Funcionario f = _funcionarios.get(lowerCase(key));
     if (f == null)
       throw new CoreUnknownEmployeeKeyException(key); // Se o funcionario não existir, lança exceção 
     return f;  
@@ -685,8 +734,12 @@ public class Hotel implements Serializable {
    * @param key the key associated with the desired Arvore object
    * @return the Arvore object associated with the given key
    */
-  public Arvore getArvore(String key) {
-    return _arvores.get(key);
+  public Arvore getArvore(String key) throws CoreUnknownTreeKeyException {
+    Arvore a = _arvores.get(lowerCase(key));
+    if( a == null){
+      throw new CoreUnknownTreeKeyException(key);
+    }
+    return a;
   }
 
   /**
@@ -697,7 +750,7 @@ public class Hotel implements Serializable {
    * @throws CoreUnknownHabitatKeyException if no habitat is found for the given key
    */
   public Habitat getHabitat(String key) throws CoreUnknownHabitatKeyException{
-    Habitat h = _habitats.get(key);
+    Habitat h = _habitats.get(lowerCase(key));
     if (h == null)
       throw new CoreUnknownHabitatKeyException(key); // Se o habitat não existir, lança exceção 
     return h;
@@ -711,7 +764,7 @@ public class Hotel implements Serializable {
    * @throws CoreUnknownAnimalKeyException if no animal is found with the provided key.
    */
   public Animal getAnimal(String key) throws CoreUnknownAnimalKeyException{
-    Animal a = _animais.get(key);
+    Animal a = _animais.get(lowerCase(key));
     if (a == null)
       throw new CoreUnknownAnimalKeyException(key); // Se o animal não existir, lança exceção 
     return a;
@@ -725,7 +778,7 @@ public class Hotel implements Serializable {
    * @throws CoreUnknownSpeciesKeyException if no species is found for the given key
    */
   public Especie getEspecie(String key) throws CoreUnknownSpeciesKeyException{
-    Especie e = _especies.get(key);
+    Especie e = _especies.get(lowerCase(key));
     if(e == null) {
       throw new CoreUnknownSpeciesKeyException(key); // Se a espécie não existir, lança exceção que cria a especie
     }
@@ -740,7 +793,7 @@ public class Hotel implements Serializable {
    * @return the Vacina object corresponding to the specified key, or null if no such object exists
    */
   public Vacina getVacina(String key) throws CoreUnknownVaccineKeyException {
-    Vacina v = _vacinas.get(key);
+    Vacina v = _vacinas.get(lowerCase(key));
     if(v == null) {
       throw new CoreUnknownVaccineKeyException(key); // Se a vacina não existir, lança exceção que cria a especie
     }
@@ -782,6 +835,10 @@ public class Hotel implements Serializable {
    */
   public Collection<Vacina> getVaccines(){
     return _vacinas.values();
+  }
+
+  public List<RegistoVacina> getRegistoVacinas(){
+    return _registoVacinas;
   }
 
   /**

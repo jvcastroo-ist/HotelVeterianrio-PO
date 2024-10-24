@@ -36,6 +36,8 @@ public class Veterinario extends Funcionario {
     return _registoVacinas;
   }
 
+
+  // DESCONTINUADO - DESCONTINUADO - DESCONTINUADO
   @Override
   public void operaResponsabilidade(Responsabilidade r, boolean atribui) {
     if (atribui) {
@@ -45,6 +47,31 @@ public class Veterinario extends Funcionario {
     }
     r.operaFuncionario(atribui);
   }
+
+  @Override
+  public String getType(){
+    return "VET";
+  }
+
+  @Override
+  public boolean isResponsabilidadeAtribuida(Responsabilidade r){
+    return _especies.contains((Especie)r);
+  }
+
+  @Override
+  public void atribuiResponsabilidade(Responsabilidade r){
+    if(!(isResponsabilidadeAtribuida(r))){
+      _especies.add((Especie)r);
+      r.operaFuncionario(true); // add +1 to responsability VET
+    }
+  }
+
+  @Override
+  public void retiraResponsabilidade(Responsabilidade r){
+    _especies.remove((Especie)r); 
+    r.operaFuncionario(false);  // removes -1 to responsability VET
+  }
+
 
   /**
    * Adds a new vaccination record to the list of vaccination records.

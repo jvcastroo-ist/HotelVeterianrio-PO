@@ -1,8 +1,10 @@
 package hva.app.vaccine;
 
 import hva.core.Hotel;
+import hva.core.RegistoVacina;
+import java.util.List;
 import pt.tecnico.uilib.menus.Command;
-import pt.tecnico.uilib.menus.CommandException;
+//import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
 
 /**
@@ -16,6 +18,11 @@ class DoShowVaccinations extends Command<Hotel> {
   
   @Override
   protected final void execute() {
-    //FIXME implement command
+    List<RegistoVacina> registoVacinas = _receiver.getRegistoVacinas();
+
+    for(RegistoVacina rv : registoVacinas){
+      _display.addLine(rv.toString());
+    }
+    _display.display();
   }
 }

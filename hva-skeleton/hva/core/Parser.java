@@ -10,6 +10,7 @@ import hva.core.exception.CoreNoResponsibilityException;
 import hva.core.exception.CoreUnknownEmployeeKeyException;
 import hva.core.exception.CoreUnknownHabitatKeyException;
 import hva.core.exception.CoreUnknownSpeciesKeyException;
+import hva.core.exception.CoreUnknownTreeKeyException;
 import hva.core.exception.UnrecognizedEntryException;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -234,7 +235,7 @@ public class Parser {
           _hotel.registerTree(id, tree);
         }
       }
-    } catch (CoreDuplicateHabitatKeyException | CoreUnknownHabitatKeyException e) {
+    } catch (CoreDuplicateHabitatKeyException | CoreUnknownHabitatKeyException | CoreUnknownTreeKeyException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }

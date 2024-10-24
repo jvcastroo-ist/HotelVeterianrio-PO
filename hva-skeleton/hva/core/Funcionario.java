@@ -24,6 +24,15 @@ public abstract class Funcionario extends HotelEntity implements Satisfacao, Com
    */
   public abstract void operaResponsabilidade(Responsabilidade r, boolean atribui);
   
+
+  public abstract void atribuiResponsabilidade(Responsabilidade r);
+  public abstract void retiraResponsabilidade(Responsabilidade r);
+  public abstract boolean isResponsabilidadeAtribuida(Responsabilidade r);
+  public abstract String getType();
+
+
+
+
   @Override
   public abstract double satisfacao();
 

@@ -22,6 +22,11 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     _animais = new ArrayList<>();
   }
 
+  @Override
+  public String getType(){
+    return "HAB";
+  }
+
   /**
    * Retrieves the area of the habitat.
    *
