@@ -1,5 +1,5 @@
-*** testsBoth/9-remove-add-zookeeper-responsibility.out	2024-10-25 21:51:06.000000000 +0100
---- testsBoth/9-remove-add-zookeeper-responsibility.outhyp	2024-10-25 22:11:37.578025876 +0100
+*** testsBoth/9-remove-add-zookeeper-responsibility.out	2024-10-25 22:32:57.649520663 +0100
+--- testsBoth/9-remove-add-zookeeper-responsibility.outhyp	2024-10-25 23:24:35.582280619 +0100
 ***************
 *** 135,141 ****
   10 - Consultas
