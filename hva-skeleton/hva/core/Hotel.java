@@ -190,7 +190,7 @@ public class Hotel implements Serializable {
     // Throws exception if habitat does not exist
     Habitat h = getHabitat(habitatId);
     // remover o animal do habitat onde está
-    h.removeAnimal(a);
+    a.getHabitat().removeAnimal(a);
     // Transfere o animal para o habitat
     a.transfereAnimal(h);
     // Adiciona animal ao novo habitat
