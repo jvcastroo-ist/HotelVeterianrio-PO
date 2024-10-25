@@ -116,7 +116,7 @@ public class Hotel implements Serializable {
   private int satisfacaoFuncionarios(Collection<Funcionario> lst) {
     int sum = 0;
     for (Funcionario f : lst) {
-       sum += f._satisfacao.satisfacao();
+       sum += f.getSatisfacao().satisfacao();
     }
     return sum;
   }
@@ -124,7 +124,7 @@ public class Hotel implements Serializable {
   private int satisfacaoAnimais(Collection<Animal> lst) {
     int sum = 0;
     for (Animal a: lst) {
-       sum += a._satisfacao.satisfacao();
+       sum += a.getSatisfacao().satisfacao();
     }
     return sum;
   }
@@ -210,7 +210,7 @@ public class Hotel implements Serializable {
     // Throws exception if animal does not exist
     Animal a = getAnimal(animalId);
     
-    return a._satisfacao.satisfacao();
+    return a.getSatisfacao().satisfacao();
   }
 
   /* ************************************* *
@@ -345,7 +345,7 @@ public class Hotel implements Serializable {
     // Throws exception if employee does not exist
     Funcionario f = getFuncionario(employeeId);
     
-    return f._satisfacao.satisfacao();
+    return f.getSatisfacao().satisfacao();
   }
 
   /* ************************************* *
@@ -650,8 +650,7 @@ public class Hotel implements Serializable {
       throw new CoreDuplicateSpeciesKeyException(speciesId);
     }
 
-    isNameInSpecie(name);
-    
+    isNameInSpecies(name);
     
     Especie e = new Especie(speciesId, name);
     _especies.put(lowerCase(speciesIdKey), e);
@@ -659,7 +658,7 @@ public class Hotel implements Serializable {
     dirty();
   }
 
-  private void isNameInSpecie(String name) throws CoreDuplicateSpeciesNameException {
+  private void isNameInSpecies(String name) throws CoreDuplicateSpeciesNameException {
     List<Especie> especies = new ArrayList<>(getSpecies());
     for (Especie e : especies) {
       if (e.getNome().equalsIgnoreCase(name)) {

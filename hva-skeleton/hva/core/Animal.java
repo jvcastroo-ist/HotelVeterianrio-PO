@@ -52,6 +52,10 @@ public class Animal extends HotelEntity implements Comparable<Animal> {
     return _adequacao;
   }
 
+  public Satisfacao getSatisfacao(){
+    return _satisfacao;
+  }
+
   /**
    * Retrieves the list of vaccination records for the animal.
    *

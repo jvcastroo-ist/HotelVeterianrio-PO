@@ -31,6 +31,10 @@ public abstract class Funcionario extends HotelEntity implements Comparable<Func
   public abstract boolean isResponsabilidadeAtribuida(Responsabilidade r);
   public abstract String getType();
 
+  public Satisfacao getSatisfacao(){
+    return _satisfacao;
+  }
+
   /**
    * Generates a concatenated string of IDs from a collection of Responsabilidade objects.
    *

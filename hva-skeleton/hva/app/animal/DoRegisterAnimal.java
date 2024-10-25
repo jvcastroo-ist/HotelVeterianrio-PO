@@ -46,8 +46,8 @@ class DoRegisterAnimal extends Command<Hotel> {
         _receiver.registerAnimal(idAnimal, nameAnimal, idSpecie, idHabitat);
       } catch (CoreDuplicateSpeciesKeyException | CoreDuplicateSpeciesNameException |  CoreDuplicateAnimalKeyException|
               CoreUnknownSpeciesKeyException | CoreUnknownHabitatKeyException excecao) {
-        
-              }  
+        System.out.println("NOME ESPÉCIE REPETIDA");
+      }  
     } catch (CoreUnknownHabitatKeyException h){
       throw new UnknownHabitatKeyException(h.getId());
     }
