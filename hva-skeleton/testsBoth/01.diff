@@ -1,0 +1,19 @@
+*** testsBoth/01.out	2024-10-25 22:32:57.647520667 +0100
+--- testsBoth/01.outhyp	2024-10-25 23:39:26.435005077 +0100
+***************
+*** 150,156 ****
+  Escolha uma opção: 1
+  VACINA|VA1|Tétano|0
+  VACINA|VA10|Febre|0|E6,E7,E8,E9
+! VACINA|va11|Gripe|0|E3,E4,E5,e13
+  VACINA|VA2|Raiva|0|E1,E2
+  Gestão de Vacinas
+  1 - Visualizar todas as vacinas
+--- 150,156 ----
+  Escolha uma opção: 1
+  VACINA|VA1|Tétano|0
+  VACINA|VA10|Febre|0|E6,E7,E8,E9
+! VACINA|va11|Gripe|0|e13,E3,E4,E5
+  VACINA|VA2|Raiva|0|E1,E2
+  Gestão de Vacinas
+  1 - Visualizar todas as vacinas

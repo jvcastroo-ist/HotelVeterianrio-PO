@@ -1,7 +1,6 @@
 package hva.core;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Vacina extends HotelEntity implements Comparable<Vacina>{
   private List<Especie> _especies;
@@ -79,9 +78,13 @@ public class Vacina extends HotelEntity implements Comparable<Vacina>{
    * @return a string containing the IDs of the species, separated by commas and prefixed with a "|".
    *         If the list is empty, returns an empty string.
    */
-  private String idEspecies(List<String> e) {
+  private String idEspecies(List<Especie> e) {
+    List<String> ids = new ArrayList<>();
     if (e.isEmpty()) {return "";}
-    return "|" + String.join(",", e);
+    for (Especie especie : e) { 
+      ids.add(especie.getId());
+    }
+    return "|" + String.join(",", ids);
   }
 
   @Override
@@ -97,12 +100,6 @@ public class Vacina extends HotelEntity implements Comparable<Vacina>{
    */
   @Override
   public String toString(){
-    List<String> ids = _especies.stream()
-                                  .map(Especie::getId)
-                                  .collect(Collectors.toList());
-    
-    // Ordena a lista usando uma instância do comparador
-    ids.sort(new NaturalCaseInsensitiveComparator());
-    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(ids));
+    return String.format("VACINA|%s|%s|%d%s", getId(), getNome(), _registosVacina.size(), idEspecies(getEspecies()));
   }  
 }
