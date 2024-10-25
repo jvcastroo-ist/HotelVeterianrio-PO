@@ -1,6 +1,6 @@
 package hva.core;
 
-public enum Estacao {
+public enum Estacao{
   PRIMAVERA {
     @Override
     public EstacaoState criarEstacaoStateCaduca() {
@@ -73,6 +73,3 @@ public enum Estacao {
   }
 
 }
-
-    
-

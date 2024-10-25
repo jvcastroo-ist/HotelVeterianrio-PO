@@ -1,5 +1,7 @@
 package hva.core;
 
-public interface Satisfacao {
+import java.io.Serializable;
+
+public interface Satisfacao extends Serializable{
   public int satisfacao();
 }
