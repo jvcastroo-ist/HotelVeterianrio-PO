@@ -1,6 +1,7 @@
 package hva.core;
 
 import java.io.*;
+import java.util.*;
 
 public class RegistoVacina implements Serializable{
     private final Vacina _vacina;
@@ -58,17 +59,27 @@ public class RegistoVacina implements Serializable{
     }
 
     private int caracteresEmComum(String str1, String str2) {
-      int count = 0;
-      int length = Math.min(str1.length(), str2.length());
+      str1 = str1.toLowerCase();
+      str2 = str2.toLowerCase();
+      Map<Character, Integer> contador1 = new HashMap<>();
 
-      for (int i = 0; i < length; i++) {
-          if (str1.charAt(i) == str2.charAt(i)) {
-              count++;
+      // Conta os caracteres de str1
+      for (char c : str1.toCharArray()) {
+          contador1.put(c, contador1.getOrDefault(c, 0) + 1);
+      }
+
+      int totalComum = 0;
+
+      // Conta os caracteres comuns em str2
+      for (char c : str2.toCharArray()) {
+          if (contador1.containsKey(c) && contador1.get(c) > 0) {
+              totalComum++;
+              contador1.put(c, contador1.get(c) - 1);
           }
       }
 
-      return count;
-  }
+      return totalComum;
+    }
 
     /**
      * Calculates the maximum damage based on the species names.
@@ -78,6 +89,10 @@ public class RegistoVacina implements Serializable{
      * @return the maximum damage calculated.
      */
     public int calculaDano() {
+      // verifica se a especie está dentro das especies da vacina
+      if (_vacina.getEspecies().contains(_animal.getEspecie())){
+        return 0;
+      }
       int maxDano = 0;
     
       for (Especie e : _vacina.getEspecies()) {
