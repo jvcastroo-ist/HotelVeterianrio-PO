@@ -6,7 +6,6 @@ import hva.core.exception.UnavailableFileException;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command to open a file.
@@ -34,18 +33,13 @@ class DoOpenFile extends Command<HotelManager> {
       ds.execute();
     }
 
-    Form request = new Form();
-    request.addStringField("fileName", Prompt.openFile());
-    request.parse();
+
+    String fileName = Form.requestString(Prompt.openFile());
 
     try {
-      String fileName = request.stringField("fileName");
       _receiver.load(fileName);
-
       } catch (UnavailableFileException efe) {
         throw new FileOpenFailedException(efe);
       }
   }
 }
-
-//efe.getFilename()

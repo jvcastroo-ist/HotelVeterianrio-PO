@@ -7,7 +7,6 @@ import hva.core.exception.CoreUnknownAnimalKeyException;
 import hva.core.exception.CoreUnknownHabitatKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Transfers a given animal to a new habitat of this zoo hotel.

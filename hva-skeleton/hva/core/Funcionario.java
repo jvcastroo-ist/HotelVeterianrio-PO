@@ -14,14 +14,6 @@ public abstract class Funcionario extends HotelEntity implements Comparable<Func
   protected Funcionario(String id, String nome) {
    super(id, nome);
   }
-
-  /**
-   * Operates on a given responsibility for the employee.
-   *
-   * @param r the responsibility to be operated on
-   * @param atribui a boolean indicating whether to assign (true) or remove (false) the responsibility
-   */
-  public abstract void operaResponsabilidade(Responsabilidade r, boolean atribui);
   
   public abstract void atribuiResponsabilidade(Responsabilidade r);
 
@@ -29,7 +21,6 @@ public abstract class Funcionario extends HotelEntity implements Comparable<Func
   
   public abstract boolean isResponsabilidadeAtribuida(Responsabilidade r);
   
-  public abstract String getType();
 
   /**
    * Retrieves the satisfaction level of the employee.

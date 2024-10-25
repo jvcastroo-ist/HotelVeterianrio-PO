@@ -7,7 +7,7 @@ import hva.core.exception.CoreDuplicateVaccineKeyException;
 import hva.core.exception.CoreUnknownSpeciesKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
+
 
 /**
  * Apply a vaccine to a given animal.

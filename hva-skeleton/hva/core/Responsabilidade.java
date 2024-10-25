@@ -26,11 +26,4 @@ public abstract class Responsabilidade extends HotelEntity {
   public void operaFuncionario(boolean adiciona) {
     _numFuncionarios += (adiciona) ? 1 : -1;
   }
-
-  /**
-   * Retrieves the type of the responsibility.
-   *
-   * @return a String representing the type of the responsibility.
-   */
-  public abstract String getType();
 }

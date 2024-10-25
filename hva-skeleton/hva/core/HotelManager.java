@@ -3,8 +3,6 @@ package hva.core;
 import hva.core.exception.*;
 import java.io.*;
 
-// FIXME import classes
-
 /**
  * Class representing the manager of this application. It manages the current
  * zoo hotel.
@@ -24,6 +22,24 @@ public class HotelManager {
   public void newHotel() {
     _hotel = new Hotel();  // Cria uma nova instância do hotel
     _filename = "";        // Reseta o nome do arquivo associado, se houver
+  }
+
+  /**
+   * Advances the current season in the hotel management system.
+   *
+   * @return an integer representing the result of advancing the season.
+   */
+  public int advanceSeason(){
+    return _hotel.avancaEstacao();
+  }
+
+  /**
+   * Calculates and returns the global satisfaction level of the hotel.
+   *
+   * @return the total satisfaction score of the hotel.
+   */
+  public int globalSatisfaction(){
+    return _hotel.satisfacaoTotal();
   }
   
   /**

@@ -1,7 +1,7 @@
 package hva.app.animal;
 
-import hva.core.Animal;     // verificar estes dois imports
-import hva.core.Hotel;       // verificar estes dois imports
+import hva.core.Animal;
+import hva.core.Hotel; 
 import java.util.List;
 import pt.tecnico.uilib.menus.Command;
 

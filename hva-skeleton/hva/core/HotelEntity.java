@@ -47,4 +47,11 @@ public abstract class HotelEntity implements Serializable{
   protected <T extends HotelEntity> List<T> sort(List<T> list) {
     return list.stream().sorted((o1, o2) -> o1.getId().compareToIgnoreCase(o2.getId())).collect(Collectors.toList());
   }
+
+  //Tirar dps
+  public <T extends Comparable<? super T>> List<T> sortIds(Collection<T> items) {
+    List<T> sortedItems = new ArrayList<>(items);
+    Collections.sort(sortedItems); // Usa o método compareTo da interface Comparable
+    return Collections.unmodifiableList(sortedItems);
+  }
 }

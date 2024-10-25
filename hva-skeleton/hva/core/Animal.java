@@ -21,6 +21,7 @@ public class Animal extends HotelEntity implements Comparable<Animal> {
     super(id, nome);
     _especie = especie;
     _habitat = habitat;
+    _adequacao = 0;
     _registoVacinacao = new ArrayList<>();
     _satisfacao = new SatisfacaoAnimal(this);
     }
@@ -107,11 +108,6 @@ public class Animal extends HotelEntity implements Comparable<Animal> {
     _adequacao = 0;
   }
 
-  @Override
-  public int compareTo(Animal a){
-    return getId().compareTo(a.getId());
-  }
-
   /**
    * Retrieves the vaccination record of the animal.
    *
@@ -125,6 +121,11 @@ public class Animal extends HotelEntity implements Comparable<Animal> {
       danos.add(rv.getDano().toString());
     }
       return String.join(",", danos);
+  }
+
+  @Override
+  public int compareTo(Animal a){
+    return getId().compareToIgnoreCase(a.getId());
   }
 
   /**

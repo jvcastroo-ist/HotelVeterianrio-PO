@@ -24,6 +24,7 @@ public class Hotel implements Serializable {
   private Map<String, Vacina> _vacinas;
   private List<RegistoVacina> _registoVacinas;
 
+
   /**
    * The Hotel class represents a veterinary hotel 
    * It provides methods to register, retrieve, and manipulate these entities, as well as to manage the current season and track modifications.
@@ -42,8 +43,9 @@ public class Hotel implements Serializable {
     _registoVacinas = new ArrayList<>();
   }
 
+
   /* ************************************* *
-   * ************ MENU PRINCIPAL ********* *
+   * *********** MENU PRINCIPAL ********** *
    * ************************************* */
 
   /**
@@ -55,6 +57,7 @@ public class Hotel implements Serializable {
   public boolean isModified() {
     return this._modified;
   }
+
 
   /**
    * Turn the dirty flag off to indicate the warehouse state has been saved.
@@ -72,6 +75,7 @@ public class Hotel implements Serializable {
     this._modified = true;
   }
   
+
   /**
    * Advances the current season to the next one.
    * Updates the internal state to reflect the change and marks the object as modified.
@@ -88,6 +92,7 @@ public class Hotel implements Serializable {
     return _estacaoAno.ordinal();
   }
 
+
   /**
    * Increases the age of all trees in the collection and sets their season to the current season.
    * This method iterates over all trees in the collection and performs two actions on each tree:
@@ -101,6 +106,7 @@ public class Hotel implements Serializable {
     }
   }
 
+
   /**
    * Calculates the total satisfaction score by summing the satisfaction scores 
    * of animals and employees, and then rounding the result to the nearest integer.
@@ -113,6 +119,13 @@ public class Hotel implements Serializable {
     return animais+func;
   }
 
+
+  /**
+   * Calculates the total satisfaction of all employees in the given collection.
+   *
+   * @param lst a collection of Funcionario objects whose satisfaction levels are to be summed.
+   * @return the total satisfaction score of all employees in the collection.
+   */
   private int satisfacaoFuncionarios(Collection<Funcionario> lst) {
     int sum = 0;
     for (Funcionario f : lst) {
@@ -121,6 +134,13 @@ public class Hotel implements Serializable {
     return sum;
   }
 
+
+  /**
+   * Calculates the total satisfaction of a collection of animals.
+   *
+   * @param lst the collection of animals whose satisfaction is to be calculated
+   * @return the sum of the satisfaction levels of all animals in the collection
+   */
   private int satisfacaoAnimais(Collection<Animal> lst) {
     int sum = 0;
     for (Animal a: lst) {
@@ -128,6 +148,7 @@ public class Hotel implements Serializable {
     }
     return sum;
   }
+
 
   /**
    * Converts the given string to lowercase.
@@ -139,12 +160,14 @@ public class Hotel implements Serializable {
     return str.toLowerCase();
   }
 
+
+
   /* ************************************* *
    * ************ MENU ANIMAL ************ *
    * ************************************* */
 
   
-  
+
   /**
    * Registers a new animal in the hotel system.
    *
@@ -176,6 +199,7 @@ public class Hotel implements Serializable {
     dirty();
   } 
 
+
   /**
    * Transfers an animal to a new habitat.
    *
@@ -199,6 +223,7 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+
   /**
    * Calculates the satisfaction level of an animal.
    *
@@ -213,10 +238,14 @@ public class Hotel implements Serializable {
     return a.getSatisfacao().satisfacao();
   }
 
+
+
   /* ************************************* *
    * ********* MENU FUNCIONÁRIO ********** *
    * ************************************* */
   
+
+
   /**
    * Registers a new employee in the system.
    *
@@ -238,87 +267,26 @@ public class Hotel implements Serializable {
     dirty();
   }
 
-  /**
-   * Verifies if the given responsibility is not null.
-   *
-   * @param r the responsibility to be verified
-   * @throws CoreNoResponsibilityException if the responsibility is null
-   */
-  private void verifyResponsabilidade(String employeeId, String responsabilityId, Responsabilidade r) throws CoreNoResponsibilityException {
-    if(r == null)
-      throw new CoreNoResponsibilityException(employeeId, responsabilityId);
-  }
 
-  /**
-   * Adds a responsibility to a given employee.
-   *
-   * @param f the employee to whom the responsibility will be assigned
-   * @param responsibilityId the ID of the responsibility to be assigned
-   * @throws CoreNoResponsibilityException if the responsibility does not exist
-   */
-  public void AUXaddResponsibility(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
+  public void addResponsibility(String funcionarioId, String responsibilityId) throws CoreUnknownEmployeeKeyException, CoreNoResponsibilityException{
     String responsibilityIdKey = lowerCase(responsibilityId);
-    // Verifies if the responsibility exists (either species or habitat)
-    Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityIdKey) : _habitats.get(responsibilityIdKey);
-    verifyResponsabilidade(f.getId(), responsibilityId, r);
-    // Calls the method of the employee that assigns the responsibility
-    f.operaResponsabilidade(r, true);
-    
-    dirty();
-  }
+    Funcionario f = getFuncionario(funcionarioId);
 
-
-  // // verificar se é preciso esta funcao, secalhar ja vem tudo direitinho
-  // private boolean verifyResponsibility(Funcionario f, Responsabilidade r) {
-  //   String typeF = f.getType();
-  //   String typeR = r.getType();
-
-  //   // verifica se Funcionario recebe Responsabilidade do seu tipo
-  //   // VET -> ESP | TRT -> HAB
-  //   return (typeF.equals("VET") && typeR.equals("ESP")) || (typeF.equals("TRT") && typeR.equals("HAB"));
-  // }
-
-  public void addResponsibility(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException{
-    String responsibilityIdKey = lowerCase(responsibilityId);
-    //String funcionarioIdKey = lowerCase(f.getId()); MUDAR ISTO RECEBER O STRING SO -> MUDAR NO PARSE
     try {
       Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? getEspecie(responsibilityId) : getHabitat(responsibilityId);
-      //if(verifyResponsibility(f, r))
+
       f.atribuiResponsabilidade(r);
       dirty();
     } catch (CoreUnknownSpeciesKeyException | CoreUnknownHabitatKeyException e) {
-      throw new CoreNoResponsibilityException(f.getId(), responsibilityId);
+      throw new CoreNoResponsibilityException(funcionarioId, responsibilityId);
     }
   }
 
-  
-
-
-  // /////////////////////////////////// DESCONTINUADO....
-  // /**
-  //  * Removes a responsibility from a given employee.
-  //  *
-  //  * @param f the employee from whom the responsibility will be removed
-  //  * @param responsibilityId the ID of the responsibility to be removed
-  //  * @throws CoreNoResponsibilityException if the responsibility does not exist
-  //  */
-  // public void removeResponsibilidade(Funcionario f, String responsibilityId) throws CoreNoResponsibilityException {
-  //   String responsibilityIdKey = lowerCase(responsibilityId);
-  //   // Verifies if the responsibility exists (either species or habitat)
-  //   Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? _especies.get(responsibilityId) : _habitats.get(responsibilityId);
-  //   verifyResponsabilidade(f.getId(), responsibilityId, r);
-  //   // Calls the method of the employee that removes the responsibility
-  //   f.operaResponsabilidade(r, false);
-
-  //   dirty();
-  // }
-  // ///////////////////////////////77
 
   public void removeResponsibility(String funcionarioId, String responsibilityId) throws CoreUnknownEmployeeKeyException, CoreNoResponsibilityException{
-    String funcionarioIdKey = lowerCase(funcionarioId);
     String responsibilityIdKey = lowerCase(responsibilityId);
 
-    Funcionario f = getFuncionario(funcionarioIdKey);
+    Funcionario f = getFuncionario(funcionarioId);
     try {
       Responsabilidade r = (_especies.containsKey(responsibilityIdKey)) ? getEspecie(responsibilityId) : getHabitat(responsibilityId);
 
@@ -334,6 +302,7 @@ public class Hotel implements Serializable {
     }
   }
 
+
   /**
    * Calculates the satisfaction level of an employee.
    *
@@ -348,10 +317,13 @@ public class Hotel implements Serializable {
     return f.getSatisfacao().satisfacao();
   }
 
+
+
   /* ************************************* *
    * *********** MENU HABITAT ************ *
    * ************************************* *
     
+
    
   /**
    * Registers a new habitat in the hotel.
@@ -361,7 +333,7 @@ public class Hotel implements Serializable {
    * @param area The area of the habitat.
    * @throws CoreDuplicateHabitatKeyException If a habitat with the given ID already exists.
    */
-  public void registerHabitat(String habitatId, String nome, int area/*adicionar vetor arvores */) throws CoreDuplicateHabitatKeyException {
+  public void registerHabitat(String habitatId, String nome, int area) throws CoreDuplicateHabitatKeyException {
     String habitatIdKey = lowerCase(habitatId);
     // Verify if the habitat already exists
     if (_habitats.containsKey(habitatIdKey)) 
@@ -373,6 +345,7 @@ public class Hotel implements Serializable {
 
     dirty();
   }
+
 
   /**
    * Changes the area of a specified habitat.
@@ -390,12 +363,14 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+
   private int getInfluence(String inf) {
     // set the enum by the string given
     Influencia i = Influencia.valueOf(inf);
     // gets the int associated with the enum
     return i.getInfluencia();
   }
+
 
   public void alteraInfluenciaEspecie(String habitatId, String speciesId, String inf) throws CoreUnknownHabitatKeyException, CoreUnknownSpeciesKeyException {
     // Throws exception if habitat does not exist
@@ -405,6 +380,7 @@ public class Hotel implements Serializable {
     // set the influence of the species
     h.alteraInfluencia(e, getInfluence(inf));
   }
+
 
   /**
    * Registers a tree to a specified habitat.
@@ -424,6 +400,7 @@ public class Hotel implements Serializable {
 
     dirty();
   }
+
 
   /**
    * Creates a tree and adds it to the collection of trees.
@@ -448,10 +425,12 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+
   public List<Animal> mostraAnimaisPorHabitat(String habitatId) throws CoreUnknownHabitatKeyException{
     Habitat h = getHabitat(habitatId);
     return h.getAnimals();
   }
+
 
   /**
    * Retrieves a list of trees (Arvore) for a given habitat.
@@ -467,9 +446,12 @@ public class Hotel implements Serializable {
     return h.getArvores();
   }
 
+
+
   /* ************************************* *
    * *********** MENU VACINAS ************ *
    * ************************************* */
+
 
  
   /**
@@ -501,6 +483,7 @@ public class Hotel implements Serializable {
 
     dirty();
   }
+
 
   /**
    * Vaccinates an animal with a specified vaccine by a veterinarian.
@@ -539,11 +522,13 @@ public class Hotel implements Serializable {
 
   }
 
-  // VERIFICAR ESTE GETID - NULL POINT
+
+  // Verifies if Funcionario f is a Veterinario
   private void verificaVeterinario(Funcionario f) throws CoreUnknownVeterinarianKeyException {
     if (!(f instanceof Veterinario)) 
       throw new CoreUnknownVeterinarianKeyException(f.getId());
   }
+
 
   /**
    * Verifies if the veterinarian has permission to vaccinate the given species.
@@ -557,6 +542,8 @@ public class Hotel implements Serializable {
       throw new CoreVeterinarianNotAuthorizedException(vet.getId(), e.getId());
     }
   }
+
+
 
   /* ************************************* *
    * ********** MENU CONSULTAS *********** *
@@ -576,6 +563,7 @@ public class Hotel implements Serializable {
     return h.getAnimals();
   }
 
+
   /**
    * Retrieves the list of vaccination records for a specific animal.
    *
@@ -589,6 +577,7 @@ public class Hotel implements Serializable {
     // returns the list of records of the animal
     return a.getRegistos();
   }
+
 
   /**
    * Consults the medical records of a veterinarian.
@@ -611,6 +600,7 @@ public class Hotel implements Serializable {
     } catch(CoreUnknownEmployeeKeyException e) {throw new CoreUnknownVeterinarianKeyException(vetId);}
   }
 
+  
   /**
    * Retrieves a list of vaccine records that were administered carelessly.
    * 
@@ -631,9 +621,13 @@ public class Hotel implements Serializable {
     return incuria;
   }
   
+
+
   /* ************************************* *
    * ********* AUXILIAR METHODS ********** *
    * ************************************* */
+
+
 
   /**
    * Registers a new species in the hotel system.
@@ -658,6 +652,14 @@ public class Hotel implements Serializable {
     dirty();
   }
 
+  /**
+   * Checks if the given species name already exists in the list of species.
+   * If a species with the same name (case insensitive) is found, a 
+   * CoreDuplicateSpeciesNameException is thrown.
+   *
+   * @param name the name of the species to check
+   * @throws CoreDuplicateSpeciesNameException if a species with the same name already exists
+   */
   private void isNameInSpecies(String name) throws CoreDuplicateSpeciesNameException {
     List<Especie> especies = new ArrayList<>(getSpecies());
     for (Especie e : especies) {
@@ -666,36 +668,6 @@ public class Hotel implements Serializable {
       }
     }
   }   
-
-  // Recebe uma coleção de objetos e devolve uma lista de strings(visualizaçoes) 
-  /**
-   * Converts a collection of items to a collection of their string representations.
-   *
-   * @param items the collection of items to be visualized
-   * @return an unmodifiable list of string representations of the items
-   */
-  public Collection<String> visualiza(Collection<?> items) {
-    List<String> view = new ArrayList<>();
-    for (Object item : items) {
-      view.add(item.toString());
-    }
-    return Collections.unmodifiableList(view);
-  }
-
-
-
-
-
-  // NOT BEING USED
-
-  // private <T>List <T>sortIds(Map<String, T> map) {
-  //   List<String> idList = new ArrayList<>(map.keySet()); // Faz uma lista das keys do map
-  //   idList.sort(String.CASE_INSENSITIVE_ORDER); // ordena os ids pela ordem lexicografica
-  //   return idList.stream().map(map::get).collect(Collectors.toList()); // transforma os ids em seus proprios objetos
-  // }
-
-
-
 
   /**
    * Sorts a collection of items that implement the {@link Comparable} interface.
@@ -712,19 +684,6 @@ public class Hotel implements Serializable {
     Collections.sort(sortedItems); // Usa o método compareTo da interface Comparable
     return Collections.unmodifiableList(sortedItems);
   }
-
-
-
-  // // Visualiza todas arvores
-  // /**
-  //  * Retrieves a collection of all tree IDs in the hotel, sorted in a specific order.
-  //  *
-  //  * @return A collection of sorted tree IDs.
-  //  */
-  // public Collection<String> visualizaTodasArvores() {
-  //   return visualiza(sortIds(_arvores));
-  // }
-
 
   /**
    * Retrieves the current season of the year.
@@ -764,6 +723,7 @@ public class Hotel implements Serializable {
     return a;
   }
 
+
   /**
    * Retrieves a Habitat object based on the provided key.
    *
@@ -778,6 +738,7 @@ public class Hotel implements Serializable {
     return h;
   }
 
+
   /**
    * Retrieves an animal from the hotel using the provided key.
    *
@@ -791,6 +752,7 @@ public class Hotel implements Serializable {
       throw new CoreUnknownAnimalKeyException(key); // Se o animal não existir, lança exceção 
     return a;
   }
+
 
   /**
    * Retrieves the species associated with the given key.
@@ -832,6 +794,7 @@ public class Hotel implements Serializable {
     return _animais.values();
   }
 
+
   /**
    * Retrieves a map of all the employees (Funcionarios) in the hotel.
    *
@@ -840,6 +803,7 @@ public class Hotel implements Serializable {
   public Collection<Funcionario> getEmployees(){
     return _funcionarios.values();
   }
+
 
   /**
    * Retrieves the map of habitats in the hotel.
@@ -850,9 +814,16 @@ public class Hotel implements Serializable {
     return _habitats.values();
   }
 
+
+  /**
+   * Retrieves a collection of all species in the hotel.
+   *
+   * @return a collection containing all species.
+   */
   public Collection<Especie> getSpecies(){
     return _especies.values();
   }
+
 
   /**
    * Retrieves the map of vaccines.
@@ -863,11 +834,16 @@ public class Hotel implements Serializable {
     return _vacinas.values();
   }
 
- 
 
+  /**
+   * Retrieves the list of vaccine records.
+   *
+   * @return a list of {@link RegistoVacina} objects representing the vaccine records.
+   */
   public List<RegistoVacina> getRegistoVacinas(){
     return _registoVacinas;
   }
+
 
   /**
    * Read text input file and create corresponding domain entities.

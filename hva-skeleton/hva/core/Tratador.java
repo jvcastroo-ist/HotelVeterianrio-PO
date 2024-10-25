@@ -20,24 +20,6 @@ public class Tratador extends Funcionario{
     return sort(_habitats);
   }
 
-
-
-  //  DESCONTINUADO - DESCONTINUADO - DESCONTINUADO
-  @Override
-  public void operaResponsabilidade(Responsabilidade r, boolean atribui) {
-    if (atribui) {
-      _habitats.add((Habitat)r);
-    } else {
-      _habitats.remove((Habitat)r);
-    }
-    r.operaFuncionario(atribui);
-  }
-
-  @Override
-  public String getType(){
-    return "TRT";
-  }
-
   /**
    * Checks if the given responsibility is assigned to this handler.
    *

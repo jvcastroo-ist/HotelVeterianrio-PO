@@ -5,7 +5,6 @@ import hva.core.Hotel;
 import hva.core.exception.CoreUnknownHabitatKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Change the area of a given habitat.

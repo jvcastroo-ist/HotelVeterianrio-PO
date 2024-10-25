@@ -23,12 +23,7 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     _animais = new ArrayList<>();
     _adequacao = new HashMap<>();
   }
-
-  @Override
-  public String getType(){
-    return "HAB";
-  }
-
+  
   /**
    * Retrieves the area of the habitat.
    *
@@ -132,11 +127,6 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     _arvores.add(a);
   }
 
-  @Override
-  public int compareTo(Habitat h){
-    return getId().compareToIgnoreCase(h.getId());
-  }
-
   /**
    * Calculates the total cleaning effort required for all trees in the habitat.
    *
@@ -146,7 +136,6 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     return _arvores.stream().mapToDouble(Arvore::getEsforcoLimpeza).sum();
   }
 
-  
   /**
    * Calculates the total work required in the habitat.
    * 
@@ -157,6 +146,11 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
    */
   public double trabalhoNoHabitat() {
     return _area + 3*_animais.size() + esforcoLimpezaArvores();  
+  }
+
+  @Override
+  public int compareTo(Habitat h){
+    return getId().compareToIgnoreCase(h.getId());
   }
 
   /**

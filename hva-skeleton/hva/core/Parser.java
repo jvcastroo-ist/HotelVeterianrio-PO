@@ -17,8 +17,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-// FIXME add other imports if needed
-
 /**
  * Esta solução assume que a classe Hotel já tem a seguinte funcionalidade
 
@@ -154,14 +152,11 @@ public class Parser {
       _hotel.registerEmployee(id, name, empType);
 
       if (components.length == 4) {
-        try{
-          Funcionario f = _hotel.getFuncionario(id);
-          for(String responsibility : components[3].split(",")){
-            _hotel.addResponsibility(f, responsibility);
-          }
-        } catch(CoreUnknownEmployeeKeyException e){}
+        for(String responsibility : components[3].split(",")){
+            _hotel.addResponsibility(id, responsibility);
+        }
       }
-    } catch (CoreDuplicateEmployeeKeyException | CoreNoResponsibilityException e) {
+    } catch (CoreDuplicateEmployeeKeyException | CoreUnknownEmployeeKeyException |CoreNoResponsibilityException e) {
       throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
     }
   }

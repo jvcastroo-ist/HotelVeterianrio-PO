@@ -5,7 +5,6 @@ import hva.core.Hotel;
 import hva.core.exception.CoreUnknownAnimalKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Shows the satisfaction of a given animal.

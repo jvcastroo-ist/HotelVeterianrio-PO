@@ -37,23 +37,6 @@ public class Veterinario extends Funcionario {
     return _registoVacinas;
   }
 
-
-  // DESCONTINUADO - DESCONTINUADO - DESCONTINUADO
-  @Override
-  public void operaResponsabilidade(Responsabilidade r, boolean atribui) {
-    if (atribui) {
-      _especies.add((Especie)r);
-    } else {
-      _especies.remove((Especie)r);
-    }
-    r.operaFuncionario(atribui);
-  }
-
-  @Override
-  public String getType(){
-    return "VET";
-  }
-
   /**
    * Checks if the given responsibility is assigned to this veterinarian.
    *

@@ -25,7 +25,7 @@ public class Dano implements Serializable {
 
   /**
    * Returns a string representation of the damage.
-   * If the key is 0 and the species is not correct, it returns "ACIDENTE".
+   * If the key is 0 and the species is not correct, it returns "CONFUSÂO".
    * Otherwise, it returns the value associated with the floor entry of the key in the damage map.
    *
    * @return a string representation of the damage.

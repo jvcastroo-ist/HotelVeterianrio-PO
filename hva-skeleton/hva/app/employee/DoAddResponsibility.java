@@ -2,7 +2,6 @@ package hva.app.employee;
 
 import hva.app.exception.NoResponsibilityException;
 import hva.app.exception.UnknownEmployeeKeyException;
-import hva.core.Funcionario;
 import hva.core.Hotel;
 import hva.core.exception.CoreNoResponsibilityException;
 import hva.core.exception.CoreUnknownEmployeeKeyException;
@@ -24,13 +23,13 @@ class DoAddResponsibility extends Command<Hotel> {
   @Override
   protected void execute() throws CommandException {
     try {
-      Funcionario employee = _receiver.getFuncionario(stringField("idEmployee"));
+      String employeeId = stringField("idEmployee");
       String responsibilityId =  stringField("idResponsibility");
-      _receiver.addResponsibility(employee, responsibilityId);
+      _receiver.addResponsibility(employeeId, responsibilityId);
     } catch (CoreUnknownEmployeeKeyException e) {
       throw new UnknownEmployeeKeyException(e.getId());
     } catch(CoreNoResponsibilityException e){
-      throw new NoResponsibilityException(e.getEmployeeKey(), e.getResponsibilityKey());  // confirmar este throw
+      throw new NoResponsibilityException(e.getEmployeeKey(), e.getResponsibilityKey());
     }
   }
 }

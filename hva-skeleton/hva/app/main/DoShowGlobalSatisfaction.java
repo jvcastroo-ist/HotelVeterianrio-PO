@@ -13,7 +13,6 @@ class DoShowGlobalSatisfaction extends Command<HotelManager> {
   
   @Override
   protected final void execute() {
-    _display.addLine(_receiver.getHotel().satisfacaoTotal());
-    _display.display();
+    _display.popup(_receiver.globalSatisfaction());
   }
 }

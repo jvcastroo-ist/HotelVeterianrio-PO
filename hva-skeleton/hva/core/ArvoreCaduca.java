@@ -24,7 +24,7 @@ public class ArvoreCaduca extends Arvore {
    */
   @Override
   protected void setEstacaoState(Estacao e) {
-    super.setEstacaoState(e.criarEstacaoStateCaduca());;
+    super.setEstacaoState(e.criarEstacaoStateCaduca());
   }
 
   /**

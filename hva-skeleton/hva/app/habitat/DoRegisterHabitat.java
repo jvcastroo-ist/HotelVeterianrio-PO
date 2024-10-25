@@ -5,7 +5,6 @@ import hva.core.Hotel;
 import hva.core.exception.CoreDuplicateHabitatKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Add a new habitat to this zoo hotel.

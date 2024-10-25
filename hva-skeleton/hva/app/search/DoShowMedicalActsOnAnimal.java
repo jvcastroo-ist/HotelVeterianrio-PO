@@ -7,7 +7,6 @@ import hva.core.exception.CoreUnknownAnimalKeyException;
 import java.util.List;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Show all medical acts applied to a given animal.
