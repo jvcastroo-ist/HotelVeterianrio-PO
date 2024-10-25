@@ -113,9 +113,9 @@ public class Hotel implements Serializable {
    *
    * @return the total satisfaction score as an integer.
    */
-  public int satisfacaoTotal() {
-    int animais = satisfacaoAnimais(_animais.values());
-    int func = satisfacaoFuncionarios(_funcionarios.values());
+  public double satisfacaoTotal() {
+    double animais = satisfacaoAnimais(_animais.values());
+    double func = satisfacaoFuncionarios(_funcionarios.values());
     return animais+func;
   }
 
@@ -231,7 +231,7 @@ public class Hotel implements Serializable {
    * @return the rounded satisfaction level of the animal.
    * @throws CoreUnknownAnimalKeyException if the animal with the given ID does not exist.
    */
-  public long calculaSatisfacaoAnimal(String animalId) throws CoreUnknownAnimalKeyException{
+  public double calculaSatisfacaoAnimal(String animalId) throws CoreUnknownAnimalKeyException{
     // Throws exception if animal does not exist
     Animal a = getAnimal(animalId);
     
@@ -310,7 +310,7 @@ public class Hotel implements Serializable {
    * @return The rounded satisfaction level of the employee.
    * @throws CoreUnknownEmployeeKeyException If the employee with the given ID does not exist.
    */
-  public long calculaSatisfacaoFuncionario(String employeeId) throws CoreUnknownEmployeeKeyException{
+  public double calculaSatisfacaoFuncionario(String employeeId) throws CoreUnknownEmployeeKeyException{
     // Throws exception if employee does not exist
     Funcionario f = getFuncionario(employeeId);
     

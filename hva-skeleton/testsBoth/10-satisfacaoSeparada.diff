@@ -1,0 +1,36 @@
+*** testsBoth/10-satisfacaoSeparada.out	2024-10-25 21:51:04.000000000 +0100
+--- testsBoth/10-satisfacaoSeparada.outhyp	2024-10-25 22:11:36.519028001 +0100
+***************
+*** 44,50 ****
+  0 - Sair
+  Escolha uma opção: 5
+  Identificador único do funcionário: w1
+! -518
+  Gestão de Funcionários
+  1 - Visualizar todos os funcionários
+  2 - Registar funcionário
+--- 44,50 ----
+  0 - Sair
+  Escolha uma opção: 5
+  Identificador único do funcionário: w1
+! -521
+  Gestão de Funcionários
+  1 - Visualizar todos os funcionários
+  2 - Registar funcionário
+***************
+*** 66,72 ****
+  10 - Consultas
+  0 - Sair
+  Escolha uma opção: 5
+! 1428
+  Menu Principal
+  1 - Criar ficheiro
+  2 - Abrir ficheiro
+--- 66,72 ----
+  10 - Consultas
+  0 - Sair
+  Escolha uma opção: 5
+! 1425
+  Menu Principal
+  1 - Criar ficheiro
+  2 - Abrir ficheiro

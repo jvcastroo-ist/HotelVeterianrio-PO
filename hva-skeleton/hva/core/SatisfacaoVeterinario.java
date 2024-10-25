@@ -16,12 +16,12 @@ public class SatisfacaoVeterinario implements Satisfacao{
    * @return the satisfaction level as an integer.
    */
   @Override
-  public int satisfacao() {
+  public double satisfacao() {
     double sum = 0;
     for (Especie e : _vet.getEspecies()) {
       sum += e.getAnimais().size()/e.getNumFuncionarios();
     }
     sum = 20 - sum;
-    return (int)Math.round(sum);
+    return sum;
   }
 }

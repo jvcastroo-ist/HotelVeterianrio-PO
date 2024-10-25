@@ -38,7 +38,7 @@ public class HotelManager {
    *
    * @return the total satisfaction score of the hotel.
    */
-  public int globalSatisfaction(){
+  public double globalSatisfaction(){
     return _hotel.satisfacaoTotal();
   }
   

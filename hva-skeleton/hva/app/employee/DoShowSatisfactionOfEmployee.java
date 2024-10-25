@@ -19,7 +19,7 @@ class DoShowSatisfactionOfEmployee extends Command<Hotel> {
   @Override
   protected void execute() throws CommandException {
     try {
-      _display.addLine(_receiver.calculaSatisfacaoFuncionario(stringField("idEmployee")));
+      _display.addLine((int)Math.round(_receiver.calculaSatisfacaoFuncionario(stringField("idEmployee"))));
       _display.display();
     } catch (CoreUnknownEmployeeKeyException e) {
       throw new UnknownEmployeeKeyException(e.getId());

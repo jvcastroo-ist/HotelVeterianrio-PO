@@ -18,13 +18,13 @@ public class SatisfacaoAnimal implements Satisfacao{
    *         - Adequacy of the habitat for the animal.
    */
   @Override
-  public int satisfacao() {
+  public double satisfacao() {
     Habitat habitat = _animal.getHabitat();
     // Numero de especies diferentes no habitat
     int especieDiferente = habitat.getAnimals().size() - (_animal.especieIgual() + 1);
     // AREA/POPULACAO
     double espacoMedio = habitat.getArea()/habitat.getAnimals().size();
     // satisfacao arredondada ao inteiro mais proximo
-    return (int)Math.round(20 + 3*_animal.especieIgual() - 2*especieDiferente + espacoMedio + _animal.getAdequacao());
+    return (20 + 3*_animal.especieIgual() - 2*especieDiferente + espacoMedio + _animal.getAdequacao());
   }
 }

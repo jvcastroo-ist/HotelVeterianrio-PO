@@ -8,5 +8,5 @@ public interface Satisfacao extends Serializable{
    *
    * @return an integer representing the satisfaction level.
    */
-  public int satisfacao();
+  public double satisfacao();
 }

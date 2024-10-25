@@ -19,7 +19,7 @@ class DoShowSatisfactionOfAnimal extends Command<Hotel> {
   @Override
   protected final void execute() throws CommandException {
     try {
-        _display.addLine(_receiver.calculaSatisfacaoAnimal(stringField("idAnimal")));
+        _display.addLine((int)Math.round(_receiver.calculaSatisfacaoAnimal(stringField("idAnimal"))));
         _display.display();
     } catch (CoreUnknownAnimalKeyException a) {
       throw new UnknownAnimalKeyException(a.getId());

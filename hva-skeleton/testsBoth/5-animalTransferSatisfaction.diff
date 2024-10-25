@@ -1,0 +1,53 @@
+*** testsBoth/5-animalTransferSatisfaction.out	2024-10-25 21:51:06.000000000 +0100
+--- testsBoth/5-animalTransferSatisfaction.outhyp	2024-10-25 22:11:36.983027070 +0100
+***************
+*** 116,122 ****
+  0 - Sair
+  Escolha uma opção: 5
+  Identificador único do funcionário: W1
+! -1398
+  Gestão de Funcionários
+  1 - Visualizar todos os funcionários
+  2 - Registar funcionário
+--- 116,122 ----
+  0 - Sair
+  Escolha uma opção: 5
+  Identificador único do funcionário: W1
+! -1401
+  Gestão de Funcionários
+  1 - Visualizar todos os funcionários
+  2 - Registar funcionário
+***************
+*** 138,144 ****
+  10 - Consultas
+  0 - Sair
+  Escolha uma opção: 5
+! 563
+  Menu Principal
+  1 - Criar ficheiro
+  2 - Abrir ficheiro
+--- 138,144 ----
+  10 - Consultas
+  0 - Sair
+  Escolha uma opção: 5
+! 560
+  Menu Principal
+  1 - Criar ficheiro
+  2 - Abrir ficheiro
+***************
+*** 219,225 ****
+  10 - Consultas
+  0 - Sair
+  Escolha uma opção: 5
+! 551
+  Menu Principal
+  1 - Criar ficheiro
+  2 - Abrir ficheiro
+--- 219,225 ----
+  10 - Consultas
+  0 - Sair
+  Escolha uma opção: 5
+! 548
+  Menu Principal
+  1 - Criar ficheiro
+  2 - Abrir ficheiro

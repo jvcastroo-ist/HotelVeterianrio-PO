@@ -13,12 +13,12 @@ public class SatisfacaoTratador implements Satisfacao{
    * @return the satisfaction level as an integer, where a higher value indicates higher satisfaction.
    */
   @Override
-  public int satisfacao() {
+  public double satisfacao() {
     double sum = 0;
     for(Habitat h : _t.getHabitats()) {
       sum += h.trabalhoNoHabitat()/h.getNumFuncionarios();
     }
     sum = 300 - sum;
-    return (int)Math.round(sum);
+    return sum;
   }
 }
