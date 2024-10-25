@@ -97,7 +97,7 @@ public class Hotel implements Serializable {
   private void aumentaIdades() {
     for (Arvore a : _arvores.values()) {
       a.aumentaIdade();
-      a.mudarEstacao(a._estacaoState.mudarEstacao());
+      a.mudarEstacao(a.getEstacaoState().mudarEstacao());
     }
   }
 

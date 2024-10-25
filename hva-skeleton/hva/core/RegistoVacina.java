@@ -58,6 +58,18 @@ public class RegistoVacina implements Serializable{
       return _dano;
     }
 
+    /**
+     * Computes the number of common characters between two strings, ignoring case.
+     * 
+     * This method converts both input strings to lowercase and then counts the 
+     * occurrences of each character in the first string. It then iterates through 
+     * the second string, counting how many characters are common with the first 
+     * string, ensuring each character is only counted once.
+     * 
+     * @param str1 the first string to compare
+     * @param str2 the second string to compare
+     * @return the number of characters that are common between the two strings
+     */
     private int caracteresEmComum(String str1, String str2) {
       str1 = str1.toLowerCase();
       str2 = str2.toLowerCase();
@@ -106,6 +118,11 @@ public class RegistoVacina implements Serializable{
       return maxDano;
     }
 
+    /**
+     * Sets the damage status for the vaccine registry.
+     *
+     * @param especieIgual a boolean indicating whether the species is the same.
+     */
     public void setDano(boolean especieIgual) {
       _dano = new Dano(calculaDano(), especieIgual);
     }

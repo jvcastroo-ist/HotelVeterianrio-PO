@@ -6,7 +6,7 @@ public class Animal extends HotelEntity implements Comparable<Animal> {
   private final Especie _especie;
   private Habitat _habitat;
   private int _adequacao;
-  protected Satisfacao _satisfacao;
+  private Satisfacao _satisfacao;
   private List<RegistoVacina> _registoVacinacao;
             
   /**
@@ -52,6 +52,11 @@ public class Animal extends HotelEntity implements Comparable<Animal> {
     return _adequacao;
   }
 
+  /**
+   * Retrieves the satisfaction level of the animal.
+   *
+   * @return the current satisfaction level of the animal.
+   */
   public Satisfacao getSatisfacao(){
     return _satisfacao;
   }

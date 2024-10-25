@@ -15,9 +15,16 @@ public class ArvoreCaduca extends Arvore {
     setEstacaoState(estacaoInicial);
   }
 
+  /**
+   * Overrides the setEstacaoState method to set the state of the season
+   * for a deciduous tree. This method calls the superclass's setEstacaoState
+   * method with a new state created specifically for deciduous trees.
+   *
+   * @param e the Estacao object representing the current season
+   */
   @Override
   protected void setEstacaoState(Estacao e) {
-    _estacaoState = e.criarEstacaoStateCaduca();
+    super.setEstacaoState(e.criarEstacaoStateCaduca());;
   }
 
   /**
@@ -28,12 +35,12 @@ public class ArvoreCaduca extends Arvore {
    */
   @Override
   public double getEsforcoLimpeza() {
-    return super.getEsforcoLimpeza()*_estacaoState.getEsforcoSazonal();
+    return super.getEsforcoLimpeza()*getEstacaoState().getEsforcoSazonal();
   }
 
   @Override
   public String toString() {
-    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "CADUCA", _estacaoState.getCicloBio());
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "CADUCA", getEstacaoState().getCicloBio());
   }
 }
 

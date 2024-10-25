@@ -30,6 +30,11 @@ public class Especie extends Responsabilidade implements Comparable<Especie>{
     _animais.add(a);
   }
 
+  /**
+   * Retrieves the list of animals associated with this species.
+   *
+   * @return a list of {@link Animal} objects.
+   */
   public List<Animal> getAnimais() {
     return _animais;
   }
