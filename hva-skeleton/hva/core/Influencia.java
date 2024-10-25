@@ -20,5 +20,10 @@ public enum Influencia {
     }
   };
   
+  /**
+   * Retrieves the influence value.
+   *
+   * @return the influence value as an integer.
+   */
   public abstract int getInfluencia(); 
 }

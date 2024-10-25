@@ -1,10 +1,9 @@
 package hva.core;
 
-import hva.core.exception.CoreNoResponsibilityException;
 import java.util.*;
 
 public abstract class Funcionario extends HotelEntity implements Comparable<Funcionario>{
-  protected Satisfacao _satisfacao;
+  private Satisfacao _satisfacao;
 
   /**
    * Constructs a new Funcionario with the specified ID and name.
@@ -21,18 +20,33 @@ public abstract class Funcionario extends HotelEntity implements Comparable<Func
    *
    * @param r the responsibility to be operated on
    * @param atribui a boolean indicating whether to assign (true) or remove (false) the responsibility
-   * @throws CoreNoResponsibilityException if the operation cannot be performed due to lack of responsibility
    */
   public abstract void operaResponsabilidade(Responsabilidade r, boolean atribui);
   
-
   public abstract void atribuiResponsabilidade(Responsabilidade r);
+
   public abstract void retiraResponsabilidade(Responsabilidade r);
+  
   public abstract boolean isResponsabilidadeAtribuida(Responsabilidade r);
+  
   public abstract String getType();
 
+  /**
+   * Retrieves the satisfaction level of the employee.
+   *
+   * @return the satisfaction level of the employee as a {@link Satisfacao} object.
+   */
   public Satisfacao getSatisfacao(){
     return _satisfacao;
+  }
+
+  /**
+   * Sets the satisfaction level of the employee.
+   *
+   * @param s the satisfaction level to be set
+   */
+  public void setSatisfacao(Satisfacao s) {
+    _satisfacao = s;
   }
 
   /**
@@ -42,7 +56,7 @@ public abstract class Funcionario extends HotelEntity implements Comparable<Func
    * @return a string containing the IDs of the Responsabilidade objects, separated by commas and prefixed with a "|". 
    *         Returns an empty string if the collection is empty.
    */
-  public String idResponsabilidade(Collection<? extends Responsabilidade> R) {
+  private String idResponsabilidade(Collection<? extends Responsabilidade> R) {
     List<String> ids = new ArrayList<>();
     if (R.isEmpty()) {return "";}
     for (Responsabilidade r : R) { 

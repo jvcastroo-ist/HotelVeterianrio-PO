@@ -15,9 +15,15 @@ public class ArvorePerene extends Arvore {
     setEstacaoState(estacaoInicial);
   }
 
+  /**
+   * Overrides the setEstacaoState method to set the state of the Estacao object
+   * to a new state specific to perennials (Perene).
+   *
+   * @param e the Estacao object whose state is to be set
+   */
   @Override
   protected void setEstacaoState(Estacao e) {
-    _estacaoState = e.criarEstacaoStatePerene();
+    super.setEstacaoState(e.criarEstacaoStatePerene());
   }
 
   /**
@@ -28,11 +34,11 @@ public class ArvorePerene extends Arvore {
    */
   @Override
   public double getEsforcoLimpeza() {
-    return super.getEsforcoLimpeza()*_estacaoState.getEsforcoSazonal();
+    return super.getEsforcoLimpeza()*getEstacaoState().getEsforcoSazonal();
   }
 
   @Override
   public String toString() {
-    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "PERENE", _estacaoState.getCicloBio());
+    return String.format("ÁRVORE|%s|%s|%d|%d|%s|%s", getId(), getNome(), getIdade(), getDificuldadeBase(), "PERENE", getEstacaoState().getCicloBio());
   }
 }

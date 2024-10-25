@@ -67,6 +67,12 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     return _animais.stream().filter(a -> (a.getEspecie() == e)).collect(Collectors.toList());
   }
 
+  /**
+   * Alters the influence of a given species in the habitat.
+   *
+   * @param e the species whose influence is to be altered
+   * @param inf the new influence value to be set
+   */
   public void alteraInfluencia(Especie e, int inf) {
     if (_adequacao.containsKey(e))
       // If the species is inside the map, it replaces the influence 
@@ -79,6 +85,11 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     }
   }
 
+  /**
+   * Removes the specified animal from the habitat.
+   *
+   * @param a the animal to be removed
+   */
   public void removeAnimal(Animal a){
     _animais.remove(a);
   }
@@ -92,6 +103,12 @@ public class Habitat extends Responsabilidade implements Comparable<Habitat> {
     _area = area;
   }
 
+  /**
+   * Adds an animal to the habitat. If the animal's species is present in the adequacy map,
+   * the animal's adequacy is set according to the map. Otherwise, the adequacy is set to neutral (0).
+   *
+   * @param a the animal to be added to the habitat
+   */
   public void addAnimal(Animal a){
     // animal's species
     Especie e = a.getEspecie();

@@ -7,6 +7,14 @@ public class SatisfacaoVeterinario implements Satisfacao{
     _vet = vet;
   }
 
+  /**
+   * Calculates the satisfaction level of the veterinarian.
+   * The satisfaction is determined by the number of animals per species
+   * divided by the number of employees for each species, summed up and
+   * subtracted from 20. The result is then rounded to the nearest integer.
+   *
+   * @return the satisfaction level as an integer.
+   */
   @Override
   public int satisfacao() {
     double sum = 0;

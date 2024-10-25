@@ -3,7 +3,7 @@ package hva.core;
 public abstract class Arvore extends HotelEntity {
   private float _idade;
   private final int _dificuldadeBase;
-  protected EstacaoState _estacaoState;
+  private EstacaoState _estacaoState;
 
   /**
    * Constructs an Arvore object with the specified parameters.
@@ -38,47 +38,61 @@ public abstract class Arvore extends HotelEntity {
     return _dificuldadeBase;
   }
 
-  // /**
-  //  * Retrieves the biological cycle of a tree based on the given season and type.
-  //  *
-  //  * @param estacao the season index
-  //  * @param tipo the type index
-  //  * @return the biological cycle corresponding to the specified season and type
-  //  */
-  // public String getCiclo(int tipo) {
-  //   return _cicloBiologico[tipo][_estacaoAtual.ordinal()];
-  // }
+  /**
+   * Retrieves the current state of the station.
+   *
+   * @return the current state of the station as an {@link EstacaoState} object.
+   */
+  public EstacaoState getEstacaoState() {
+    return _estacaoState;
+  }
+
+  /**
+   * Sets the current state of the station.
+   *
+   * @param e the new state to be set for the station
+   */
+  public void setEstacaoState(EstacaoState e) {
+    _estacaoState = e;
+  }
 
   protected abstract void setEstacaoState(Estacao e);
 
+  /**
+   * Changes the current season state of the object.
+   *
+   * @param estacao the new season state to be set
+   */
   public void mudarEstacao(EstacaoState estacao) {
     _estacaoState = estacao;
   }
 
+  /**
+   * Retrieves the biological cycle information from the current station state.
+   *
+   * @return A string representing the biological cycle.
+   */
   public String getCicloBio() {
     return _estacaoState.getCicloBio();
   }
 
+  /**
+   * Retrieves the seasonal effort from the current state of the season.
+   *
+   * @return the seasonal effort as an integer.
+   */
   public int getEsforcoSazonal() {
     return _estacaoState.getEsforcoSazonal();
   }
-
-  // /**
-  //  * Retrieves the cleaning effort required for a specific type and season.
-  //  *
-  //  * @param estacao the season index
-  //  * @param tipo the type index
-  //  * @return the cleaning effort for the specified type and season
-  //  */
-  // public Integer getEsforcoSazonal(int tipo) {
-  //   return _esforcoSazonal[tipo][_estacaoAtual.ordinal()];
-  // }
 
   // a versão realmente utilizada desse metodo é o override das classes filho
   public double getEsforcoLimpeza() {
     return getDificuldadeBase()*Math.log(getIdade()+1);
   }
 
+  /**
+   * Increases the age of the entity by 0.25.
+   */
   public void aumentaIdade() {
     _idade += 0.25;
   }

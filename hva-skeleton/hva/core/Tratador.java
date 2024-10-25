@@ -13,7 +13,7 @@ public class Tratador extends Funcionario{
   public Tratador(String idTratador, String nome){
     super(idTratador, nome);
     _habitats = new ArrayList<>();
-    _satisfacao = new SatisfacaoTratador(this);
+    setSatisfacao(new SatisfacaoTratador(this));
   }
 
   public List<Habitat> getHabitats(){
@@ -38,20 +38,37 @@ public class Tratador extends Funcionario{
     return "TRT";
   }
 
+  /**
+   * Checks if the given responsibility is assigned to this handler.
+   *
+   * @param r the responsibility to check
+   * @return true if the responsibility is assigned, false otherwise
+   */
   @Override
   public boolean isResponsabilidadeAtribuida(Responsabilidade r){
     return _habitats.contains((Habitat)r);
   }
 
+  /**
+   * Assigns a responsibility to the handler if it has not already been assigned.
+   * If the responsibility is not already assigned, it adds the habitat to the list
+   * of habitats and updates the responsibility status.
+   *
+   * @param r the responsibility to be assigned
+   */
   @Override
   public void atribuiResponsabilidade(Responsabilidade r){
     if(!(isResponsabilidadeAtribuida(r))){
       _habitats.add((Habitat)r);
       r.operaFuncionario(true); // add +1 to responsability TRT
     }
-    
   }
 
+  /**
+   * Removes the given responsibility from the handler.
+   * 
+   * @param r the responsibility to be removed
+   */
   @Override
   public void retiraResponsabilidade(Responsabilidade r){
     _habitats.remove((Habitat)r);  

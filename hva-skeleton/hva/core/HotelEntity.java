@@ -44,7 +44,7 @@ public abstract class HotelEntity implements Serializable{
    * @param list the list of objects to be sorted
    * @return A sorted list of objects based on their IDs.
    */
-  public <T extends HotelEntity> List<T> sort(List<T> list) {
+  protected <T extends HotelEntity> List<T> sort(List<T> list) {
     return list.stream().sorted((o1, o2) -> o1.getId().compareToIgnoreCase(o2.getId())).collect(Collectors.toList());
   }
 }

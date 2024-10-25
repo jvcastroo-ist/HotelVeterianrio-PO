@@ -16,7 +16,7 @@ public class Veterinario extends Funcionario {
     super(idVeterinario, nome);
     _especies = new ArrayList<>();
     _registoVacinas = new ArrayList<>();
-    _satisfacao = new SatisfacaoVeterinario(this);
+    setSatisfacao(new SatisfacaoVeterinario(this));
   }
 
   /**
@@ -54,11 +54,24 @@ public class Veterinario extends Funcionario {
     return "VET";
   }
 
+  /**
+   * Checks if the given responsibility is assigned to this veterinarian.
+   *
+   * @param r the responsibility to check
+   * @return true if the responsibility is assigned, false otherwise
+   */
   @Override
   public boolean isResponsabilidadeAtribuida(Responsabilidade r){
     return _especies.contains((Especie)r);
   }
 
+  /**
+   * Assigns a responsibility to the veterinarian if it has not already been assigned.
+   * If the responsibility is not already assigned, it adds the responsibility to the list of species
+   * and increments the responsibility count for the veterinarian.
+   *
+   * @param r the responsibility to be assigned
+   */
   @Override
   public void atribuiResponsabilidade(Responsabilidade r){
     if(!(isResponsabilidadeAtribuida(r))){
@@ -67,6 +80,11 @@ public class Veterinario extends Funcionario {
     }
   }
 
+  /**
+   * Removes the given responsibility from the veterinarian.
+   * 
+   * @param r the responsibility to be removed
+   */
   @Override
   public void retiraResponsabilidade(Responsabilidade r){
     _especies.remove((Especie)r); 

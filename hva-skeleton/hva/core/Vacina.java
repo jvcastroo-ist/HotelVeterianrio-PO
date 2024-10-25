@@ -78,7 +78,7 @@ public class Vacina extends HotelEntity implements Comparable<Vacina>{
    * @return a string containing the IDs of the species, separated by commas and prefixed with a "|".
    *         If the list is empty, returns an empty string.
    */
-  public String idEspecies(List<Especie> e) {
+  private String idEspecies(List<Especie> e) {
     List<String> ids = new ArrayList<>();
     if (e.isEmpty()) {return "";}
     for (Especie especie : e) { 
