@@ -1,4 +1,5 @@
 # HotelVeterinario
-Projeto de PO - 2º Ano IST
-
-Aplicativo que controla um gestor de um Hotel Veterinário, implementa a Framework po-uilib.
+Object Oriented Programming Project - Second Year - IST
+João Silva - Vaco Reino
+18
+Program that controls a "Zoo", implements the framework "po-uilib", distribuited by IST.
